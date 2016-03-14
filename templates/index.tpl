@@ -9,6 +9,9 @@
 
     <!-- Bootstrap -->
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap callouts -->
+    <link href="static/css/bootstrap-callouts.css" rel="stylesheet">
+ 
   </head>
   <body>
     
@@ -26,12 +29,18 @@
     <script src="src/core/fabrica.js"></script>
     <!-- Base class for all screens -->
     <script src="src/core/screen.class.js"></script>
+    <!-- Describes a machine, stores information about it, communicates with it -->
+    <script src="src/core/machine.js"></script>
 
     <!-- Connection screen -->
     <script src="src/screens/connection.js"></script>
 
 
 
+    <script>
+        // Manually enter the first screen
+        fabrica.screens.connection.enter();
+    </script>
 
   </body>
 </html>

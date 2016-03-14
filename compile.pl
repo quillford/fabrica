@@ -31,5 +31,5 @@ for my $to_replace ( split("\n", $template) ){
 }
 
 # Generate new file
-write_file( 'index.html', @replaced );
+write_file( 'index.html', join("\r\n", @replaced) );
 
