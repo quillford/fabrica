@@ -11,12 +11,28 @@
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
-    <h1>Hello, world!</h1>
+    
+    <!-- Bootstrap -->
+    <link href="src/screens/connection.html" rel="html">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="static/js/jquery-2.2.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="static/js/bootstrap.min.js"></script>
+    <!-- Js.class allows more object-oriented javascript -->
+    <script src="src/core/js.class/dist/browser/js.class.min.js"></script>
+
+    <!-- Core Fabrica object -->
+    <script src="src/core/fabrica.js"></script>
+    <!-- Base class for all screens -->
+    <script src="src/core/screen.class.js"></script>
+
+    <!-- Connection screen -->
+    <script src="src/screens/connection.js"></script>
+
+
+
+
   </body>
 </html>
 
