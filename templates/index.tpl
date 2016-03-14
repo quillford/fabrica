@@ -15,8 +15,10 @@
   </head>
   <body>
     
-    <!-- Bootstrap -->
+    <!-- HTML files for screens -->
     <link href="src/screens/connection.html" rel="html">
+    <link href="src/screens/initialization.html" rel="html">
+    <link href="src/screens/welcome.html" rel="html">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="static/js/jquery-2.2.1.min.js"></script>
@@ -31,10 +33,15 @@
     <script src="src/core/screen.class.js"></script>
     <!-- Describes a machine, stores information about it, communicates with it -->
     <script src="src/core/machine.js"></script>
+    <!-- Parses and stores configuration for a machine -->
+    <script src="src/core/configuration.js"></script>
 
     <!-- Connection screen -->
     <script src="src/screens/connection.js"></script>
-
+    <!-- Initialization screen -->
+    <script src="src/screens/initialization.js"></script>
+    <!-- Welcome screen -->
+    <script src="src/screens/welcome.js"></script>
 
 
     <script>

@@ -11,6 +11,8 @@ var ConnectionScreen = Screen.extend({
 
         // Add handlers
         this.html.find(".btn-connect").click(function(){ fabrica.screens.connection.attempt_connection(); });
+
+        // TODO : Add auto-detection of IP and remembering last-used IPs
     },
 
     attempt_connection: function(){
@@ -26,10 +28,6 @@ var ConnectionScreen = Screen.extend({
         html.find(".error-ip").removeClass("hidden");
         html.find(".error-ip kbd").html(html.find(".input-ip").val());
     },
-
-    on_succesful_connection: function(){
-        // Called by machine when a succesful connection has been made
-    }
 
 });
 

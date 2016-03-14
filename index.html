@@ -82,7 +82,7 @@
   </head>
   <body>
     
-    <!-- Bootstrap -->
+    <!-- HTML files for screens -->
 
 <screen id="connection_screen" class="hidden">
 
@@ -106,17 +106,101 @@
         <button type="button" class="btn btn-default navbar-btn navbar-left"> 
             <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
         </button>
+        <a href="#" class="btn navbar-btn navbar-right btn-default btn-connect col-md-2">Connect</a>
         <form class="navbar-form navbar-right">
             <div class="form-group">
               <input class="form-control input-ip" placeholder="IP Address" type="text" value="192.168.0.20">
             </div>
-            <a href="#" class="btn btn-default btn-connect">Connect</a>
         </form>
       </div>
     </nav>
 
 </screen>
 
+
+
+
+<screen id="initialization_screen" class="hidden">
+    <div class="container">
+      
+      <div class="text-center">
+        <h1>Loading</h1>
+      </div>
+      <br>
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 0%;">
+        </div>
+      </div>
+      <div class="row">
+        <ul>
+          <li class="list-group-item hidden list-done"> <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Cooling neutrino reaction chamber </li>
+          <li class="list-group-item hidden list-parse"> <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Parsing configuration </li>
+          <li class="list-group-item hidden list-download"> <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Downloading configuration from board </li>
+        </ul>
+      </div>
+      
+    </div><!-- /.container -->
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container">
+        <button type="button" class="btn btn-default navbar-btn navbar-left"> 
+            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
+        </button>
+      </div>
+    </nav>
+</screen>
+
+
+
+<screen id="welcome_screen" class="hidden">
+    <div class="container">
+      
+      <div class="text-center">
+        <h1>Welcome</h1>
+      </div>
+      <br>
+    <div class="row">
+      <div class="col-md-4">
+        <p> This interface is a community-driven collaborative Open-Source project. </p>
+        <p> You can find the source code on <a href="#"> github </a>, and you are very welcome to report problems and contribute. </p>
+        <div class="center-block"> 
+            <img src=" https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" style="width:200px" class="img-responsive" alt="Responsive image"> 
+        </div>
+      </div>
+      <div class="col-md-4">
+        <p> This project receives support from the following organisations : </p>
+        <ul>
+          <li> <a href="https://openhardwarecoza.wordpress.com/"> Openhardware.co.za </a> </li>
+          <li> <a href="https://robotseed.com/"> RobotSeed </a> </li>
+        </ul>
+        <p> The current maintainers for this project are : </p>
+        <ul>
+          <li> Bob </li>
+          <li> Jim</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h3> Donate </h3>
+        Ipsum dolorem paypalum sic patreonia
+      </div>
+    </div>
+      
+    </div><!-- /.container -->
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container">
+
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group navbar-left">
+                <input type="checkbox"> Do not show this next time </input>
+            </div>
+          </form>
+        
+      <a href="#" class="btn btn-default navbar-btn navbar-right col-md-2 btn_next"> Next </a>
+      </div>
+    </nav>
+
+</screen>
 
 
 
@@ -221,15 +305,85 @@ var Machine = Class({
     successful_connection: function(data, ip){
         // Remember the information learned from finding the board
         this.ip = ip;
+        this.address = "http://" + ip ;
         this.version_string = data;
 
-        // Warn the system that a new connection was established
+        // Tell the system that a new connection was established
         fabrica.call_event('on_succesful_connection');
+    
+        // Next step is obtaining the configuration file from the SD card
+        // TODO : Handle errors
+        $.ajax(this.address + "/sd/config").done(function(file){
+            // Tell the system the configuration file was obtained and parsing will now begin 
+            fabrica.call_event('on_config_parse_begin');
+
+            // Parse configuration
+            fabrica.machine.config.parse(file);
+
+            // Parsing done
+            fabrica.call_event('on_config_parse_end');
+        });
     }
 
 }); 
 
 fabrica.machine = new Machine();
+
+</script>
+
+    <!-- Parses and stores configuration for a machine -->
+<script type='text/javascript'>
+// Parses and stores configuration for a given machine
+
+var Configuration = Class({
+
+    // Constructor method
+    create: function(){
+    },
+
+    // Parse configuration file
+    parse: function(file){
+        // Remember the config's content
+        this.file = file;
+
+        // Parse and save entries
+        this.entries = {};
+        this.root = {};
+
+        file.split("\n").forEach(function(line){
+            // For each entry
+            if( line.match(/^(\s*)\#/g) || line == '' || line.match(/^[\s\n]*$/) ){ return; }
+
+            // Separate name from value
+            var match = line.match(/^([\w_\-\.]*)\s+(.*?)\s+\#/); 
+            var name = match[1];
+            var value = match[2];
+           
+            // Save raw entry
+            this.entries[name] = value; 
+
+            // Save extracted entries        
+            var key_path = name.split('.'); 
+            if( key_path.length == 1 ){
+                this.root[key_path[0]] = value;
+            }else if(key_path.length == 2 ){
+                if( this[key_path[0]] == undefined ){ this[key_path[0]] = {}; } 
+                this[key_path[0]][key_path[1]] = value;
+            }else if(key_path.length == 3 ){
+                if( this[key_path[0]] == undefined ){ this[key_path[0]] = {}; } 
+                if( this[key_path[0]][key_path[1]] == undefined ){ this[key_path[0]][key_path[1]] = {}; }
+                this[key_path[0]][key_path[1]][key_path[2]] = value;
+            } 
+
+        }, this);
+
+    }
+
+});
+
+fabrica.machine.config = new Configuration();
+
+
 
 </script>
 
@@ -249,6 +403,8 @@ var ConnectionScreen = Screen.extend({
 
         // Add handlers
         this.html.find(".btn-connect").click(function(){ fabrica.screens.connection.attempt_connection(); });
+
+        // TODO : Add auto-detection of IP and remembering last-used IPs
     },
 
     attempt_connection: function(){
@@ -265,10 +421,6 @@ var ConnectionScreen = Screen.extend({
         html.find(".error-ip kbd").html(html.find(".input-ip").val());
     },
 
-    on_succesful_connection: function(){
-        // Called by machine when a succesful connection has been made
-    }
-
 });
 
 fabrica.add_screen( 'connection', new ConnectionScreen() );
@@ -276,6 +428,73 @@ fabrica.add_screen( 'connection', new ConnectionScreen() );
 
 </script>
 
+    <!-- Initialization screen -->
+<script type='text/javascript'>
+// Initialization screen : displays progress of preparation of the interface, after initial contact with the machine
+
+InitializationScreen = Screen.extend({
+    enter: function(){
+        // Save screen html
+        this.html = $("#initialization_screen");
+
+        // Display this screen 
+        $("screen").addClass('hidden');
+        this.html.removeClass('hidden');
+    },
+
+    on_succesful_connection: function(){
+        this.enter();
+        this.html.find(".list-download").removeClass('hidden');
+        this.html.find(".progress-bar").width("33%");
+    },
+
+    on_config_parse_begin: function(){
+        this.html.find(".list-parse").removeClass('hidden');
+        this.html.find(".progress-bar").width("66%");
+    }, 
+
+    on_config_parse_end: function(){
+        this.html.find(".list-done").removeClass('hidden');
+        this.html.find(".progress-bar").width("100%");
+        fabrica.call_event('on_initialization_complete');
+    }
+
+});
+
+fabrica.add_screen( 'initialization', new InitializationScreen() );
+
+</script>
+
+    <!-- Welcome screen -->
+<script type='text/javascript'>
+// Welcome the user to the interface, display useful information
+
+var WelcomeScreen = Class({
+
+    enter: function(){
+        // Save screen html
+        this.html = $("#welcome_screen");
+
+        // Display this screen 
+        $("screen").addClass('hidden');
+        this.html.removeClass('hidden');
+
+        //TODO : Make "do not show this next time" actually do what it says
+
+        // Add handler
+        this.html.find(".btn_next").click(function(){ fabrica.screens.main.enter(); });
+    }, 
+
+    on_initialization_complete: function(){
+        this.enter();
+    }
+
+}); 
+
+fabrica.add_screen( 'welcome', new WelcomeScreen() );
+
+
+</script>
 
 
 
