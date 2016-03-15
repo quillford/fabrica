@@ -248,18 +248,18 @@ body,html      { height:100% }
 
   <div class="container">
     <div class="row">
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Move</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Home</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Offsets</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Probe</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Spindle</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Laser</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Temperature</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Extruder</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Filament</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Calibration</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Levelling</a>
-        <a class="btn btn-default col-xs-12 btn-lg" href="#">Commands</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-move" href="#">Move</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-home" href="#">Home</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-offsets" href="#">Offsets</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-probe" href="#">Probe</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-spindle" href="#">Spindle</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-laser" href="#">Laser</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-temperature" href="#">Temperature</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-extruder" href="#">Extruder</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-filament" href="#">Filament</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-calibration" href="#">Calibration</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-levelling" href="#">Levelling</a>
+        <a class="btn btn-default col-xs-12 btn-lg btn-terminal" href="#">Terminal</a>
     </div>
   </div>
 
@@ -273,6 +273,16 @@ body,html      { height:100% }
         </button>
       </div>
     </nav>
+
+</screen>
+
+
+
+
+
+<screen id="move_screen" class="hidden">
+
+test
 
 </screen>
 
@@ -602,6 +612,8 @@ var ControlScreen = Screen.extend({
 
         // Add handlers
         this.html.find(".btn-back").click(function(){ fabrica.screens.main.enter(); });
+        
+        this.html.find(".btn-move").click(function(){ fabrica.screens.move.enter(); });
  
     },
 
@@ -611,6 +623,25 @@ var ControlScreen = Screen.extend({
 fabrica.add_screen('control', new ControlScreen()); 
 
 </script>
+
+    <!-- Move screen -->
+<script type='text/javascript'>
+// Move screen : allows moving the machine to a given position
+
+var MoveScreen = Screen.extend({
+    enter: function(){
+        // Display this screen
+        this.display('move_screen');
+    },
+
+});
+
+
+fabrica.add_screen('move', new MoveScreen()); 
+
+
+</script>
+
 
 
 

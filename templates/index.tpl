@@ -23,6 +23,7 @@
     <link href="src/screens/welcome.html" rel="html">
     <link href="src/screens/main.html" rel="html">
     <link href="src/screens/control/control.html" rel="html">
+    <link href="src/screens/control/move.html" rel="html">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="static/js/jquery-2.2.1.min.js"></script>
@@ -50,6 +51,9 @@
     <script src="src/screens/main.js"></script>
     <!-- Control screen -->
     <script src="src/screens/control/control.js"></script>
+    <!-- Move screen -->
+    <script src="src/screens/control/move.js"></script>
+
 
 
 
