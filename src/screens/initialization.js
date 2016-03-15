@@ -2,12 +2,8 @@
 
 InitializationScreen = Screen.extend({
     enter: function(){
-        // Save screen html
-        this.html = $("#initialization_screen");
-
-        // Display this screen 
-        $("screen").addClass('hidden');
-        this.html.removeClass('hidden');
+        // Display this screen
+        this.display('initialization_screen'); 
     },
 
     on_succesful_connection: function(){

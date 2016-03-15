@@ -314,7 +314,14 @@ var fabrica = new Fabrica();
 
 var Screen = Class({
 
+    display: function(name){
+        // Save screen html
+        this.html = $("#" + name);
 
+        // Display this screen 
+        $("screen").addClass('hidden');
+        this.html.removeClass('hidden');
+    }
 
 
 }); 
@@ -434,12 +441,8 @@ fabrica.machine.config = new Configuration();
 
 var ConnectionScreen = Screen.extend({
     enter: function(){
-        // Save screen html
-        this.html = $("#connection_screen");
-
-        // Display this screen 
-        $("screen").addClass('hidden');
-        this.html.removeClass('hidden');
+        // Display this screen
+        this.display('connection_screen');
 
         // Add handlers
         this.html.find(".btn-connect").click(function(){ fabrica.screens.connection.attempt_connection(); });
@@ -474,12 +477,8 @@ fabrica.add_screen( 'connection', new ConnectionScreen() );
 
 InitializationScreen = Screen.extend({
     enter: function(){
-        // Save screen html
-        this.html = $("#initialization_screen");
-
-        // Display this screen 
-        $("screen").addClass('hidden');
-        this.html.removeClass('hidden');
+        // Display this screen
+        this.display('initialization_screen'); 
     },
 
     on_succesful_connection: function(){
@@ -509,15 +508,11 @@ fabrica.add_screen( 'initialization', new InitializationScreen() );
 <script type='text/javascript'>
 // Welcome the user to the interface, display useful information
 
-var WelcomeScreen = Class({
+var WelcomeScreen = Screen.extend({
 
     enter: function(){
-        // Save screen html
-        this.html = $("#welcome_screen");
-
-        // Display this screen 
-        $("screen").addClass('hidden');
-        this.html.removeClass('hidden');
+        // Display this screen
+        this.display('welcome_screen');
 
         //TODO : Make "do not show this next time" actually do what it says
 
@@ -540,15 +535,11 @@ fabrica.add_screen( 'welcome', new WelcomeScreen() );
 <script type='text/javascript'>
 // Main screen, selects actions to do for users
 
-var MainScreen = Class({
+var MainScreen = Screen.extend({
 
     enter: function(){
-        // Save screen html
-        this.html = $("#main_screen");
-
-        // Display this screen 
-        $("screen").addClass('hidden');
-        this.html.removeClass('hidden');
+        // Display screen
+        this.display('main_screen'); 
     }
 
 });

@@ -2,12 +2,8 @@
 
 var ConnectionScreen = Screen.extend({
     enter: function(){
-        // Save screen html
-        this.html = $("#connection_screen");
-
-        // Display this screen 
-        $("screen").addClass('hidden');
-        this.html.removeClass('hidden');
+        // Display this screen
+        this.display('connection_screen');
 
         // Add handlers
         this.html.find(".btn-connect").click(function(){ fabrica.screens.connection.attempt_connection(); });

@@ -1,14 +1,10 @@
 // Welcome the user to the interface, display useful information
 
-var WelcomeScreen = Class({
+var WelcomeScreen = Screen.extend({
 
     enter: function(){
-        // Save screen html
-        this.html = $("#welcome_screen");
-
-        // Display this screen 
-        $("screen").addClass('hidden');
-        this.html.removeClass('hidden');
+        // Display this screen
+        this.display('welcome_screen');
 
         //TODO : Make "do not show this next time" actually do what it says
 
