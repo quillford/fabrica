@@ -11,7 +11,9 @@
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap callouts -->
     <link href="static/css/bootstrap-callouts.css" rel="stylesheet">
- 
+    <!-- Fabrica custom CSS -->
+    <link href="static/css/fabrica.css" rel="stylesheet">
+
   </head>
   <body>
     
@@ -19,6 +21,7 @@
     <link href="src/screens/connection.html" rel="html">
     <link href="src/screens/initialization.html" rel="html">
     <link href="src/screens/welcome.html" rel="html">
+    <link href="src/screens/main.html" rel="html">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="static/js/jquery-2.2.1.min.js"></script>
@@ -42,6 +45,9 @@
     <script src="src/screens/initialization.js"></script>
     <!-- Welcome screen -->
     <script src="src/screens/welcome.js"></script>
+    <!-- Main screen -->
+    <script src="src/screens/main.js"></script>
+
 
 
     <script>
