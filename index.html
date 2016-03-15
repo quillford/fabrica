@@ -282,7 +282,25 @@ body,html      { height:100% }
 
 <screen id="move_screen" class="hidden">
 
-test
+  <div class="container">
+  
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#">Jog</a></li>
+        <li role="presentation"><a href="#">Relative</a></li>
+        <li role="presentation"><a href="#">Absolute</a></li>
+      </ul>
+  </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container">
+        <button type="button" class="btn btn-default navbar-btn navbar-left col-md-2"> 
+            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
+        </button>
+        <button type="button" class="btn btn-default navbar-btn navbar-right col-md-2 btn-back">
+            <span class="glyphicon glyphicon-back" aria-hidden="true"></span> Back
+        </button>
+      </div>
+    </nav>
 
 </screen>
 
@@ -632,6 +650,10 @@ var MoveScreen = Screen.extend({
     enter: function(){
         // Display this screen
         this.display('move_screen');
+
+        // Add handlers
+        this.html.find(".btn-back").click(function(){ fabrica.screens.control.enter(); });
+
     },
 
 });
