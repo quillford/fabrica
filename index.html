@@ -363,8 +363,21 @@ body,html      { height:100% }
 
   <div class="container">
     <div class="row">
-        test
-    </div>
+        <h2> Raw configuration editing tool </h2>
+        <p> Here you can edit configuration options individually. </p> 
+        <p> Please select which section you would like to edit : </p>
+        <table class="table table-striped section_list">
+            <tr> <th> Section </th> <th> Description </th> </tr>
+        </table>
+        <table class="hidden">
+            <tr class="section_line"> 
+                <td>
+                    <a class="btn btn-default btn-block section-button" href="#" role="button"></a> 
+                </td> 
+                <td class="section-description"></td> 
+            </tr>
+        </table>
+   </div>
   </div>
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
@@ -842,6 +855,35 @@ var RawConfigurationScreen = Screen.extend({
     enter: function(){
         // Display this screen
         this.display('raw_configuration_screen');
+
+        // Set up sections
+        this.sections = [
+            { name: "Robot",                selector: "## Robot",        description: "Basic motion" },
+            { name: "Extruder",             selector: "## Extruder",     description: "Extruder motors" }, 
+            { name: "Laser",                selector: "## Laser",        description: "Laser power control"},
+            { name: "Temperature control",  selector: "## Temperature",  description: "Temperature regulation"},
+            { name: "Switch",               selector: "## Switch",       description: "Map inputs/outputs and commands"},
+            { name: "Temperature switch",   selector: "## Temperaturesw",description: "Toggle outputs at given temperatures"},
+            { name: "Endstops",             selector: "## Endstops",     description: "Homing, endstops and limit switches"},
+            { name: "Z-probe",              selector: "## Z-probe",      description: "Probing, calibration and levelling"},
+            { name: "Panel",                selector: "## Panel",        description: "Panels and displays"},
+            { name: "Custom menus",         selector: "## Custom menus", description: "Custom menu entries"},
+            { name: "Network",              selector: "## Network",      description: "Ethernet and web interface"},
+            { name: "System",               selector: "## System",       description: "System settings" } 
+        ];
+
+        // Display sections in the array
+        this.html.find(".section_list .section_line").remove();
+        var line_template = this.html.find(".section_line");
+        var _that = this;
+        $.each( this.sections, function( index, line ){
+            var new_line = line_template.clone();
+            new_line.removeClass("hidden");
+            new_line.find(".section-button").text( line.name );
+            new_line.find(".section-description").text( line.description );
+            _that.html.find(".section_list").append(new_line);
+            console.log(new_line);
+        });   
 
         // Setup button clicks       
         //this.html.find(".btn-raw-configuration").off().click(function(){ fabrica.screens.move.enter(); });
