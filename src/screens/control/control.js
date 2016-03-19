@@ -5,10 +5,8 @@ var ControlScreen = Screen.extend({
         // Display this screen
         this.display('control_screen');
 
-        // Add handlers
-        this.html.find(".btn-back").click(function(){ fabrica.screens.main.enter(); });
-        
-        this.html.find(".btn-move").click(function(){ fabrica.screens.move.enter(); });
+        // Setup button clicks       
+        this.html.find(".btn-move").off().click(function(){ fabrica.screens.move.enter(); });
  
     },
 

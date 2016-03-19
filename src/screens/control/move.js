@@ -5,9 +5,6 @@ var MoveScreen = Screen.extend({
         // Display this screen
         this.display('move_screen');
 
-        // Add handlers
-        this.html.find(".btn-back").click(function(){ fabrica.screens.control.enter(); });
-
     },
 
 });

@@ -366,6 +366,7 @@ var Fabrica = Class({
     // Constructor method
     create: function(){
         this.screens = {};
+        this.screen_stack = [];
     },
 
     // Add a new screen to the list
@@ -383,7 +384,16 @@ var Fabrica = Class({
                 }
             });
         });
-    }
+    },
+
+    // A screen was entered, remember it is the current screen, and add it to the stack
+    entered_screen: function( screen ){
+        // Remember the current screen
+        this.current_screen = screen;
+
+        // Push the current screen to the stack
+        this.screen_stack.push( screen );
+    } 
 
 });
 
@@ -406,32 +416,53 @@ var Screen = Class({
         this.html = $("#" + name);
         this.name = name;
 
+        // Warn the core this screen was entered
+        fabrica.entered_screen(this);
+
         // Display this screen 
         $("screen").addClass('hidden');
         this.html.removeClass('hidden');
 
         // Setup help for this screen
         this.setup_help();
+
+        // Setup back button for this screen
+        this.setup_back();
     },
 
     setup_help: function(){
         // Only register if the help modal exists
         this.help_modal = $("#" + this.name + "_help");
         if( this.help_modal.length == 0 ){
-            console.log(this.help_modal); 
             this.html.find(".btn-help").hide();
             return; 
         }
 
         // Only register for a button if there is a button
         var _that = this;
-        this.html.find(".btn-help").click(function(button){
-            _that.enter_help(button);
+        this.html.find(".btn-help").off().click(function(button){
+            _that.enter_help();
         });
     },
 
-    enter_help: function(button){
-        // Show the modal
+    setup_back: function(){
+        // Add back button handler
+        var _that = this;
+        this.html.find(".btn-back").off().click(function(){ 
+            _that.go_back(); 
+        });
+    },
+
+    go_back: function(){
+        // Remove current screen from the stack
+        fabrica.screen_stack.pop();
+
+        // Remove the previous screen, and enter it
+        fabrica.screen_stack.pop().enter();
+    },
+
+    enter_help: function(){
+        // Show the modal for the help screen
         this.help_modal.modal();
     }
 
@@ -557,7 +588,7 @@ var ConnectionScreen = Screen.extend({
         this.display('connection_screen');
 
         // Add handlers
-        this.html.find(".btn-connect").click(function(){ fabrica.screens.connection.attempt_connection(); });
+        this.html.find(".btn-connect").off().click(function(){ fabrica.screens.connection.attempt_connection(); });
 
         // TODO : Add auto-detection of IP and remembering last-used IPs
     },
@@ -629,7 +660,7 @@ var WelcomeScreen = Screen.extend({
         //TODO : Make "do not show this next time" actually do what it says
 
         // Add handler
-        this.html.find(".btn_next").click(function(){ fabrica.screens.main.enter(); });
+        this.html.find(".btn_next").off().click(function(){ fabrica.screens.main.enter(); });
     }, 
 
     on_initialization_complete: function(){
@@ -654,8 +685,8 @@ var MainScreen = Screen.extend({
         this.display('main_screen'); 
         
         // Set handlers
-        this.html.find(".btn-control").click(function(){ fabrica.screens.control.enter(); });
-        this.html.find(".btn-make"   ).click(function(){ fabrica.screens.make.enter(); });
+        this.html.find(".btn-control").off().click(function(){ fabrica.screens.control.enter(); });
+        this.html.find(".btn-make"   ).off().click(function(){ fabrica.screens.make.enter(); });
 
     }
 
@@ -676,10 +707,8 @@ var ControlScreen = Screen.extend({
         // Display this screen
         this.display('control_screen');
 
-        // Add handlers
-        this.html.find(".btn-back").click(function(){ fabrica.screens.main.enter(); });
-        
-        this.html.find(".btn-move").click(function(){ fabrica.screens.move.enter(); });
+        // Setup button clicks       
+        this.html.find(".btn-move").off().click(function(){ fabrica.screens.move.enter(); });
  
     },
 
@@ -698,9 +727,6 @@ var MoveScreen = Screen.extend({
     enter: function(){
         // Display this screen
         this.display('move_screen');
-
-        // Add handlers
-        this.html.find(".btn-back").click(function(){ fabrica.screens.control.enter(); });
 
     },
 
