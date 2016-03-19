@@ -1,6 +1,7 @@
 // Raw configuration screen : allows direct editing of configuration options
 
 var RawConfigurationScreen = Screen.extend({
+
     enter: function(){
         // Display this screen
         this.display('raw_configuration_screen');
@@ -28,17 +29,55 @@ var RawConfigurationScreen = Screen.extend({
         $.each( this.sections, function( index, line ){
             var new_line = line_template.clone();
             new_line.removeClass("hidden");
-            new_line.find(".section-button").text( line.name );
+            new_line.find(".section-button").text( line.name ).click(function(){
+                fabrica.screens.raw_configuration_section.enter( line );
+            });
             new_line.find(".section-description").text( line.description );
             _that.html.find(".section_list").append(new_line);
-            console.log(new_line);
         });   
 
-        // Setup button clicks       
-        //this.html.find(".btn-raw-configuration").off().click(function(){ fabrica.screens.move.enter(); });
     },
 
 });
 
 fabrica.add_screen('raw_configuration', new RawConfigurationScreen()); 
+
+// Raw configuration section screen : select lines to edit in a specific section of the screen
+
+var RawConfigurationSectionScreen = Screen.extend({
+
+    enter: function( section ){
+        // Remember section in case we come back
+        if( section !== undefined ){
+            this.current_section = section;
+        }
+
+        // Display this screen
+        this.display('raw_configuration_section_screen');
+
+        // Set up screen
+        this.html.find(".section_name").text( section.name );
+
+        // Get configuration file section
+        this.lines = fabrica.machine.config.get_section( section.selector );
+
+        // Display list of options
+        this.html.find(".option_list .option_line").remove();
+        var line_template = this.html.find(".option_line");
+        var _that = this;
+        $.each( this.lines, function( index, line ){
+            var new_line = line_template.clone();
+            new_line.removeClass("hidden");
+            new_line.find(".option_name").text( line );
+            _that.html.find(".option_list").append(new_line);
+        });   
+
+
+        console.log(this.lines.join("\n"));
+
+    }
+
+});
+
+fabrica.add_screen('raw_configuration_section', new RawConfigurationSectionScreen()); 
 
