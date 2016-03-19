@@ -7,9 +7,7 @@ var ControlScreen = Screen.extend({
 
         // Setup button clicks       
         this.html.find(".btn-move").off().click(function(){ fabrica.screens.move.enter(); });
- 
     },
-
 
 });
 

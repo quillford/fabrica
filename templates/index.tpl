@@ -24,6 +24,8 @@
     <link href="src/screens/main.html" rel="html">
     <link href="src/screens/control/control.html" rel="html">
     <link href="src/screens/control/move.html" rel="html">
+    <link href="src/screens/configuration/configuration.html" rel="html">
+    <link href="src/screens/configuration/raw_configuration.html" rel="html">
 
     <!-- HTML files for help screens -->
     <link href="src/help/screens/connection.html" rel="html">
@@ -56,9 +58,10 @@
     <script src="src/screens/control/control.js"></script>
     <!-- Move screen -->
     <script src="src/screens/control/move.js"></script>
-
-
-
+    <!-- Configuration screen -->
+    <script src="src/screens/configuration/configuration.js"></script>
+    <!-- Raw Configuration screen -->
+    <script src="src/screens/configuration/raw_configuration.js"></script>
 
 
     <script>
