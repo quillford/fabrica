@@ -5,10 +5,4 @@ body,html      { height:100%; }
 .fill-height * { height:100%; }
 .fill-height   { height:100%; }
 
-/* Raw configuration editing tool, option display */
-
-td.option_name > * { color: #ff0000; }
-td.option_value > * { color: #00ff00; }
-td.option_comment > * { color: #aaaaaa; }
-
 

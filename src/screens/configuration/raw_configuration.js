@@ -71,13 +71,18 @@ var RawConfigurationSectionScreen = Screen.extend({
             var new_line = line_template.clone();
             new_line.removeClass("hidden");
             if( parsed.is_split ){
-                new_line.find(".option_name samp").text( parsed.option );
-                new_line.find(".option_value samp").text( parsed.value );
-                new_line.find(".option_comment samp").text( parsed.comment );
+                new_line.find(".option_name").text( parsed.option ).css('color', '#110077');
+                new_line.find(".option_value").text( parsed.value ).css('color', '#770011');
+                new_line.find(".option_comment").text( parsed.comment ).css('color', '#888');
+                if( parsed.option.substr(0,1) == '#' ){
+                    new_line.find(".option_name").css('color', '#888');
+                    new_line.find(".option_value").css('color', '#888');
+                }
             }else{
                 new_line.find(".option_name").remove();
                 new_line.find(".option_value").remove();
-                new_line.find(".option_comment samp").text( parsed.comment );
+                new_line.find(".option_comment").text( parsed.comment ).css('color', '#888');
+
                 new_line.find(".option_comment").attr('colspan',3);
             }
             _that.html.find(".option_list").append(new_line);
