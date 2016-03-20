@@ -30,6 +30,9 @@
     <!-- HTML files for help screens -->
     <link href="src/help/screens/connection.html" rel="html">
 
+    <!-- HTML files for miscalenous definitions -->
+    <link href="src/screens/configuration/definitions.html" rel="html">
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="static/js/jquery-2.2.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

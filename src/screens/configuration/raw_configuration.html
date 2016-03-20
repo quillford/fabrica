@@ -67,8 +67,41 @@
   <div class="container">
     <div class="row">
         <h2> Editing option : <kbd class="option_name"></kbd> </h2>
-        <br/>
+        <h3> Value </h3>
         <p> This option is currently set to the value « <samp class="option_current_value"></samp> » </p>
+        <h3> Description </h3>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"></h3>
+            </div>
+            <div class="panel-body">
+            </div>
+        </div>
+        <h3> Edition </h3>
+        <div class="edit_boxes">
+            <div class="edit_box edit_speed hidden">
+                <form>
+                  <div class="form-group">
+                    <label for="speed-input">Enter new speed</label>
+                    <div class="input-group">
+                        <input type="text" id="speed-input" class="form-control" placeholder="">
+                        <div class="input-group-addon option-units"></div>
+                    </div>
+                  </div>
+                </form>
+            </div>
+            <div class="edit_box edit_number hidden">
+                 <form>
+                  <div class="form-group">
+                    <label for="number-input">Enter new number</label>
+                    <div class="input-group">
+                        <input type="text" id="number-input" class="form-control" placeholder="">
+                        <div class="input-group-addon option-units"></div>
+                    </div>
+                  </div>
+                </form>
+            </div>
+        </div>
    </div>
   </div>
   <br/><br/><br/>

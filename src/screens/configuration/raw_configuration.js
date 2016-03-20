@@ -129,8 +129,29 @@ var RawConfigurationOptionScreen = Screen.extend({
         // Set up screen
         this.html.find(".option_name").text( line.option );
         this.html.find(".option_current_value").text( line.value );
-        
-        // TODO : Comment/uncomment line
+    
+        // Get option definitions
+        var definitions = $("#option_definitions");       
+
+        // Get option within definitions
+        var definition = {};
+        definitions.find("div.option").each(function(index){
+            if( $(this).attr("name") == line.option ){ definition = $(this); }
+        });
+        // TODO : What to do if no definition of a config option was found ( error message )
+
+        // Display found information
+        this.html.find(".panel-title").text( definition.attr('title') );
+        this.html.find(".panel-body" ).empty().append( definition.find("div.description").clone() );
+
+        // Display the right edition box
+        var type = definition.attr('type');
+        var unit = definition.attr('unit');
+        this.html.find(".edit_box").addClass('hidden');
+        this.html.find(".edit_" + type).removeClass('hidden'); 
+        this.html.find(".option-units").text(unit);
+
+        // TODO : Allow to comment/uncomment line
         // TODO : Raw edit
         // TODO : Assisted edit
 
