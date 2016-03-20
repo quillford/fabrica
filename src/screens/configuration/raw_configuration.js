@@ -9,6 +9,7 @@ var RawConfigurationScreen = Screen.extend({
         // Set up sections
         this.sections = [
             { name: "Robot",                selector: "## Robot",        description: "Basic motion" },
+            { name: "System",               selector: "## System",       description: "System settings" },
             { name: "Extruder",             selector: "## Extruder",     description: "Extruder motors" }, 
             { name: "Laser",                selector: "## Laser",        description: "Laser power control"},
             { name: "Temperature control",  selector: "## Temperature",  description: "Temperature regulation, typically for hotends and heated beds"},
@@ -18,8 +19,7 @@ var RawConfigurationScreen = Screen.extend({
             { name: "Z-probe",              selector: "## Z-probe",      description: "Probing, calibration and levelling"},
             { name: "Panel",                selector: "## Panel",        description: "Panels and displays"},
             { name: "Custom menus",         selector: "## Custom menus", description: "Custom menu entries"},
-            { name: "Network",              selector: "## Network",      description: "Ethernet and web interface"},
-            { name: "System",               selector: "## System",       description: "System settings" } 
+            { name: "Network",              selector: "## Network",      description: "Ethernet and web interface"}
         ];
 
         // Display sections in the array
@@ -66,15 +66,40 @@ var RawConfigurationSectionScreen = Screen.extend({
         var line_template = this.html.find(".option_line");
         var _that = this;
         $.each( this.lines, function( index, line ){
+            var parsed = _that.parse_line(line);
+            console.log(parsed); 
             var new_line = line_template.clone();
             new_line.removeClass("hidden");
-            new_line.find(".option_name").text( line );
+            if( parsed.is_split ){
+                new_line.find(".option_name samp").text( parsed.option );
+                new_line.find(".option_value samp").text( parsed.value );
+                new_line.find(".option_comment samp").text( parsed.comment );
+            }else{
+                new_line.find(".option_name").remove();
+                new_line.find(".option_value").remove();
+                new_line.find(".option_comment samp").text( parsed.comment );
+                new_line.find(".option_comment").attr('colspan',3);
+            }
             _that.html.find(".option_list").append(new_line);
         });   
 
+    },
 
-        console.log(this.lines.join("\n"));
-
+    parse_line: function( line ){
+        var splitted = line.split(/\s+/);
+        var parsed = {option: '', value:'', comment:'', is_split: true};
+        if( line.substr(0,2) == '# ' ){ parsed.comment = line; parsed.is_split = false; return parsed; }
+        if( line.substr(0,2) == '##' ){ parsed.comment = line; parsed.is_split = false; return parsed; }
+        if( line.substr(0,2) == '  ' ){ parsed.comment = line; parsed.is_split = true;  return parsed; }
+        if( line.length == 0 ){ parsed.is_split = false; return parsed; }
+        if( parsed[0] == '' ){ parsed.comment = line; return parsed; }
+        var parsed = {
+            option: splitted.shift(), 
+            value: splitted.shift(), 
+            comment: splitted.join(" "), 
+            is_split: true
+        };
+        return parsed;
     }
 
 });
