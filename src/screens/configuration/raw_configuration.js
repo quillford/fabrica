@@ -56,10 +56,10 @@ var RawConfigurationSectionScreen = Screen.extend({
         this.display('raw_configuration_section_screen');
 
         // Set up screen
-        this.html.find(".section_name").text( section.name );
+        this.html.find(".section_name").text( this.current_section.name );
 
         // Get configuration file section
-        this.lines = fabrica.machine.config.get_section( section.selector );
+        this.lines = fabrica.machine.config.get_section( this.current_section.selector );
 
         // Display list of options
         this.html.find(".option_list .option_line").remove();
@@ -67,9 +67,9 @@ var RawConfigurationSectionScreen = Screen.extend({
         var _that = this;
         $.each( this.lines, function( index, line ){
             var parsed = _that.parse_line(line);
-            console.log(parsed); 
             var new_line = line_template.clone();
             new_line.removeClass("hidden");
+            // TODO : Do the color properly with css files, I wasn't able to
             if( parsed.is_split ){
                 new_line.find(".option_name").text( parsed.option ).css('color', '#110077');
                 new_line.find(".option_value").text( parsed.value ).css('color', '#770011');
@@ -78,12 +78,20 @@ var RawConfigurationSectionScreen = Screen.extend({
                     new_line.find(".option_name").css('color', '#888');
                     new_line.find(".option_value").css('color', '#888');
                 }
+                if( parsed.value != '' ){
+                    new_line.find("a").click(function(){
+                        fabrica.screens.raw_configuration_option.enter(parsed);
+                    });
+                }else{
+                    new_line.find(".option_button").remove();
+                    new_line.find(".option_comment").attr('colspan',2);
+                }
             }else{
                 new_line.find(".option_name").remove();
                 new_line.find(".option_value").remove();
+                new_line.find(".option_button").remove();
                 new_line.find(".option_comment").text( parsed.comment ).css('color', '#888');
-
-                new_line.find(".option_comment").attr('colspan',3);
+                new_line.find(".option_comment").attr('colspan',4);
             }
             _that.html.find(".option_list").append(new_line);
         });   
@@ -108,6 +116,26 @@ var RawConfigurationSectionScreen = Screen.extend({
     }
 
 });
-
 fabrica.add_screen('raw_configuration_section', new RawConfigurationSectionScreen()); 
+
+// Raw configuration option screen : edit a specific option's value
+
+var RawConfigurationOptionScreen = Screen.extend({
+
+    enter: function( line ){
+        // Display this screen
+        this.display('raw_configuration_option_screen');
+
+        // Set up screen
+        this.html.find(".option_name").text( line.option );
+        this.html.find(".option_current_value").text( line.value );
+        
+        // TODO : Comment/uncomment line
+        // TODO : Raw edit
+        // TODO : Assisted edit
+
+    }
+
+});
+fabrica.add_screen('raw_configuration_option', new RawConfigurationOptionScreen()); 
 
