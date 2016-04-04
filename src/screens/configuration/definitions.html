@@ -6,6 +6,15 @@
         </div>
     </div>
 
+     <div class="option" name="glossary" type="speed" unit="millimeters/minute" title="Default feed rate">
+        <div class="description">
+            <p> The feed rate is the speed for "feed" movements ( G1/G2/G3 ) during which the tool is active, as opposed to "seek" movements ( G0 ) during which the tool is inactive </p>
+            <p> This value is the default speed, that will be used for feed moves at boot time, until a speed is actually specificed by a <kbd>F</kbd> parameter </p>
+        </div>
+    </div>
+
+    
+    
     <div class="option" name="default_feed_rate" type="speed" unit="millimeters/minute" title="Default feed rate">
         <div class="description">
             <p> The feed rate is the speed for "feed" movements ( G1/G2/G3 ) during which the tool is active, as opposed to "seek" movements ( G0 ) during which the tool is inactive </p>
@@ -38,24 +47,24 @@
 
     <div class="option" name="alpha_steps_per_mm" type="number" unit="steps/millimeter" title="Steps per millimeter for the alpha actuator">
         <div class="description">
-            <p> The alpha actuator is typically the X axis on cartesian machines, and the first tower on delta machines. By default it controls the M1 motor driver. </p>
-            <p> This value sets the number of steps of the stepper motor to rotate, for the axis to move ( linearly ) one millimeter </p>
+            <p> The alpha actuator is typically the X axis on cartesian machines (like in a gantry setup), and the first tower on delta machines. By default it controls the M1 motor driver. </p>
+            <p> This value sets the number of steps of the stepper motor to rotate, for the axis to move (in a straight line) one millimeter </p>
             <p> Note that this value corresponds to the number of steps the microcontroller generates, therefore it refers to microsteps, not full stepper motor steps </p>
         </div>
     </div>
 
     <div class="option" name="beta_steps_per_mm" type="number" unit="steps/millimeter" title="Steps per millimeter for the beta actuator">
         <div class="description">
-            <p> The beta actuator is typically the Y axis on cartesian machines, and the second tower on delta machines. By default it controls the M2 motor driver. </p>
-            <p> This value sets the number of steps of the stepper motor to rotate, for the axis to move ( linearly ) one millimeter </p>
+            <p> The beta actuator is typically the Y axis on cartesian machines (like in a gantry machine), and the second tower on delta machines. By default it controls the M2 motor driver. </p>
+            <p> This value sets the number of steps of the stepper motor to rotate, for the axis to move (in a straight line) one millimeter </p>
             <p> Note that this value corresponds to the number of steps the microcontroller generates, therefore it refers to microsteps, not full stepper motor steps </p>
         </div>
     </div>
 
     <div class="option" name="gamma_steps_per_mm" type="number" unit="steps/millimeter" title="Steps per millimeter for the gamma actuator">
         <div class="description">
-            <p> The gamma actuator is typically the Z axis on cartesian machines, and the third tower on delta machines. By default it controls the M3 motor driver. </p>
-            <p> This value sets the number of steps of the stepper motor to rotate, for the axis to move ( linearly ) one millimeter </p>
+            <p> The gamma actuator is typically the Z axis on cartesian machines (like in a gantry machine), and the third tower on delta machines. By default it controls the M3 motor driver. </p>
+            <p> This value sets the number of steps of the stepper motor to rotate, for the axis to move (in a straight line) one millimeter </p>
             <p> Note that this value corresponds to the number of steps the microcontroller generates, therefore it refers to microsteps, not full stepper motor steps </p>
         </div>
     </div>
