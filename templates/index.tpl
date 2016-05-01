@@ -19,6 +19,7 @@
     
     <!-- HTML files for screens -->
     <link href="src/screens/connection.html" rel="html">
+    <link href="src/screens/network_scan.html" rel="html">
     <link href="src/screens/initialization.html" rel="html">
     <link href="src/screens/welcome.html" rel="html">
     <link href="src/screens/main.html" rel="html">
@@ -40,6 +41,9 @@
     <!-- Js.class allows more object-oriented javascript -->
     <script src="src/core/js.class/dist/browser/js.class.min.js"></script>
 
+    <!-- Smoothie Happy ( Smoothie API ) submodule -->
+    <script src="static/js/sh/src/smoothie-happy.js"></script>
+
     <!-- Core Fabrica object -->
     <script src="src/core/fabrica.js"></script>
     <!-- Base class for all screens -->
@@ -51,6 +55,8 @@
 
     <!-- Connection screen -->
     <script src="src/screens/connection.js"></script>
+    <!-- Network scan screen -->
+    <script src="src/screens/network_scan.js"></scrip
     <!-- Initialization screen -->
     <script src="src/screens/initialization.js"></script>
     <!-- Welcome screen -->
