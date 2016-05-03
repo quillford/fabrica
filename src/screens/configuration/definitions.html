@@ -164,7 +164,7 @@
         <div class="description">
             <p>Acceleration for Z only moves, same as acceleration but for movements of the Z axis</p>
             <p>Do not set this value if you use a delta arm solution.</p>
-            <Once again, the best way to sjust this is to start with a low value and raise it slowly until the quality decreases, then lower it back dowen to the value that last provide a stable machine.</p>
+            <Once again, the best way to adjust this is to start with a low value and raise it slowly until the quality decreases, then lower it back dowen to the value that last provide a stable machine.</p>
         </div>
     </div>
 
@@ -205,6 +205,7 @@
     <div class="option" name="microseconds_per_step_pulse" type="???" unit="???" title="Microseconds per step pulse">
         <div class="description">
             <p>Duration of step pulses to the stepper motor drivers, in microseconds</p>
+            <p>If you notice that the stepper motor is skiupping sets, try increasing this value slowly, until the problem goes away.</p>
         </div>
     </div>
 
@@ -219,6 +220,7 @@
         <div class="description">
             <p>Maximum allowable speed for the X axis, in millimetres/minute</p>
             <p>Smoothie will never exceed that value for that axis.</p>
+            <p>Too high of a value will cause the stepper motors to lose steps, as well decreasing the accuracy and quality.</p>
         </div>
     </div>
 
@@ -226,6 +228,7 @@
         <div class="description">
             <p>Maximum allowable speed for the Y axis, in millimetres/minute</p>
             <p>Smoothie will never exceed that value for that axis.</p>
+            <p>Too high of a value will cause the stepper motors to lose steps, as well decreasing the accuracy and quality.</p>
         </div>
     </div>
 
@@ -233,6 +236,7 @@
         <div class="description">
             <p>Maximum allowable speed for the Z axis, in millimetres/minute</p>
             <p>Smoothie will never exceed that value for that axis.</p>
+            <p>Too high of a value will cause the stepper motors to lose steps, as well decreasing the accuracy and quality.</p>
         </div>
     </div>
 
@@ -241,90 +245,105 @@
     <div class="option" name="alpha_step_pin" type="???" unit="???" title="Alpha step pin">
         <div class="description">
             <p>Pin for alpha stepper step signal</p>
+            <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
     <div class="option" name="alpha_dir_pin" type="???" unit="???" title="Alpha dir pin">
         <div class="description">
             <p>Pin for alpha stepper direction</p>
+            <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
     <div class="option" name="alpha_en_pin" type="???" unit="???" title="Alpha en pin">
         <div class="description">
             <p>Pin for alpha enable pin</p>
+            <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
     <div class="option" name="alpha_current" type="???" unit="???" title="Alpha current">
         <div class="description">
-            <p>M1 stepper motor driver current, in Amperes.</p>
+            <p>Alpha, or M1 stepper motor driver current, in Amperes.</p>
+            <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
     <div class="option" name="alpha_max_rate" type="???" unit="???" title="Alpha max rate">
         <div class="description">
             <p>Maximum allowable speed for this actuator ( as opposed to axis, they are the same on a cartesian machine, but not on a delta machine for example ), in millimetres/minute.</p>
+            <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
     <div class="option" name="beta_step_pin" type="???" unit="???" title="Beta step pin">
         <div class="description">
             <p>Pin for beta stepper step signal</p>
+            <p>Beta usually refers to the Y axis.</p>
         </div>
     </div>
 
     <div class="option" name="beta_dir_pin" type="???" unit="???" title="Beta dir pin">
         <div class="description">
             <p>Pin for beta stepper direction</p>
+            <p>Beta usually refers to the Y axis.</p>
         </div>
     </div>
 
     <div class="option" name="beta_en_pin" type="???" unit="???" title="Beta en pin">
         <div class="description">
             <p>Pin for beta enable</p>
+            <p>Beta usually refers to the Y axis.</p>
         </div>
     </div>
 
     <div class="option" name="beta_current" type="???" unit="???" title="Beta current">
         <div class="description">
-            <p>M2 stepper motor driver current, in Amperes.</p>
+            <p>Beta, or M2 stepper motor driver current, in Amperes.</p>
+            <p>Beta usually refers to the Y axis.</p>
         </div>
     </div>
 
     <div class="option" name="beta_max_rate" type="???" unit="???" title="Beta max rate">
         <div class="description">
             <p>Maximum allowable speed for this actuator, in millimetres/minute.</p>
+            <p>Beta usually refers to the Y axis.</p>
         </div>
     </div>
 
     <div class="option" name="gamma_step_pin" type="???" unit="???" title="Gamma step pin">
         <div class="description">
             <p>Pin for gamma stepper step signal</p>
+            <p>Gamma usually refers to the Z axis.</p>
         </div>
     </div>
 
     <div class="option" name="gamma_dir_pin" type="???" unit="???" title="Gamma dir pin">
         <div class="description">
             <p>Pin for gamma stepper direction</p>
+            <p>Gamma usually refers to the Z axis.</p>
         </div>
     </div>
 
     <div class="option" name="gamma_en_pin" type="???" unit="???" title="Gamma en pin">
         <div class="description">
             <p>Pin for gamma enable</p>
+            <p>Gamma usually refers to the Z axis.</p>
         </div>
     </div>
 
     <div class="option" name="gamma_current" type="???" unit="???" title="Gamma current">
         <div class="description">
-            <p>M3 stepper motor driver current, in Amperes.</p>
+            <p>Gamma, or M3 stepper motor driver current, in Amperes.</p>
+            <p>Gamma usually refers to the Z axis.</p>
         </div>
     </div>
 
     <div class="option" name="gamma_max_rate" type="???" unit="???" title="Gamma max rate">
         <div class="description">
             <p>Maximum allowable speed for this actuator , in millimetres/minute.</p>
+            <p>Gamma usually refers to the Z axis.</p>
         </div>
     </div>
 
@@ -333,13 +352,15 @@
     <div class="option" name="uart0.baud_rate" type="???" unit="???" title="Baud rate">
         <div class="description">
             <p>Baud rate for the default hardware serial port ( UART0, labelled "Serial" on the board, close to the USB connector )</p>
-            <p>Defaults to 9600 if undefined, or if the configuration file can not be read.</p>
+            <p>Defaults to 9600 baud if undefined, or if the configuration file can not be read.</p>
+            <p>115000 is usually the upper limit of this speed, works on most configurations.</p>
         </div>
     </div>
 
     <div class="option" name="second_usb_serial_enable" type="???" unit="???" title="Second usb serial enable">
         <div class="description">
             <p>This enables a second serial port over the USB connection ( for example to have both Pronterface and a terminal connected)</p>
+            <p>Depending on your configuration, this may slow down communications.</p>
         </div>
     </div>
 
@@ -348,42 +369,49 @@
     <div class="option" name="leds_disable" type="???" unit="???" title="Leds disable">
         <div class="description">
             <p>Disable the 4 flashing LEDs on the board</p>
+            <p>Not necessary unless they bother you with their flashing</p>
         </div>
     </div>
 
     <div class="option" name="play_led_disable" type="???" unit="???" title="Play led disable">
         <div class="description">
             <p>Disable the "play" status LED</p>
+            <p>Not necessary unless it bothers you with its flashing</p>
         </div>
     </div>
 
     <div class="option" name="pause_button_enable" type="???" unit="???" title="Pause button enable">
         <div class="description">
             <p>Enable the "pause" input button</p>
+            <p>Allows you to pause the job that is running.</p>
         </div>
     </div>
 
     <div class="option" name="pause_button_pin" type="???" unit="???" title="Pause button pin">
         <div class="description">
             <p>Pin for the "pause" input button</p>
+            <p>This refers to the pin on the smoothieboard that you connect to the button you want to use as the pause button.</p>
         </div>
     </div>
 
     <div class="option" name="kill_button_enable" type="???" unit="???" title="Kill button enable">
         <div class="description">
             <p>Enable the "kill" button</p>
+            <p>Allows you to kill, or permantly stop the job that is running.</p>
         </div>
     </div>
 
     <div class="option" name="kill_button_pin" type="???" unit="???" title="Kill button pin">
         <div class="description">
             <p>Pin for the "kill" button</p>
+            <p>This refers to the pin on the smoothieboard that you connect to the button you want to use as the kill button.</p>
         </div>
     </div>
 
     <div class="option" name="msd_disable" type="???" unit="???" title="Msd disable">
         <div class="description">
             <p>Disable the MSD ( SD Card access over USB ) when set to true ( requires a special binary, which you can find here, will be ignored without the special binary)</p>
+            <p>Not usually required.</p>
         </div>
     </div>
 
@@ -396,6 +424,7 @@
     <div class="option" name="return_error_on_unhandled_gcode" type="???" unit="???" title="Return error on unhandled gcode">
         <div class="description">
             <p>If set to true, return an error if a G-code is received but not understood.</p>
+            <p>This is very usefull for diagnosing troublesome G code files.</p>
         </div>
     </div>
 
