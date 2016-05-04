@@ -434,6 +434,7 @@
         <div class="description">
             <p>If set to true, enable digital control of the current settings of the stepper motor drivers</p>
             <p>Note : this is dependent on the physical board type, and unless you are designing a new board you shouldn't have to modify these settings</p>
+            <p>Enabling this option allows you to set the current available to the stepper motors without having to manually use a screwdriver like on stepstick drivers</p>
         </div>
     </div>
 
@@ -441,36 +442,42 @@
         <div class="description">
             <p>Select the digipot chip with which to control the current for the stepper motor drivers</p>
             <p>Supported chips are mcp4451 and ad5206</p>
+            <p>Check your control board specifications to determine which chip you have, if any.</p>
         </div>
     </div>
 
     <div class="option" name="digipot_max_current" type="???" unit="???" title="Digipot max current">
         <div class="description">
             <p>Maximum current that can be set</p>
+            <p>Setting this too high may damage your stepper motor or the driver chip.</p>
         </div>
     </div>
 
     <div class="option" name="digipot_factor" type="???" unit="???" title="Digipot factor">
         <div class="description">
             <p>Factor for converting the current into digipot values</p>
+            <p>??????????????????</p>
         </div>
     </div>
 
     <div class="option" name="zeta_current" type="???" unit="???" title="Zeta current">
         <div class="description">
             <p>Current setting for the 6th stepper motor driver current control</p>
+            <p>Very few boards have this many motor drivers, so you will probably not need to use this option</p>
         </div>
     </div>
 
     <div class="option" name="eta_current" type="???" unit="???" title="Eta current">
         <div class="description">
             <p>Current setting for the 7th stepper motor driver current control</p>
+            <p>Very few boards have this many motor drivers, so you will probably not need to use this option</p>
         </div>
     </div>
 
     <div class="option" name="theta_current" type="???" unit="???" title="Theta current">
         <div class="description">
             <p>Current setting for the 8th stepper motor driver current control</p>
+            <p>Very few boards have this many motor drivers, so you will probably not need to use this option</p>
         </div>
     </div>
 
@@ -481,12 +488,14 @@
             <p>G-code file to play when the board boots</p>
             <p>This file will automaticaly be played when the board is done booting up</p>
             <p>Useful for example if you want to home your printer when it boots, or do similar tasks.</p>
+            <p>Be carefull not to include any commands that would harm your machine, like spindle controls or turning the laser on.</p>
         </div>
     </div>
 
     <div class="option" name="on_boot_gcode_enable" type="???" unit="???" title="On boot gcode enable">
         <div class="description">
             <p>If set to true, play the on_boot_gcode file when the board boots up</p>
+            <Remember to make sure that the file it will play or run, does not contain any commands that would damage your machine.
         </div>
     </div>
 
@@ -494,6 +503,7 @@
         <div class="description">
             <p>G-code to execute automatically right after the suspend command is received, this is useful if you want to retract, or turn off heaters etc</p>
             <p>The _ character gets converted into space</p>
+            <p>If you are unsure of G code programming, it is best not to use this option</p>
         </div>
     </div>
 
@@ -501,14 +511,16 @@
         <div class="description">
             <p>G-code to execute automatically right after the resume command is received, but before resuming execution</p>
             <p>This is useful in particular to un-do what was done by after_suspend_gcode</p>
+            <p>If you are unsure of G code programming, it is best not to use this option</p>
             <p>The _ character gets converted into space</p>
         </div>
     </div>
 
     <div class="option" name="leave_heaters_on_suspend" type="???" unit="???" title="Leave heaters on suspend">
         <div class="description">
-            <p>If set to true, heaters are left ON when suspend is received</p>
+            <p>If set to true, heaters are left ON when the suspend command is received</p>
             <p>If set to false, heaters are turned OFF when suspend is received, and then turned back ON when resume is received.</p>
+            <p>If you are using the run gcode before/after suspend option, make sure that you are not duplicating any of its commands by running this option</p>
         </div>
     </div>
 
@@ -517,7 +529,7 @@
     <div class="option" name="extruder.module_name.enable" type="???" unit="???" title="Enable">
         <div class="description">
             <p>Whether to activate the extruder module at all</p>
-            <p>All configuration is ignored if false</p>
+            <p>All configuration of the extruder(s) is ignored if false</p>
             <p>Each time an extruder.module_name.enable line is encountered, an extruder module with the name «module_name» will be created.</p>
         </div>
     </div>
@@ -526,14 +538,14 @@
         <div class="description">
             <p>Steps/millimetre for the extruder stepper motor</p>
             <p>This is the number of steps to move one millimetre of filament</p>
-            <p>Learn more</p>
+            <p>To calculate exactly, make a mark on your filament 100mm above the extruder. Set your machine to extrude 100mm of filament, then using the mark you made measure how much filament was actually extruded. Then new steps/mm = old steps * (100 / distance_actually_moved)</p>
         </div>
     </div>
 
     <div class="option" name="extruder.module_name.filament_diameter" type="???" unit="???" title="Filament diameter">
         <div class="description">
             <p>Filament diameter, in millimetres, used for volumetric extrusion control</p>
-            <p>Learn more</p>
+            <p>Most newer 3D printers are using 1.75mm however it is best to measure yours with a caliper to be sure.</p>
         </div>
     </div>
 
@@ -542,36 +554,43 @@
             <p>Default rate in millimetres/minute for moves where only the extruder moves</p>
             <p>This is only used if you have never provided a feedrate via the F parameter</p>
             <p>Once you specify a F parameter, it will be used as the Extruder feed rate until you reset the board.</p>
+            <p>Make sure this default setting does not exceed the extruders capabilities.</p>
         </div>
     </div>
 
     <div class="option" name="extruder.module_name.acceleration" type="???" unit="???" title="Acceleration">
         <div class="description">
             <p>Acceleration for the extruder stepper motor, in millimetres/second/second</p>
+            <p>This is how fast the controller brings the extruder motor up to speed</p>
+            <p>Too high a value will cause errors in the extrusion of the filament</p>
         </div>
     </div>
 
     <div class="option" name="extruder.module_name.max_speed" type="???" unit="???" title="Max speed">
         <div class="description">
             <p>Maximum allowable speed for the extruder stepper motor, in millimetres/second</p>
+            <p>Too high of a value will cause the extruder stepper to miss steps and cause errors with the extrusion.</p>
         </div>
     </div>
 
     <div class="option" name="extruder.module_name.step_pin" type="???" unit="???" title="Step pin">
         <div class="description">
             <p>Pin for extruder stepper motor driver's step signal</p>
+            <p>This is the pin that the controller sends the command to move steps to the stepper motor</p>
         </div>
     </div>
 
     <div class="option" name="extruder.module_name.dir_pin" type="???" unit="???" title="Dir pin">
         <div class="description">
             <p>Pin for extruder stepper motor driver's direction signal</p>
+            <p>This is the pin the control uses to tell the stepper motor which direction to rotate in.</p>
         </div>
     </div>
 
     <div class="option" name="extruder.module_name.en_pin" type="???" unit="???" title="En pin">
         <div class="description">
             <p>Pin for extruder stepper motor driver's enable signal</p>
+            <p>This is the pin the controller uses to tell the stepper motor to turn on or off.</p>
         </div>
     </div>
 
@@ -579,18 +598,23 @@
         <div class="description">
             <p>Extruder offset from origin in millimetres for the X axis</p>
             <p>This is useful when you have multiple extruders to specify the offset from each extruder to the first one.</p>
+            <p>Most 3D printers only offset extruders in the X direction</p>
         </div>
     </div>
 
     <div class="option" name="extruder.module_name.y_offset" type="???" unit="???" title="Y offset">
         <div class="description">
             <p>Extruder offset from origin in millimetres for the Y axis.</p>
+            <p>This is useful when you have multiple extruders to specify the offset from each extruder to the first one.</p>
+            <p>Most 3D printers only offset extruders in the X direction</p>
         </div>
     </div>
 
     <div class="option" name="extruder.module_name.z_offset" type="???" unit="???" title="Z offset">
         <div class="description">
             <p>Extruder offset from origin in millimetres for the Z axis.</p>
+            <p>This is useful when you have multiple extruders to specify the offset from each extruder to the first one.</p>
+            <p>Most 3D printers only offset extruders in the X direction</p>
         </div>
     </div>
 
@@ -599,13 +623,14 @@
             <p>Retract length in millimetres</p>
             <p>Retract is a retractation of the filament called using the G10 G-code</p>
             <p>It is recovered ( reverted ) using the G11 G-code</p>
-            <p>Learn more about retractation</p>
+            <p>Retraction is used to prevent stringing (fine wisps of filament) from happening when moving the extruder to a new place on the bed.</p>
         </div>
     </div>
 
     <div class="option" name="extruder.module_name.retract_feedrate" type="???" unit="???" title="Retract feedrate">
         <div class="description">
             <p>Retract feed-rate ( filament speed ) in millimetres/second</p>
+            <p>Too high of a feedrate can cause the stepper motor to lose steps and cause errors.</p>
         </div>
     </div>
 
@@ -651,8 +676,8 @@
     <div class="option" name="laser_module_enable" type="???" unit="???" title="Laser module enable">
         <div class="description">
             <p>Whether to activate the laser module at all</p>
-            <p>All configuration is ignored if false</p>
-            <p>The laser module is used for laser cutting using a laser diode or CO2 laser tube.</p>
+            <p>All configuration of the laser module is ignored if false</p>
+            <p>The laser module is used for laser cutting/engraving using a laser diode or CO2 laser tube.</p>
         </div>
     </div>
 
@@ -661,27 +686,32 @@
             <p>This pin will control the laser</p>
             <p>Pulse width will be modulated to vary power output ( PWM )</p>
             <p>Note : PWM is available only on pins 2.0 to 2.5, 1.18, 1.20, 1.21, 1.23, 1.24, 1.26, 3.25 and 3.26</p>
+            <p>Differet power supplies will have different inputs that you would connect this pin to. Check your power supply manual for more information on which input to connect to</p>
         </div>
     </div>
 
     <div class="option" name="laser_module_max_power" type="???" unit="???" title="Laser module max power">
         <div class="description">
             <p>This is the maximum duty cycle that will be applied to the laser</p>
+            <p>Duty cycle is the percentage of the time that the laser is active.</p>
+            <p>Setting this to 1 equals 100 percent of the time. This may cause premature failure of the laser, especially when using laser diodes.</p>
             <p>Value is from 0 to 1</p>
         </div>
     </div>
 
     <div class="option" name="laser_module_tickle_power" type="???" unit="???" title="Laser module tickle power">
         <div class="description">
-            <p>This duty cycle will be used for travel moves to keep the laser active without actually burning</p>
-            <p>Useful for some diode setups</p>
-            <p>Value is from 0 to 1</p>
+            <p>This option will be used for travel moves to keep the laser active without actually burning</p>
+            <p>Useful for some diode setups, as they require a small current be applied to basically wake up the laser diode and get it ready to fire.</p>
+            <p>Value is from 0 (none) to 1 (100%)</p>
+            <p>This value will be very low, check your laser diode manual for more information on the required tickle current</p>
         </div>
     </div>
 
     <div class="option" name="laser_module_pwm_period" type="???" unit="???" title="Laser module pwm period">
         <div class="description">
             <p>PWM frequency expressed as the period in microseconds</p>
+            <p>?????????????????????????????????????????</p>
         </div>
     </div>
 
@@ -691,6 +721,7 @@
         <div class="description">
             <p>Whether to activate this temperaturecontrol module</p>
             <p>You can create as many temperaturecontrol modules as you want, simply by giving a new module a name, and setting it's enable option to true</p>
+            <p>This module is used to read the temperature of something like a heated bed using a thermistor</p>        
         </div>
     </div>
 
@@ -698,12 +729,14 @@
         <div class="description">
             <p>Pin for the thermistor to read</p>
             <p>ADC ports TH1 to TH4 are pins 0.23 to 0.26.</p>
+            <p>These are the pins that wyou would connect the thermistor to. You can have up to 4 enabled at once.</p>
         </div>
     </div>
 
     <div class="option" name="temperature_control.module_name.readings_per_second" type="???" unit="???" title="Readings per second">
         <div class="description">
             <p>How many times per second to read temperature from the sensor.</p>
+            <p>The higher the value, the more accurate your reading, however setting the value too high could cause performance issues.</p>
         </div>
     </div>
 
@@ -719,6 +752,7 @@
             <p>Pin that controls the heater</p>
             <p>This can be used to control a Mosfet on board or an external Solid State Relay</p>
             <p>Set to nc if a readonly thermistor is being defined</p>
+            <p>?????????????????????????????????????</p>
         </div>
     </div>
 
@@ -726,6 +760,7 @@
         <div class="description">
             <p>Set the thermistor model for this module</p>
             <p>Several different common models are pre-defined, see here for a list</p>
+            <p>??????????????????????????????????????</p>
         </div>
     </div>
 
@@ -733,6 +768,7 @@
         <div class="description">
             <p>Manually set the beta value for your thermistor</p>
             <p>This is useful if your thermistor is not in the common pre-defined models.</p>
+            <p>The data sheet for your thermistor should have this value listed.</p>
         </div>
     </div>
 
@@ -740,6 +776,7 @@
         <div class="description">
             <p>Manually set the r0 resistance value for your thermistor</p>
             <p>This is useful if your thermistor is not in the common pre-defined models</p>
+            <p>The data sheet for your thermistor should have this value listed.</p>
             <p>Besides beta and r0 which are properties of your thermistor, you can also set the r1, r2 and t0 values, but those are properties of your board so they usually never have to be changed.</p>
         </div>
     </div>
@@ -747,6 +784,7 @@
     <div class="option" name="temperature_control.module_name.get_m_code" type="???" unit="???" title="Get m code">
         <div class="description">
             <p>Calling this M-code will return the current temperature.</p>
+            <p>?????????????????????????????????????</p>
         </div>
     </div>
 
@@ -768,24 +806,31 @@
         <div class="description">
             <p>The letter this module's temperature will be identified as in the M105 command's answer</p>
             <p>For example here the value is T, so M105 will answer ok T:23.4 /0.0 @0</p>
+            <p>?????????????????????????????????????</p>
         </div>
     </div>
 
     <div class="option" name="temperature_control.module_name.p_factor" type="???" unit="???" title="P factor">
         <div class="description">
             <p>P factor for PID temperature regulation</p>
+            <p>PID is a control loop feedback mechanism to minimise fluctuations in the temperature</p>
+            <p>P accounts for present values of the error. For example, if the error is large and positive, the control output will also be large and positive.</p>
         </div>
     </div>
 
     <div class="option" name="temperature_control.module_name.i_factor" type="???" unit="???" title="I factor">
         <div class="description">
             <p>I factor for PID temperature regulation</p>
+            <p>PID is a control loop feedback mechanism to minimise fluctuations in the temperature</p>
+            <p>I accounts for past values of the error. For example, if the current output is not sufficiently strong, error will accumulate over time, and the controller will respond by applying a stronger action.</p>
         </div>
     </div>
 
     <div class="option" name="temperature_control.module_name.d_factor" type="???" unit="???" title="D factor">
         <div class="description">
             <p>D factor for PID temperature regulation</p>
+            <p>PID is a control loop feedback mechanism to minimise fluctuations in the temperature</p>
+            <p>D accounts for possible future values of the error, based on its current rate of change</p>
         </div>
     </div>
 
@@ -801,12 +846,16 @@
     <div class="option" name="temperature_control.module_name.bang_bang" type="???" unit="???" title="Bang bang">
         <div class="description">
             <p>Set to true to use bang bang control rather than PID</p>
+            <p>Bang Bang control is a feedback controller that switches abruptly between two states.</p>
+            <p> Most common residential thermostats are bang–bang controllers.</p>
         </div>
     </div>
 
     <div class="option" name="temperature_control.module_name.hysteresis" type="???" unit="???" title="Hysteresis">
         <div class="description">
             <p>Set to the temperature in degrees C to use as hysteresis for bang bang control</p>
+            <p>This is the temperature setting that the controller will turn off the heating element when reached.</p>
+            <p>It is usually set slightly below the desired temperature, as the element will continue to provide heat for a short time after being switched off.</p>
         </div>
     </div>
 
@@ -824,6 +873,7 @@
             <p>Set the type of sensor used to read temperature</p>
             <p>Values can be thermistor for the usual thermistor reading via ADC method, or max31855 to read values from a thermocouple over SPI</p>
             <p>See Reading a thermocouple</p>
+            <p>????????????????????????????????????????</p>
         </div>
     </div>
 
@@ -831,18 +881,21 @@
         <div class="description">
             <p>If the sensor is set to max31855, sets the chip select pin for the SPI port</p>
             <p>This allows you to have multiple sensors sharing the same SPI port, as long as they each get a chip select ( CS ) pin.</p>
+            <p>??????????????????????????????????????????????</p>
         </div>
     </div>
 
     <div class="option" name="temperature_control.module_name.spi_channel" type="???" unit="???" title="Spi channel">
         <div class="description">
             <p>If the sensor is set to max31855, SPI channel using which to talk to the thermocouple chip.</p>
+            <p>If using multiple sensors, set each to a different channel</p>
         </div>
     </div>
 
     <div class="option" name="temperature_control.module_name.max_temp" type="???" unit="???" title="Max temp">
         <div class="description">
             <p>If set, no temperature above this will be accepted and if the temperature exceeds this value the system will be forced into a HALT state.</p>
+            <p>Very usefull to prevent overheating an extruder.</p>
         </div>
     </div>
 
