@@ -921,42 +921,49 @@
         <div class="description">
             <p>If set to momentary when the input pin becomes high the switch changes to the ON state, and when it becomes low the switch changes to the OFF state</p>
             <p>If set to toggle the input pin toggles the switch's state between ON and OFF.</p>
+            <p>So if set to toggle each time you change the input value it will change between on and off, if set to momentary, the change will always happen with a change of pin state from high to low.</p>
         </div>
     </div>
 
     <div class="option" name="switch.module_name.input_on_command" type="???" unit="???" title="Input on command">
         <div class="description">
             <p>Calling this command sets the switch ON</p>
+            <p>Works best when pin is set to toggle</p>
         </div>
     </div>
 
     <div class="option" name="switch.module_name.input_off_command" type="???" unit="???" title="Input off command">
         <div class="description">
             <p>Calling this command sets the switch OFF</p>
+            <p>Works best when pin is set to toggle</p>
         </div>
     </div>
 
     <div class="option" name="switch.module_name.subcode" type="???" unit="???" title="Subcode">
         <div class="description">
             <p>the subcode that the input on or input off commands respond to M106.1</p>
+            <p>This will run the gcode file assigned to this function</p>
         </div>
     </div>
 
     <div class="option" name="switch.module_name.output_on_command" type="???" unit="???" title="Output on command">
         <div class="description">
             <p>This command is called when the switch changes to the ON state</p>
+            <p>Allows you to have it trigger a relay, light an Led etc.</p>
         </div>
     </div>
 
     <div class="option" name="switch.module_name.output_off_command" type="???" unit="???" title="Output off command">
         <div class="description">
             <p>This command is called when the switch changes to the OFF state</p>
+            <p>Can be used to trigger a relay, gcode file etc.</p>
         </div>
     </div>
 
     <div class="option" name="switch.module_name.output_pin" type="???" unit="???" title="Output pin">
         <div class="description">
             <p>This pin will be set low when the switch is OFF, and high when the switch is ON</p>
+            <p>Omly assign to pins that are available for customisation</p>
         </div>
     </div>
 
@@ -978,6 +985,7 @@
     <div class="option" name="switch.module_name.startup_value" type="???" unit="???" title="Startup value">
         <div class="description">
             <p>Statup value of the switch if the output_type is pwm.</p>
+            <p>Has no effect if switch set to be High/Low</p></has>
         </div>
     </div>
 
@@ -997,6 +1005,7 @@
     <div class="option" name="switch.module_name.fail_safe_set_to" type="???" unit="???" title="Fail safe set to">
         <div class="description">
             <p>0 or 1 what to set the output pin to in case of a crash or HALT condition</p>
+            <p>This can be used to trigger relays, lights or run a gcode file.</p>
         </div>
     </div>
 
@@ -1039,18 +1048,21 @@
     <div class="option" name="temperatureswitch.module_name.heatup_poll" type="???" unit="???" title="Heatup poll">
         <div class="description">
             <p>Poll temperature at this frequency ( in seconds ) when heating up.</p>
+            <p>Too high a value can cause performace issues.</p>
         </div>
     </div>
 
     <div class="option" name="temperatureswitch.module_name.cooldown_poll" type="???" unit="???" title="Cooldown poll">
         <div class="description">
             <p>Poll temperature at this frequency ( in seconds ) when cooling down.</p>
+            <p>Too high a value can cause performance issues.</p>
         </div>
     </div>
 
     <div class="option" name="temperatureswitch.module_name.trigger" type="???" unit="???" title="Trigger">
         <div class="description">
             <p>can be level, rising, falling - level is the default</p>
+            <p>If set to rising triggers when the temperature read starts increasing in value, falling triggers it when temperature read starts to decrease, level triggers it when the temperature read hits a preset level.</p>
         </div>
     </div>
 
