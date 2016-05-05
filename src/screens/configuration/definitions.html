@@ -1083,6 +1083,7 @@
     <div class="option" name="spindle_enable" type="???" unit="???" title="Spindle enable">
         <div class="description">
             <p>If set to true, enables the Spindle module, which uses an encoder to PID-control a PWM-modulated spindle motor</p>
+            <p>PID refers to a feedback loop to minimise fluctuations of spiundle speed and PWM refers to control the spindle speed using a varying frequency input.</p>
         </div>
     </div>
 
@@ -1090,48 +1091,60 @@
         <div class="description">
             <p>Output PWM pin (uses hardware PWM)</p>
             <p>Note : hardware PWM is available only on pins 2.0 to 2.5, 1.18, 1.20, 1.21, 1.23, 1.24, 1.26, 3.25 and 3.26</p>
+            <p>This is the pin that will send the varying frequency to the spindle speed controller.</p>
         </div>
     </div>
 
     <div class="option" name="spindle_pwm_period" type="???" unit="???" title="Spindle pwm period">
         <div class="description">
             <p>PWM period to use in microseconds</p>
+            <p>??????????????????????????</p>
         </div>
     </div>
 
     <div class="option" name="spindle_feedback_pin" type="???" unit="???" title="Spindle feedback pin">
         <div class="description">
             <p>Feedback input pin (must be Port 0 or 2, meaning the pin number must be 2.x or 0.x )</p>
+            <p>This is the pin that will recieve the feedback from the spindle controller to use in the feedback loop controlling the spindles speed.</p>
         </div>
     </div>
 
     <div class="option" name="spindle_pulses_per_rev" type="???" unit="???" title="Spindle pulses per rev">
         <div class="description">
             <p>Number of feedback pulses per revolution on the feedback input pin</p>
+            <p>The higher the number, the more accuraate the reading, however too high of a number can cause performance issues.</p>
         </div>
     </div>
 
     <div class="option" name="spindle_default_rpm" type="???" unit="???" title="Spindle default rpm">
         <div class="description">
             <p>RPM to use if none given in M3 command, in rotations/minute</p>
+            <p>Make sure that this value is not set too high or low as it can cause problems during cutting. It is best to always specify a speed in the M3 command to avoid having issues.</p>
         </div>
     </div>
 
     <div class="option" name="spindle_control_P" type="???" unit="???" title="Spindle control P">
         <div class="description">
             <p>PID P factor (unit is 1 / RPM)</p>
+            <p>PID is a feedback loop used to minimise fluctuations in the system being controlled</p>
+            <p>P accounts for present values of the error. For example, if the error is large and positive, the control output will also be large and positive.</p>
         </div>
     </div>
 
     <div class="option" name="spindle_control_I" type="???" unit="???" title="Spindle control I">
         <div class="description">
             <p>PID I factor (unit is 1 / ( RPM x seconds ))</p>
+            <p>PID is a feedback loop used to minimise fluctuations in the system being controlled</p>
+            <p>I accounts for past values of the error. For example, if the current output is not sufficiently strong, error will accumulate over time, and the controller will respond by applying a stronger action.</p>
+            <
         </div>
     </div>
 
     <div class="option" name="spindle_control_D" type="???" unit="???" title="Spindle control D">
         <div class="description">
             <p>PID D factor (unit is 1 / (R PM / seconds ))</p>
+            <p>PID is a feedback loop used to minimise fluctuations in the system being controlled</p>
+            <p>D accounts for possible future values of the error, based on its current rate of change.</p>
         </div>
     </div>
 
@@ -1140,6 +1153,7 @@
     <div class="option" name="endstops_enable" type="???" unit="???" title="Endstops enable">
         <div class="description">
             <p>The endstop module is enabled if this is set to true</p>
+            <p>Endstops are used to prevent the machine from moving past the preset limity, so physical damage to the machine is prevented</p>
             <p>All of it's parameters are ignored otherwise.</p>
         </div>
     </div>
@@ -1165,6 +1179,8 @@
     <div class="option" name="alpha_min_endstop" type="???" unit="???" title="Alpha min endstop">
         <div class="description">
             <p>Alpha ( X axis or alpha tower ) minimum limit endstop</p>
+            <p>Endstops are used to prevent the machine from moving past the preset limity, so physical damage to the machine is prevented</p>
+            <p>Minimum endstops are usually used for homing the axis to the Zero position</p>
             <p>Set to nc if not installed on your machine.</p>
         </div>
     </div>
@@ -1172,6 +1188,8 @@
     <div class="option" name="alpha_max_endstop" type="???" unit="???" title="Alpha max endstop">
         <div class="description">
             <p>Alpha ( X axis or alpha tower ) maximum limit endstop</p>
+            <p>Endstops are used to prevent the machine from moving past the preset limit, so physical damage to the machine is prevented</p>
+            <p>Maximum endstops are usually used for stopping the machine from moving the axis past its physical endpoint,preventing mechanical damage</p>
             <p>Set to nc if not installed on your machine.</p>
         </div>
     </div>
@@ -1181,24 +1199,29 @@
             <p>In which direction to home</p>
             <p>If set to home_to_min, homing ( using the G28 G-code ) will move until it hits the minimum endstop and then set the current position to alpha_min</p>
             <p>If set to home_to_max, homing will move until it hits the maximum endstop, and then set the current position to alpha_max</p>
+            <p>Most machines are set to home to the minimum stop</p>
         </div>
     </div>
 
     <div class="option" name="alpha_min" type="???" unit="???" title="Alpha min">
         <div class="description">
             <p>This gets loaded after homing when alpha_homing_direction is set to home_to_min and the minimum endstop is hit.</p>
+            <p>This lets the software know that it is now at the Zero position.</p>
         </div>
     </div>
 
     <div class="option" name="alpha_max" type="???" unit="???" title="Alpha max">
         <div class="description">
             <p>This gets loaded after homing when alpha_homing_direction is set to home_to_max and the maximum endstop is hit.</p>
+            <p>This lets the software know that the axis is now at the end of it's physical travel.</p>
         </div>
     </div>
 
     <div class="option" name="beta_min_endstop" type="???" unit="???" title="Beta min endstop">
         <div class="description">
             <p>Beta ( Y axis or beta tower ) minimum limit endstop</p>
+            <p>Endstops are used to prevent the machine from moving past the preset limity, so physical damage to the machine is prevented</p>
+            <p>Minimum endstops are usually used for homing the axis to the Zero position</p>
             <p>Set to nc if not installed on your machine.</p>
         </div>
     </div>
@@ -1206,6 +1229,8 @@
     <div class="option" name="beta_max_endstop" type="???" unit="???" title="Beta max endstop">
         <div class="description">
             <p>Beta ( Y axis or beta tower ) maximum limit endstop</p>
+            <p>Endstops are used to prevent the machine from moving past the preset limit, so physical damage to the machine is prevented</p>
+            <p>Maximum endstops are usually used for stopping the machine from moving the axis past its physical endpoint,preventing mechanical damage</p>
             <p>Set to nc if not installed on your machine.</p>
         </div>
     </div>
@@ -1215,24 +1240,29 @@
             <p>In which direction to home</p>
             <p>If set to home_to_min, homing ( using the G28 G-code ) will move until it hits the minimum endstop and then set the current position to beta_min</p>
             <p>If set to home_to_max, homing will move until it hits the maximum endstop, and then set the current position to beta_max</p>
+            <p>Most machines are set to home to the minimum stop</p>
         </div>
     </div>
 
     <div class="option" name="beta_min" type="???" unit="???" title="Beta min">
         <div class="description">
             <p>This gets loaded after homing when beta_homing_direction is set to home_to_min and the minimum endstop is hit.</p>
+            <p>This lets the software know that it is now at the Zero position.</p>
         </div>
     </div>
 
     <div class="option" name="beta_max" type="???" unit="???" title="Beta max">
         <div class="description">
             <p>This gets loaded after homing when beta_homing_direction is set to home_to_max and the maximum endstop is hit.</p>
+            <p>This lets the software know that the axis is now at the end of it's physical travel.</p>
         </div>
     </div>
 
     <div class="option" name="gamma_min_endstop" type="???" unit="???" title="Gamma min endstop">
         <div class="description">
             <p>Gamma ( Z axis or gamma tower ) minimum limit endstop</p>
+            <p>Endstops are used to prevent the machine from moving past the preset limity, so physical damage to the machine is prevented</p>
+            <p>Minimum endstops are usually used for homing the axis to the Zero position</p>
             <p>Set to nc if not installed on your machine.</p>
         </div>
     </div>
@@ -1249,18 +1279,21 @@
             <p>In which direction to home</p>
             <p>If set to home_to_min, homing ( using the G28 G-code ) will move until it hits the minimum endstop and then set the current position to gamma_min</p>
             <p>If set to home_to_max, homing will move until it hits the maximum endstop, and then set the current position to gamma_max</p>
+            <p>Most machines are set to home to the minimum stop</p>
         </div>
     </div>
 
     <div class="option" name="gamma_min" type="???" unit="???" title="Gamma min">
         <div class="description">
             <p>This gets loaded after homing when gamma_homing_direction is set to home_to_min and the minimum endstop is hit.</p>
+            <p>This lets the software know that it is now at the Zero position.</p>
         </div>
     </div>
 
     <div class="option" name="gamma_max" type="???" unit="???" title="Gamma max">
         <div class="description">
             <p>This gets loaded after homing when gamma_homing_direction is set to home_to_max and the maximum endstop is hit.</p>
+            <p>This lets the software know that the axis is now at the end of it's physical travel.</p>
         </div>
     </div>
 
@@ -1292,54 +1325,63 @@
     <div class="option" name="alpha_fast_homing_rate_mm_s" type="???" unit="???" title="Alpha fast homing rate mm s">
         <div class="description">
             <p>Speed, in millimetres/second, at which to home for the alpha actuator ( X axis or alpha tower )</p>
+            <p>Too high of a rate can cause the stepper motor to lose steps.</p>
         </div>
     </div>
 
     <div class="option" name="beta_fast_homing_rate_mm_s" type="???" unit="???" title="Beta fast homing rate mm s">
         <div class="description">
             <p>Speed, in millimetres/second, at which to home for the beta actuator ( Y axis or beta tower )</p>
+            <p>Too high of a rate can cause the stepper motor to lose steps.</p>
         </div>
     </div>
 
     <div class="option" name="gamma_fast_homing_rate_mm_s" type="???" unit="???" title="Gamma fast homing rate mm s">
         <div class="description">
             <p>Speed, in millimetres/second, at which to home for the gamma actuator ( Z axis or gamma tower )</p>
+            <p>Too high of a rate can cause the stepper motor to lose steps.</p>
         </div>
     </div>
 
     <div class="option" name="alpha_homing_retract_mm" type="???" unit="???" title="Alpha homing retract mm">
         <div class="description">
             <p>Distance to retract the alpha actuator ( X axis or alpha tower ) once the endstop is first hit, before re-homing at a slower speed.</p>
+            <p>20mm is usually enough</p>
         </div>
     </div>
 
     <div class="option" name="beta_homing_retract_mm" type="???" unit="???" title="Beta homing retract mm">
         <div class="description">
             <p>Distance to retract the beta actuator ( Y axis or beta tower ) once the endstop is first hit, before re-homing at a slower speed.</p>
+            <p>20mm is usually enough</p
         </div>
     </div>
 
     <div class="option" name="gamma_homing_retract_mm" type="???" unit="???" title="Gamma homing retract mm">
         <div class="description">
             <p>Distance to retract the alpha actuator ( Z axis or gamma tower ) once the endstop is first hit, before re-homing at a slower speed.</p>
+            <p>20mm is usually enough</p
         </div>
     </div>
 
     <div class="option" name="alpha_slow_homing_rate_mm_s" type="???" unit="???" title="Alpha slow homing rate mm s">
         <div class="description">
             <p>Speed, in millimetres/second, at which to re-home for the alpha actuator ( X axis or alpha tower ) once the endstop is hit once.</p>
+            <p>The slower the speed, the more accurate the homing function will be</p>
         </div>
     </div>
 
     <div class="option" name="beta_slow_homing_rate_mm_s" type="???" unit="???" title="Beta slow homing rate mm s">
         <div class="description">
             <p>Speed, in millimetres/second, at which to re-home for the beta actuator ( Y axis or beta tower ) once the endstop is hit once.</p>
+            <p>The slower the speed, the more accurate the homing function will be</p>
         </div>
     </div>
 
     <div class="option" name="gamma_slow_homing_rate_mm_s" type="???" unit="???" title="Gamma slow homing rate mm s">
         <div class="description">
             <p>Speed, in millimetres/second, at which to re-home for the gamma actuator ( Z axis or gamma tower ) once the endstop is hit once.</p>
+            <p>The slower the speed, the more accurate the homing function will be</p>
         </div>
     </div>
 
@@ -1347,6 +1389,7 @@
         <div class="description">
             <p>Debounce each endstop pin over this number of values</p>
             <p>Set to 100 if your endstops are too noisy and give false readings.</p>
+            <p>You can lower this number until it causes an error in homing, then increase it by about 10% to be set well.</p>
         </div>
     </div>
 
@@ -1354,6 +1397,7 @@
         <div class="description">
             <p>DELTA ONLY Software trim for alpha ( X axis or alpha tower ) stepper endstop (in millimetres )</p>
             <p>When the endstop is hit, the axis will move this distance towards the endstop (negative values move endstop away from the endstop )</p>
+            <p>???????????????????????????</p>
         </div>
     </div>
 
@@ -1361,6 +1405,7 @@
         <div class="description">
             <p>DELTA ONLY Software trim for beta ( Y axis or beta tower ) stepper endstop (in millimetres )</p>
             <p>When the endstop is hit, the axis will move this distance towards the endstop (negative values move endstop away from the endstop )</p>
+            <p>???????????????????????????</p>
         </div>
     </div>
 
@@ -1368,12 +1413,15 @@
         <div class="description">
             <p>DELTA ONLY Software trim for gamma ( Z axis or gamma tower ) stepper endstop (in millimetres )</p>
             <p>When the endstop is hit, the axis will move this distance towards the endstop (negative values move endstop away from the endstop )</p>
+            <p>???????????????????????????</p>
         </div>
     </div>
 
     <div class="option" name="move_to_origin_after_home" type="???" unit="???" title="Move to origin after home">
         <div class="description">
             <p>If set to true, once homing is complete, the machine will move to it's origin point</p>
+            <p>Depending on where the origin was set, this may be different from the 0,0,0 position.</p>
+            <p>Origin is usually set to a place on the cutting bed where the material is located</p>
         </div>
     </div>
 
