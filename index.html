@@ -100,9 +100,9 @@ body,html      { height:100%; }
     
     <!-- HTML files for screens -->
 
-<script id="connection_screen" type="text/x-handlebars-template">
 
-    <div class="container">
+<script id="connection_screen" type="text/x-handlebars-template">
+<div class="container">
       
       <div class="text-center">
         <h1>Connection</h1>
@@ -144,7 +144,7 @@ body,html      { height:100%; }
 
 
 
-<screen id="network_scan_screen" class="hidden">
+<script id="network_scan_screen" type="text/x-handlebars-template">
 
     <div class="container scan-info">
 
@@ -152,6 +152,7 @@ body,html      { height:100%; }
         <h1>Network scan</h1>
       </div>
 
+      {{#unless scanning}}
       <p> Here you can enter an IP range or an expression specifying where to look for an active board: </p>
 
       <div class="bs-callout bs-callout-info">
@@ -169,7 +170,9 @@ body,html      { height:100%; }
       <p> Please enter an expression at the bottom of the screen then click on «Search» </p>
 
     </div>
+    {{/unless}}
 
+    {{#if scanning}}
     <div class="container scan-ongoing">
 
       <div class="text-center">
@@ -177,19 +180,30 @@ body,html      { height:100%; }
       </div>
       <br/>
 
-      <p> The scanner is currently looking at : <span class="currently-scanning"></span> </p>
+      <p> The scanner is currently looking at : <span class="currently-scanning"></span> to determine if it is an active machine </p>
 
+      {{#if machines}}
       <div class="found-machines">
         <h2> Found machines </h2>
         <br/>
         <p> The following machines were found on the network </p>
         <table class="machine-list table table-stripped">
             <tr><th>Branch</th><th>Date</th><th>Commit</th><th>Microcontroller</th><th>Speed</th><th> Connect </th></tr>
-            <tr class="hidden"><td></td></td>
+            {{#each machines}}
+                <tr>
+                    <td> {{this.branch}} </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {{/each}}          
         </table>
       </div>
+      {{/if}}
 
     </div>
+    {{/if}}
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
       <div class="container">
@@ -205,7 +219,7 @@ body,html      { height:100%; }
       </div>
     </nav>
 
-</screen>
+</script>
 
 
 
@@ -9949,25 +9963,33 @@ var fabrica = new Fabrica();
 var Screen = Class({
 
     display: function(name){
-        // Save screen html and name
-        var template = $("#" + name).html();
+        // Remember our name
         this.name = name;
-
+        
         // Warn the core this screen was entered
         fabrica.entered_screen(this);
-
-        // Compile and execute the template
-        var compiled = Handlebars.compile(template); 
-        var result = compiled({});
-
-        // Display this screen 
-        $("#screen").html(result); 
+        
+        // Actually display the screen
+        this.refresh();
 
         // Setup help for this screen
         this.setup_help();
 
         // Setup back button for this screen
         this.setup_back();
+    },
+
+    refresh: function(){
+        // Save screen html and name
+        var template = $("#" + this.name).html();
+
+        // Compile and execute the template
+        var compiled = Handlebars.compile(template); 
+        var result = compiled(this);
+
+        // Display this screen 
+        $("#screen").html(result); 
+        this.html = $("#screen");
     },
 
     setup_help: function(){
@@ -10177,10 +10199,12 @@ fabrica.add_screen( 'connection', new ConnectionScreen() );
 
 var NetworkScanScreen = Screen.extend({
     enter: function(){
+        this.machines = [];
+        this.scanning = false;
+        
         // Display this screen
         this.display('network_scan_screen');
-        this.html.find(".scan-ongoing").hide();
-       
+
         // Set up button 
         this.html.find(".btn-scan").off().click(function(){ fabrica.screens.network_scan.start_scanning(); });
     },
@@ -10189,24 +10213,18 @@ var NetworkScanScreen = Screen.extend({
         // Start scanning the network for boards
         var _that = this;
         var expression = this.html.find(".input-expression").val();
-        this.html.find(".scan-info").hide();
-        this.html.find(".scan-ongoing").show();
-        this.html.find(".found-machines").hide();
 
         // Start the scan 
         // TODO : Get the button to do something, can't now because it doesn't return the IP address along with the board
+        this.scanning = true; 
+        this.refresh();
         sh.scanner.scan(expression,{
             onprogress: function(ip, version){
                 _that.html.find(".currently-scanning").text(ip);
             },
             onboard: function(board){
-                console.log(board);
-               _that.html.find(".found-machines").show();
-               _that.html.find(".machine-list").append(
-                   $("<tr></tr>").append(
-                       $("<td></td>").text(board.branch), $("<td></td>").text(board.date), $("<td></td>").text(board.hash), $("<td></td>").text(board.mcu), $("<td></td>").text(board.clock),$("<button></button>").addClass("btn btn-default").text("Connect to this board")
-                   )
-               );
+                _that.machines.push(board);
+                _that.refresh();
             }
         });
     }
