@@ -41,6 +41,8 @@
     <script src="static/js/bootstrap.min.js"></script>
     <!-- Js.class allows more object-oriented javascript -->
     <script src="src/core/js.class/dist/browser/js.class.min.js"></script>
+    <!-- HandleBar JS Template system -->
+    <script src="static/js/handlebar.js"></script>
 
     <!-- Smoothie Happy ( Smoothie API ) submodule -->
     <script src="static/js/sh/src/smoothie-happy.js"></script>

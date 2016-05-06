@@ -66,13 +66,20 @@
         </div>
     </div>
 
-    <div class="option" name="arm_solution" type="???" unit="???" title="Arm solution">
+    <div class="option" name="arm_solution" type="options" title="Arm solution">
         <div class="description">
             <p>Sets the arm solution for this machine</p>
             <p>The arm solution converts position in millimetres into actuator positions ( usually in steps )</p>
             <p>On cartesian machines those are proportional to each other, but for example on a linear delta machine, some fancy math is required for the conversion</p>
             <p>Possible values : cartesian, corexy, linear_delta, rotatable_cartesian, morgan</p>
             <p>If unsure of the type of machine you have, cartesian is the standard x,y basic CNC setup. 90% plus of machines are of this style. If you have custom built a machine that is not like this, you are probably aware of what type it is. You can always Google the differnt machine types if unsure.</p>
+        </div>
+        <div class="options">
+            <div class="option" value="cartesian"> Cartesian : The classical arm solution, where each actuator corresponds to a separate and independant axis. </div>
+            <div class="option" value="linear_delta"> Linear delta : Three towers each control a separate arm, and the three arms together control the actuator using forced parralelism.  </div>
+            <div class="option" value="rotary_delta"> Rotary delta : Three rotary actuators each control a separate arm, and the three arms together control the actuator using forced parralelism.  </div>
+            <div class="option" value="hbot"> H-bot or CoreXY : The X and Y axes share a single belt, and movement of both actuators result in movement in either axes. Z stays cartesian.  </div>
+            <div class="option" value="morgan"> Morgan : Two rotary actuators each control a separate arm, and the two arms together define XY movement. The Z stays cartesian. </div>
         </div>
     </div>
 
