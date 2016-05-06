@@ -1431,6 +1431,7 @@
         <div class="description">
             <p>Set to true to enable the Z-probe module</p>
             <p>This is used to scan surfaces, and to calibrate parameters and compensate for non-planar surfaces.</p>
+            <p>Leveling the bed on a 3D printer is also a use for this.</p>
         </div>
     </div>
 
@@ -1443,18 +1444,21 @@
     <div class="option" name="zprobe.slow_feedrate" type="???" unit="???" title="Slow feedrate">
         <div class="description">
             <p>Speed in millimetres/second at which the probe seeks a surface.</p>
+            <p>Slower speeds create a more accurate result.</p>
         </div>
     </div>
 
     <div class="option" name="zprobe.fast_feedrate" type="???" unit="???" title="Fast feedrate">
         <div class="description">
             <p>Speed in millimetres/second at which the probe does fast moves.</p>
+            <p>These are moves from one location to another where the surface is not being measured.</p>
         </div>
     </div>
 
     <div class="option" name="zprobe.return_feedrate" type="???" unit="???" title="Return feedrate">
         <div class="description">
             <p>Speed in millimetres/second at which the probe does the return after a probe.</p>
+            <p>Do not set too high as it may cause the stepper motor to lose steps and skew your results.</p>
         </div>
     </div>
 
@@ -1462,12 +1466,14 @@
         <div class="description">
             <p>Debounce the probe pin over this number of values</p>
             <p>Set to 100 if your probe is too noisy and give false readings.</p>
+            <p>Slowly lower this value until errors occour, then raise by 10% and you should be well set.</p>
         </div>
     </div>
 
     <div class="option" name="zprobe.probe_height" type="???" unit="???" title="Probe height">
         <div class="description">
             <p>Distance above the bed at which the probing is started, once the bed's height is known.</p>
+            <p>Make sure the Z porbe can travel this distance, and allow 5-10% leeway to ensure it makes good contact with the bed surface.</p>
         </div>
     </div>
 
@@ -1477,36 +1483,39 @@
         <div class="description">
             <p>Set to true to enable the leveling strategy that probes three points to define a plane and then keeps the Z parallel to that plane</p>
             <p>This is useful if your Z plate/bed is not perfectly aligned with your XY gantry</p>
+            <p>This is a common issue with 3D printers.</p>
         </div>
     </div>
 
     <div class="option" name="leveling-strategy.three-point-leveling.point1" type="???" unit="???" title="Point1">
         <div class="description">
-            <p>The first probe point (X, Y)</p>
+            <p>The first probe point (X, Y) when performing the 3 point leveling option.</p>
         </div>
     </div>
 
     <div class="option" name="leveling-strategy.three-point-leveling.point2" type="???" unit="???" title="Point2">
         <div class="description">
-            <p>The second probe point (X, Y)</p>
+            <p>The second probe point (X, Y) when performing the 3 point leveling option.</p>
         </div>
     </div>
 
     <div class="option" name="leveling-strategy.three-point-leveling.point3" type="???" unit="???" title="Point3">
         <div class="description">
-            <p>The third probe point (X, Y)</p>
+            <p>The third probe point (X, Y) when performing the 3 point leveling option.</p>
         </div>
     </div>
 
     <div class="option" name="leveling-strategy.three-point-leveling.home_first" type="???" unit="???" title="Home first">
         <div class="description">
             <p>Home the X and Y axes before probing</p>
+            <p>When set, this will cause the machine to home all axis' before starting the leveling procedure. This is the reccomended way of doing this.</p>
         </div>
     </div>
 
     <div class="option" name="leveling-strategy.three-point-leveling.tolerance" type="???" unit="???" title="Tolerance">
         <div class="description">
             <p>The probe tolerance in millimetres, anything less that this will be ignored, default is 0.03mm</p>
+            ,p>Check the specifications of your probe for its accuracy and do not set it higher than the probe can handle or it will cause the leveling operation to have errors.
         </div>
     </div>
 
@@ -1520,6 +1529,7 @@
     <div class="option" name="leveling-strategy.three-point-leveling.save_plane" type="???" unit="???" title="Save plane">
         <div class="description">
             <p>Set to true to allow the bed plane to be saved with M500, default is false</p>
+            <p>This will save the settings to your controller so the next time you start it, it will use the last leveling data as the current settings. Usually used on CNC routers, but not 3D printers as the bed is spring loaded and can change from use to use.</p>
         </div>
     </div>
 
@@ -1527,12 +1537,14 @@
         <div class="description">
             <p>Set to true to enable the delta calibration levelling strategy</p>
             <p>This uses the probe to figure out the plane's tilt and arm's radius in a delta machine</p>
+            <p>Only enable if you are using a DFelta configuration on your machine.</p>
         </div>
     </div>
 
     <div class="option" name="leveling-strategy.delta-calibration.radius" type="???" unit="???" title="Radius">
         <div class="description">
             <p>Radius at which to probe the three points</p>
+            <p>Ensure that this value is smaller than the physical bed size.</p>
         </div>
     </div>
 
@@ -1549,6 +1561,7 @@
         <div class="description">
             <p>Set to true to enable the panel interface</p>
             <p>Panels are a screen, an encoder wheel and/or a set of buttons, used to control your machine.</p>
+            <p>Common examples are the RepRapDiscount Full Graphic Smart Controller and 2004 LCD Smart Controller</p>
         </div>
     </div>
 
@@ -1557,43 +1570,50 @@
             <p>Type of panel we are connecting</p>
             <p>Each panel has a specific interface so we need to specify which panel we will be connecting</p>
             <p>The currently supported panel types are reprap_discount_glcd, st7565_glcd, viki2, mini_viki2 and universal_adapter.</p>
+            <p>The specification sheet for your control panel should have the info of what type of panel it is.</p>
         </div>
     </div>
 
     <div class="option" name="panel.spi_channel" type="???" unit="???" title="Spi channel">
         <div class="description">
             <p>SPI channel to use</p>
+            <p>This is the communications channel used to talk between the controller board and LCD panel.</p>
         </div>
     </div>
 
     <div class="option" name="panel.spi_cs_pin" type="???" unit="???" title="Spi cs pin">
         <div class="description">
             <p>CS ( Chip Select ) pin to use, this can be used to have several different devices on the same SPI port, as long as each device has a separate CS pin</p>
-            <p>Note that the RRD GLCD panel does not support this and requires being alone on it's port.</p>
+            <p>Note that the RRD GLCD (12864 LCD) panel does not support this and requires being alone on it's port.</p>
         </div>
     </div>
 
     <div class="option" name="panel.spi_frequency" type="???" unit="???" title="Spi frequency">
         <div class="description">
             <p>SPI port frequency</p>
+            <p>??????????????????????????????????</p>
         </div>
     </div>
 
     <div class="option" name="panel.contrast" type="???" unit="???" title="Contrast">
         <div class="description">
             <p>Contrast value for panels that support it ( viki2, mini_viki2 and st7565_glcd )</p>
+            <p>Specify a value between 1 and 10, the higher the value, the more the contrast.</p>
+            <p>Panels that do not support this usually have a small trimmer potentiometer that controls the contrast.</p>
         </div>
     </div>
 
     <div class="option" name="panel.reverse" type="???" unit="???" title="Reverse">
         <div class="description">
             <p>If set to true, reverse the screen.</p>
+            <p>???????????????????????????</p>
         </div>
     </div>
 
     <div class="option" name="panel.busy_pin" type="???" unit="???" title="Busy pin">
         <div class="description">
             <p>If using the universal_adapter, this pin can be connected to the adapter to ask it if it is busy or not.</p>
+            <p>This can be used to ensure that the data can be accep\ted by the panel.</p>
         </div>
     </div>
 
@@ -1602,6 +1622,7 @@
             <p>A pin for the encoder wheel</p>
             <p>Encoders have two pins : A and B</p>
             <p>Set to nc if you use no encoder.</p>
+            <p>Most 3D printer panels have an encoder.</p>
         </div>
     </div>
 
@@ -1609,6 +1630,7 @@
         <div class="description">
             <p>B pin for the encoder wheel</p>
             <p>Encoders have two pins : A and B</p>
+            <p>Most 3D printer panels have an encoder.</p>
             <p>Set to nc if you use no encoder.</p>
         </div>
     </div>
@@ -1616,36 +1638,46 @@
     <div class="option" name="panel.encoder_resolution" type="???" unit="???" title="Encoder resolution">
         <div class="description">
             <p>the number of pulses the encoder emits per detent/click</p>
+            <p>The higher the value, the more it will scroll the screen or adjust an entry number per click of the encoder.</p>
+            <p>Too high a value will make it difficult to navigate or change settings.</p>
         </div>
     </div>
 
     <div class="option" name="panel.click_button_pin" type="???" unit="???" title="Click button pin">
         <div class="description">
             <p>Pin for the click ( "enter" ) button</p>
+            <p> The enter button is usually when you press down on the encoder knob, instead of turning it which scrolls the menus or changes settings.</p>
         </div>
     </div>
 
     <div class="option" name="panel.buzz_pin" type="???" unit="???" title="Buzz pin">
         <div class="description">
             <p>Pin for the buzzer</p>
+            <p>Most panels have a small pizeo buzzer that can be used for audible feedback while using the panel.</p>
         </div>
     </div>
 
     <div class="option" name="panel.back_button_pin" type="???" unit="???" title="Back button pin">
         <div class="description">
             <p>Pin for the back button</p>
+            <p>Most panels do not have a button for this purpose.</p>
+            <p>You can use a momentary switch to use this option</p>
         </div>
     </div>
 
     <div class="option" name="panel.up_button_pin" type="???" unit="???" title="Up button pin">
         <div class="description">
             <p>Pin for the up button</p>
+            <p>Most panels do not have a button for this purpose.</p>
+            <p>You can use a momentary switch to use this option</p>
         </div>
     </div>
 
     <div class="option" name="panel.down_button_pin" type="???" unit="???" title="Down button pin">
         <div class="description">
             <p>Pin for the down button</p>
+            <p>Most panels do not have a button for this purpose.</p>
+            <p>You can use a momentary switch to use this option</p>
         </div>
     </div>
 
@@ -1660,6 +1692,7 @@
         <div class="description">
             <p>X jogging feedrate in millimetres/minute</p>
             <p>This is used when jogging using the panel screen.</p>
+            <p>10mm/jog is usually a good setting.</p>
         </div>
     </div>
 
@@ -1667,12 +1700,14 @@
         <div class="description">
             <p>Y jogging feedrate in millimetres/minute</p>
             <p>This is used when jogging using the panel screen.</p>
+            <p>10mm/jog is usually a good setting.</p>
         </div>
     </div>
 
     <div class="option" name="panel.gamma_jog_feedrate" type="???" unit="???" title="Gamma jog feedrate">
         <div class="description">
             <p>Z jogging feedrate in millimetres/minute</p>
+            <p>5mm/jog is usually a good setting.</p>
             <p>This is used when jogging using the panel screen.</p>
         </div>
     </div>
@@ -1680,24 +1715,28 @@
     <div class="option" name="panel.hotend_temperature" type="???" unit="???" title="Hotend temperature">
         <div class="description">
             <p>Temperature to set the hotend to when using the pre-heating menu item</p>
+            <p>The hot end is the heating block in a 3D printer head, it is what melts the filament.</p>
         </div>
     </div>
 
     <div class="option" name="panel.bed_temperature" type="???" unit="???" title="Bed temperature">
         <div class="description">
             <p>Temperature to set the bed to when using the pre-heating menu item</p>
+            <p>The heated bed is usually found only on 3D printers.</p>
         </div>
     </div>
 
     <div class="option" name="panel.external_sd" type="???" unit="???" title="External sd">
         <div class="description">
             <p>Set to true if your panel has an external SD card slot, or if you want to connect a second SD card slot to one of your Smothieboard's SPI ports</p>
+            <p>Using an External SD card allows you to run the machine without having a PC hooked up to it.</p>
         </div>
     </div>
 
     <div class="option" name="panel.external_sd.spi_channel" type="???" unit="???" title="Spi channel">
         <div class="description">
             <p>Set the SPI channel the external SD card is on</p>
+            <p>You can use the same channel for multiple card slots as long as the have chip select pins and you set the option "Spi cs pin"</p>
         </div>
     </div>
 
@@ -1710,6 +1749,7 @@
     <div class="option" name="panel.external_sd.sdcd_pin" type="???" unit="???" title="Sdcd pin">
         <div class="description">
             <p>SD card detect signal pin, set to nc if you don't use a SD card detect signal</p>
+            <p>???????????????????????????????????</p>
         </div>
     </div>
 
@@ -1738,24 +1778,29 @@
     <div class="option" name="network.enable" type="???" unit="???" title="Enable">
         <div class="description">
             <p>If set to true, enable the Ethernet network services</p>
+            <p>Very useful to access files that are on differnt PC's than the one connected to the smoothieboard via a USB cable.</p>
+            <p>Ethernet access is more reliable than USB access.</p>
         </div>
     </div>
 
     <div class="option" name="network.webserver.enable" type="???" unit="???" title="Enable">
         <div class="description">
             <p>If set to true, enable the web server service, on port 80, which provides a control and upload web interface</p>
+            <p>You can then use an PC on your network to control the machine.</p>
         </div>
     </div>
 
     <div class="option" name="network.telnet.enable" type="???" unit="???" title="Enable">
         <div class="description">
             <p>If set to true, enable the telnet service, on port 23, which behaves much like a Serial interface</p>
+            <p>This is used to connect using programs like Pronterface.</p>
         </div>
     </div>
 
     <div class="option" name="network.plan9.enable" type="???" unit="???" title="Enable">
         <div class="description">
             <p>If set to true, enable the plan9 network filesystem on port 564 which allows mounting the Smoothieboard</p>
+            <p>This shows the machine as a device on the network when viewing network attached devices from a file explorer programm on a network connect computer.</p>
         </div>
     </div>
 
@@ -1763,18 +1808,21 @@
         <div class="description">
             <p>If set to auto, use DHCP to request an IP address</p>
             <p>If set to an IP address, use that address as a static IP.</p>
+            <p>Static IP's are better as this does not require you to figure out what the smoothieboard IP is each time it is rebooted.</p>
         </div>
     </div>
 
     <div class="option" name="network.ip_mask" type="???" unit="???" title="Ip mask">
         <div class="description">
             <p>If using a static IP, define the mask for the network.</p>
+            <p>Most home networks will have a value of  255.255.255.0</p>
         </div>
     </div>
 
     <div class="option" name="network.ip_gateway" type="???" unit="???" title="Ip gateway">
         <div class="description">
             <p>If using a static IP, define the gateway for the network.</p>
+            <p>This is usually the IP address of the network router (or cable modem/DSL modem).</p>
         </div>
     </div>
 
@@ -1782,12 +1830,14 @@
         <div class="description">
             <p>If set, override the MAC adress for the Ethernet interface</p>
             <p>Only set this if you have a conflict on your network.</p>
+            <p>The MAC address is usually on the controller board if it is network capable like the smoothieboard.</p>
         </div>
     </div>
 
     <div class="option" name="network.hostname" type="???" unit="???" title="Hostname">
         <div class="description">
             <p>Some DHCP servers accept a hostname for the machine, which then allows you to connect to it using that name instead of it's IP.</p>
+            <p>An example would be naming the machine something like Lser Cutter, or 3D printer.</p>
         </div>
     </div>
 
