@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>fabrica</title>
+    <title>fabrica.</title>
 
     <!-- Bootstrap -->
 <style rel='stylesheet'>
@@ -149,7 +150,7 @@ body,html      { height:100%; }
         <h1>Network scan</h1>
       </div>
 
-      <p> Here you can enter an IP range or expression specifying where to look for an active board: </p>
+      <p> Here you can enter an IP range or an expression specifying where to look for an active board: </p>
 
       <div class="bs-callout bs-callout-info">
           <h4>Supported expressions</h4>
@@ -5342,6 +5343,7 @@ var NetworkScanScreen = Screen.extend({
         this.html.find(".found-machines").hide();
 
         // Start the scan 
+        // TODO : Get the button to do something, can't now because it doesn't return the IP address along with the board
         sh.scanner.scan(expression,{
             onprogress: function(ip, version){
                 _that.html.find(".currently-scanning").text(ip);
