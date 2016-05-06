@@ -2,17 +2,20 @@
 
 var Screen = Class({
 
-    display: function(name){
+    display: function(name, data){
         // Save screen html and name
-        this.html = $("#" + name);
+        var template = $("#" + name).html();
         this.name = name;
 
         // Warn the core this screen was entered
         fabrica.entered_screen(this);
 
+        // Compile and execute the template
+        var compiled = Handlebars.compile(template); 
+        var result = compiled(data);
+
         // Display this screen 
-        $("screen").addClass('hidden');
-        this.html.removeClass('hidden');
+        $("#screen").html(result); 
 
         // Setup help for this screen
         this.setup_help();

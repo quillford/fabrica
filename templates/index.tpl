@@ -17,6 +17,8 @@
 
   </head>
   <body>
+
+    <div id="screen"> </div>
     
     <!-- HTML files for screens -->
     <link href="src/screens/connection.html" rel="html">
