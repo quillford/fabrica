@@ -146,13 +146,13 @@ body,html      { height:100%; }
 
 <script id="network_scan_screen" type="text/x-handlebars-template">
 
+    {{#unless scanning}}
     <div class="container scan-info">
 
       <div class="text-center">
         <h1>Network scan</h1>
       </div>
 
-      {{#unless scanning}}
       <p> Here you can enter an IP range or an expression specifying where to look for an active board: </p>
 
       <div class="bs-callout bs-callout-info">
@@ -192,10 +192,10 @@ body,html      { height:100%; }
             {{#each machines}}
                 <tr>
                     <td> {{this.branch}} </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td> {{this.date}} </td>
+                    <td> {{this.hash}} </td>
+                    <td> {{this.mcu}} </td>
+                    <td> {{this.clock}} </td>
                 </tr>
             {{/each}}          
         </table>
