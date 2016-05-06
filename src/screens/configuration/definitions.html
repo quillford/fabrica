@@ -14,10 +14,6 @@
         </div>
     </div>
 
-    
-    
-    
-
     <div class="option" name="default_seek_rate" type="speed" unit="millimeters/minute" title="Default seek rate">
         <div class="description">
             <p> The seek rate is the speed for "seek" movements ( G0 ) during which the tool is inactive, as opposed to "feed" movements ( G1/G2/G3 ) during which the tool is active </p>
@@ -143,39 +139,40 @@
         </div>
     </div>
 
-    <div class="option" name="planner_queue_size" type="???" unit="???" title="Planner queue size">
+    <div class="option" name="planner_queue_size" type="number" unit="segments" title="Planner queue size">
         <div class="description">
             <p>Defines how many blocks ( line segments ) are stored in RAM for look-ahead acceleration calculation</p>
             <p>Do not change this unless you know exactly what you are doing !</p>
-            <p>Realy, we maean don't adjust this unless you understand the code behind this function and know what it means.</p>
+            <p>Really, we meant it, don't adjust this unless you understand the code behind this function and know what it means.</p>
         </div>
     </div>
 
-    <div class="option" name="acceleration" type="???" unit="???" title="Acceleration">
+    <div class="option" name="acceleration" type="number" unit="millimeters/second²" title="Acceleration">
         <div class="description">
             <p>Acceleration in millimetres/second/second</p>
             <p>Higher values make your machine faster and shakier, lower values make your machine slower and sturdier</p>
             <p>This is generally proportional to the weight of the tool you are trying to move.</p>
-            <p>The best way to sjust this is to start with a low value and raise it slowly until the quality decreases, then lower it back dowen to the value that last provide a stable machine.</p>
+            <p>The best way to adjust this is to start with a low value and raise it slowly until the quality decreases, then lower it back dowen to the value that last provide a stable machine.</p>
         </div>
     </div>
 
-    <div class="option" name="z_acceleration" type="???" unit="???" title="Z acceleration">
+    <div class="option" name="z_acceleration" type="number" unit="millimeters/second²" title="Z acceleration">
         <div class="description">
-            <p>Acceleration for Z only moves, same as acceleration but for movements of the Z axis</p>
+            <p>Acceleration for Z only moves, in millimeters/second/second, same as acceleration but for movements of the Z axis</p>
             <p>Do not set this value if you use a delta arm solution.</p>
-            <Once again, the best way to adjust this is to start with a low value and raise it slowly until the quality decreases, then lower it back dowen to the value that last provide a stable machine.</p>
+            <p>Once again, the best way to adjust this is to start with a low value and raise it slowly until the quality decreases, then lower it back dowen to the value that last provide a stable machine.</p>
         </div>
     </div>
 
-    <div class="option" name="acceleration_ticks_per_second" type="???" unit="???" title="Acceleration ticks per second">
+    <div class="option" name="acceleration_ticks_per_second" type="number" unit="hertz ( ticks/second )" title="Acceleration ticks per second">
         <div class="description">
             <p>Number of times per second the speed is updated</p>
             <p>Do not modify unless you know exactly what you are doing !</p>
             <p>Realy, we maean don't adjust this unless you understand the code behind this function and know what it means.</p>
         </div>
+    </div>
 
-    <div class="option" name="junction_deviation" type="???" unit="???" title="Junction deviation">
+    <div class="option" name="junction_deviation" type="number" unit="ratio" title="Junction deviation">
         <div class="description">
             <p>Similar to the old "max_jerk", in millimeters</p>
             <p>Defines how much the machine slows down when decelerating proportional to the vector angle of change of direction</p>
@@ -185,7 +182,7 @@
         </div>
     </div>
 
-    <div class="option" name="z_junction_deviation" type="???" unit="???" title="Z junction deviation">
+    <div class="option" name="z_junction_deviation" type="number" unit="ratio" title="Z junction deviation">
         <div class="description">
             <p>Junction deviation for Z only moves, -1 uses junction_deviation, 0 disables junction_deviation on z moves</p>
             <p>Do not set this value if you use a delta arm solution.</p>
