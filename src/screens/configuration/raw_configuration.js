@@ -23,24 +23,10 @@ var RawConfigurationScreen = Screen.extend({
         // Display this screen
         this.display('raw_configuration_screen');
 
-
-
-
-        /*
-        // Display sections in the array
-        this.html.find(".section_list .section_line").remove();
-        var line_template = this.html.find(".section_line");
-        var _that = this;
-        $.each( this.sections, function( index, line ){
-            var new_line = line_template.clone();
-            new_line.removeClass("hidden");
-            new_line.find(".section-button").text( line.name ).click(function(){
-                fabrica.screens.raw_configuration_section.enter( line );
-            });
-            new_line.find(".section-description").text( line.description );
-            _that.html.find(".section_list").append(new_line);
-        });  
-        */ 
+        // Set up button clicks
+        $(".section-button").click(function(){
+            fabrica.screens.raw_configuration_section.enter( $(this).attr('selector'), $(this).text());
+        });
 
     },
 
@@ -52,72 +38,29 @@ fabrica.add_screen('raw_configuration', new RawConfigurationScreen());
 
 var RawConfigurationSectionScreen = Screen.extend({
 
-    enter: function( section ){
+    enter: function(selector, name ){
         // Remember section in case we come back
-        if( section !== undefined ){
-            this.current_section = section;
-        }
+        if( selector !== undefined ){ this.current_section = {'name': name, 'selector': selector}; }
+
+        // Get configuration file section
+        this.config = fabrica.machine.config.get_section( this.current_section.selector ).map( this.parse_line );
 
         // Display this screen
         this.display('raw_configuration_section_screen');
 
-        // Set up screen
-        this.html.find(".section_name").text( this.current_section.name );
-
-        // Get configuration file section
-        this.lines = fabrica.machine.config.get_section( this.current_section.selector );
-
-        // Display list of options
-        this.html.find(".option_list .option_line").remove();
-        var line_template = this.html.find(".option_line");
-        var _that = this;
-        $.each( this.lines, function( index, line ){
-            var parsed = _that.parse_line(line);
-            var new_line = line_template.clone();
-            new_line.removeClass("hidden");
-            // TODO : Do the color properly with css files, I wasn't able to
-            if( parsed.is_split ){
-                new_line.find(".option_name").text( parsed.option ).css('color', '#110077');
-                new_line.find(".option_value").text( parsed.value ).css('color', '#770011');
-                new_line.find(".option_comment").text( parsed.comment ).css('color', '#888');
-                if( parsed.option.substr(0,1) == '#' ){
-                    new_line.find(".option_name").css('color', '#888');
-                    new_line.find(".option_value").css('color', '#888');
-                }
-                if( parsed.value != '' ){
-                    new_line.find("a").click(function(){
-                        fabrica.screens.raw_configuration_option.enter(parsed);
-                    });
-                }else{
-                    new_line.find(".option_button").remove();
-                    new_line.find(".option_comment").attr('colspan',2);
-                }
-            }else{
-                new_line.find(".option_name").remove();
-                new_line.find(".option_value").remove();
-                new_line.find(".option_button").remove();
-                new_line.find(".option_comment").text( parsed.comment ).css('color', '#888');
-                new_line.find(".option_comment").attr('colspan',4);
-            }
-            _that.html.find(".option_list").append(new_line);
-        });   
-
+        // Set up button clicks
+        $(".option_line .btn").click(function(){
+            fabrica.screens.raw_configuration_option.enter({option:$(this).attr('option'), value:$(this).attr('value')});
+        });
     },
 
     parse_line: function( line ){
         var splitted = line.split(/\s+/);
-        var parsed = {option: '', value:'', comment:'', is_split: true};
-        if( line.substr(0,2) == '# ' ){ parsed.comment = line; parsed.is_split = false; return parsed; }
-        if( line.substr(0,2) == '##' ){ parsed.comment = line; parsed.is_split = false; return parsed; }
-        if( line.substr(0,2) == '  ' ){ parsed.comment = line; parsed.is_split = true;  return parsed; }
-        if( line.length == 0 ){ parsed.is_split = false; return parsed; }
-        if( parsed[0] == '' ){ parsed.comment = line; return parsed; }
-        var parsed = {
-            option: splitted.shift(), 
-            value: splitted.shift(), 
-            comment: splitted.join(" "), 
-            is_split: true
-        };
+        var parsed = { option: splitted.shift(), value: splitted.shift(), comment: splitted.join(" ") };
+        parsed.starts_with_comment = ((line.substr(0,2) == '# ' || line.substr(0,2) == '##') ? true : false );
+        parsed.shifted_comment = ((parsed.value !== undefined && parsed.value.substr(0,1) == '#') ? true : false );
+        parsed.has_value = (parsed.value != '' ? true : false );
+        parsed.empty = (splitted.length == 0 ? true : false );
         return parsed;
     }
 
@@ -129,12 +72,24 @@ fabrica.add_screen('raw_configuration_section', new RawConfigurationSectionScree
 var RawConfigurationOptionScreen = Screen.extend({
 
     enter: function( line ){
+        // Remember our line
+        this.line = line 
+
+        // Get option definitions
+        var _that = this;
+        $("#option_definitions").find("div.option").each(function(index){
+            if( $(this).attr("name") == line.option ){ _that.definition = $(this); }
+        });
+        this.title = this.definition.attr('title');
+        this.description = this.definition.find("div.description").html();
+        this.type = {}; this.type[this.definition.attr('type')] = true;
+        this.unit = this.definition.attr('unit');
+        // TODO : What to do if no definition of a config option was found ( error message )
+   
         // Display this screen
         this.display('raw_configuration_option_screen');
 
-        // Set up screen
-        this.html.find(".option_name").text( line.option );
-        this.html.find(".option_current_value").text( line.value );
+   /*     // Set up screen
     
         // Get option definitions
         var definitions = $("#option_definitions");       
@@ -156,6 +111,7 @@ var RawConfigurationOptionScreen = Screen.extend({
         this.html.find(".edit_box").addClass('hidden');
         this.html.find(".edit_" + type).removeClass('hidden'); 
         this.html.find(".option-units").text(unit);
+    */
 
         // TODO : Allow to comment/uncomment line
         // TODO : Raw edit

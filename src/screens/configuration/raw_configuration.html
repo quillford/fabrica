@@ -1,5 +1,4 @@
-
-<screen id="raw_configuration_screen" class="hidden">
+<script id="raw_configuration_screen" type="text/x-handlebars-template">
   <div class="container">
     <div class="row">
         <h2> Raw configuration editing tool </h2>
@@ -7,14 +6,14 @@
         <p> Please select which section you would like to edit : </p>
         <table class="table table-striped section_list">
             <tr> <th> Section </th> <th> Description </th> </tr>
-        </table>
-        <table class="hidden">
-            <tr class="section_line"> 
-                <td>
-                    <a class="btn btn-default btn-block section-button" href="#" role="button"></a> 
-                </td> 
-                <td class="section-description"></td> 
-            </tr>
+            {{#each sections}} 
+                <tr class="section_line"> 
+                    <td>
+                        <a class="btn btn-default btn-block section-button" href="#" role="button" selector="{{this.selector}}">{{this.name}}</a> 
+                    </td> 
+                    <td class="section-description">{{this.description}}</td> 
+                </tr>
+            {{/each}}
         </table>
    </div>
   </div>
@@ -29,9 +28,9 @@
         </button>
       </div>
     </nav>
-</screen>
+</script>
 
-<screen id="raw_configuration_section_screen" class="hidden">
+<script id="raw_configuration_section_screen" type="text/x-handlebars-template">
   <div class="container">
     <div class="row">
         <h2> Editing section : <span class="section_name"></span> </h2>
@@ -39,16 +38,27 @@
         <samp>
         <table class="table table-striped option_list">
             <tr> <th> Option </th> <th> Value </th> <th> Comment </th> <th> Select </th> </tr>
+            {{#each config}}
+                <tr class="option_line"> 
+                {{#unless this.empty}}
+                    {{#if this.starts_with_comment }}
+                            <td class="option_comment" colspan=4>{{this.option}} {{this.value}} {{this.comment}}</td> 
+                    {{else}}
+                        {{#if this.shifted_comment }}
+                            <td></td> <td></td> 
+                            <td class="option_comment" colspan=2>{{this.value}} {{this.comment}}</td> 
+                        {{else}}
+                            <td class="option_name">{{this.option}}</td> 
+                            <td class="option_value">{{this.value}}</td> 
+                            <td class="option_comment">{{this.comment}}</td> 
+                            <td class="option_button"> <a class="btn btn-default btn-sm" href="#" role="button" option="{{ this.option }}" value="{{ this.value }}"> Change </a> </td>
+                        {{/if}}
+                    {{/if}}
+                {{/unless}}
+                </tr>
+            {{/each}}
         </table>
         </samp>
-        <table class="hidden">
-            <tr class="option_line"> 
-                <td class="option_name"></td> 
-                <td class="option_value"></td> 
-                <td class="option_comment"></td> 
-                <td class="option_button"> <a class="btn btn-default btn-sm" href="#" role="button"> Change </a> </td>
-            </tr>
-        </table>
     </div>
   </div>
   <br/><br/><br/>
@@ -62,58 +72,65 @@
         </button>
       </div>
     </nav>
-</screen>
+</script>
 
-<screen id="raw_configuration_option_screen" class="hidden">
+<script id="raw_configuration_option_screen" type="text/x-handlebars-template">
   <div class="container">
     <div class="row">
-        <h2> Editing option : <kbd class="option_name"></kbd> </h2>
+        <h2> Editing option : <kbd> {{line.option }}</kbd> </h2>
         <h3> Value </h3>
-        <p> This option is currently set to the value « <samp class="option_current_value"></samp> » </p>
+        <p> This option is currently set to the value « <samp> {{ line.value }} </samp> » </p>
         <h3> Description </h3>
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title"></h3>
+                <h3 class="panel-title"> {{ title }} </h3>
             </div>
             <div class="panel-body">
+                {{{ description }}}
             </div>
         </div>
         <h3> Edition </h3>
         <div class="edit_boxes">
-            <div class="edit_box edit_speed hidden">
-                <form>
-                  <div class="form-group">
-                    <label for="speed-input">Enter new speed</label>
-                    <div class="input-group">
-                        <input type="text" id="speed-input" class="form-control" placeholder="">
-                        <div class="input-group-addon option-units"></div>
-                    </div>
-                  </div>
-                </form>
-            </div>
-            <div class="edit_box edit_options hidden">
-                <label>Select an option</label>
-                <form>
-                  <div class="form-group">
-                    <div class="input-group">
-                    </div>
-                  </div>
-                </form>
-                <div class="hidden">
-                    <div class="radio"> <label> <input type="radio"> <span class="option-name"> </span> </label> </div>
+            {{#if type.speed }}
+                <div class="edit_box edit_speed">
+                    <form>
+                      <div class="form-group">
+                        <label for="speed-input">Enter new speed</label>
+                        <div class="input-group">
+                            <input type="text" id="speed-input" class="form-control" placeholder="">
+                            <div class="input-group-addon option-units"> {{ unit }} </div>
+                        </div>
+                      </div>
+                    </form>
                 </div>
-            </div>
-            <div class="edit_box edit_number hidden">
-                 <form>
-                  <div class="form-group">
-                    <label for="number-input">Enter new number</label>
-                    <div class="input-group">
-                        <input type="text" id="number-input" class="form-control" placeholder="">
-                        <div class="input-group-addon option-units"></div>
+            {{/if}}
+            {{#if type.options }}
+                <div class="edit_box edit_options">
+                    <label>Select an option</label>
+                    <form>
+                      <div class="form-group">
+                        <div class="input-group">
+                        </div>
+                      </div>
+                    </form>
+                    <div class="hidden">
+                        <div class="radio"> <label> <input type="radio"> <span class="option-name"> </span> </label> </div>
                     </div>
-                  </div>
-                </form>
-            </div>
+                </div>
+            {{/if}}
+            {{#if type.number }}
+                <div class="edit_box edit_number">
+                     <form>
+                      <div class="form-group">
+                        <label for="number-input">Enter new number</label>
+                        <div class="input-group">
+                            <input type="text" id="number-input" class="form-control" placeholder="">
+                            <div class="input-group-addon option-units"> {{ unit }} </div>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+            {{/if}}
         </div>
    </div>
   </div>
@@ -128,7 +145,7 @@
         </button>
       </div>
     </nav>
-</screen>
+</script>
 
 
 
