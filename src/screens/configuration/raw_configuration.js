@@ -3,25 +3,30 @@
 var RawConfigurationScreen = Screen.extend({
 
     enter: function(){
-        // Display this screen
-        this.display('raw_configuration_screen');
 
         // Set up sections
         this.sections = [
-            { name: "Robot",                selector: "## Robot",        description: "Basic motion" },
+            { name: "Robot",                selector: "## Robot",        description: "Basic motion" },
             { name: "System",               selector: "## System",       description: "System settings" },
             { name: "Extruder",             selector: "## Extruder",     description: "Extruder motors" }, 
-            { name: "Laser",                selector: "## Laser",        description: "Laser power control"},
-            { name: "Temperature control",  selector: "## Temperature",  description: "Temperature regulation, typically for hotends and heated beds"},
-            { name: "Switch",               selector: "## Switch",       description: "Map inputs/outputs and commands"},
+            { name: "Laser",                selector: "## Laser",        description: "Laser power control"},
+            { name: "Temperature control",  selector: "## Temperature",  description: "Temperature regulation, typically for hotends and heated beds"},
+            { name: "Switch",               selector: "## Switch",       description: "Map inputs/outputs and commands"},
             { name: "Temperature switch",   selector: "## Temperaturesw",description: "Toggle outputs at given temperatures"},
-            { name: "Endstops",             selector: "## Endstops",     description: "Homing, endstops and limit switches"},
+            { name: "Endstops",             selector: "## Endstops",     description: "Homing, endstops and limit switches"},
             { name: "Z-probe",              selector: "## Z-probe",      description: "Probing, calibration and levelling"},
             { name: "Panel",                selector: "## Panel",        description: "Panels and displays"},
             { name: "Custom menus",         selector: "## Custom menus", description: "Custom menu entries"},
             { name: "Network",              selector: "## Network",      description: "Ethernet and web interface"}
         ];
 
+        // Display this screen
+        this.display('raw_configuration_screen');
+
+
+
+
+        /*
         // Display sections in the array
         this.html.find(".section_list .section_line").remove();
         var line_template = this.html.find(".section_line");
@@ -34,7 +39,8 @@ var RawConfigurationScreen = Screen.extend({
             });
             new_line.find(".section-description").text( line.description );
             _that.html.find(".section_list").append(new_line);
-        });   
+        });  
+        */ 
 
     },
 
@@ -69,7 +75,7 @@ var RawConfigurationSectionScreen = Screen.extend({
             var parsed = _that.parse_line(line);
             var new_line = line_template.clone();
             new_line.removeClass("hidden");
-            // TODO : Do the color properly with css files, I wasn't able to
+            // TODO : Do the color properly with css files, I wasn't able to
             if( parsed.is_split ){
                 new_line.find(".option_name").text( parsed.option ).css('color', '#110077');
                 new_line.find(".option_value").text( parsed.value ).css('color', '#770011');
@@ -138,7 +144,7 @@ var RawConfigurationOptionScreen = Screen.extend({
         definitions.find("div.option").each(function(index){
             if( $(this).attr("name") == line.option ){ definition = $(this); }
         });
-        // TODO : What to do if no definition of a config option was found ( error message )
+        // TODO : What to do if no definition of a config option was found ( error message )
 
         // Display found information
         this.html.find(".panel-title").text( definition.attr('title') );
@@ -151,12 +157,14 @@ var RawConfigurationOptionScreen = Screen.extend({
         this.html.find(".edit_" + type).removeClass('hidden'); 
         this.html.find(".option-units").text(unit);
 
-        // TODO : Allow to comment/uncomment line
-        // TODO : Raw edit
-        // TODO : Assisted edit
+        // TODO : Allow to comment/uncomment line
+        // TODO : Raw edit
+        // TODO : Assisted edit
 
     }
 
 });
 fabrica.add_screen('raw_configuration_option', new RawConfigurationOptionScreen()); 
+
+
 

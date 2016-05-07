@@ -146,7 +146,7 @@ body,html      { height:100%; }
 
 <script id="network_scan_screen" type="text/x-handlebars-template">
 
-    {{#unless scanning}}
+{{#unless scanning}}
     <div class="container scan-info">
 
       <div class="text-center">
@@ -224,7 +224,7 @@ body,html      { height:100%; }
 
 
 
-<screen id="initialization_screen" class="hidden">
+<script id="initialization_screen" type="text/x-handlebars-template">
     <div class="container">
       
       <div class="text-center">
@@ -252,11 +252,11 @@ body,html      { height:100%; }
         </button>
       </div>
     </nav>
-</screen>
+</script>
 
 
 
-<screen id="welcome_screen" class="hidden">
+<script id="welcome_screen" type="text/x-handlebars-template">
     <div class="container">
       
       <div class="text-center">
@@ -304,11 +304,11 @@ body,html      { height:100%; }
       </div>
     </nav>
 
-</screen>
+</script>
 
 
 
-<screen id="main_screen" class="hidden">
+<script id="main_screen" type="text/x-handlebars-template">
 
     <fill class="fill-height">
       <div class="container">
@@ -399,9 +399,9 @@ body,html      { height:100%; }
 
 
 
-<screen id="configuration_screen" class="hidden">
+<script id="configuration_screen" type="text/x-handlebars-template">
 
-  <div class="container">
+<div class="container">
     <h2> Full machine configuration tool </h2>
     <p> Use this tool to configure all aspects of your machine in a step-by-step process. </p>
     <p> It is recommended using this wizard at least once when setting up a new machine </p>
@@ -445,11 +445,11 @@ body,html      { height:100%; }
       </div>
     </nav>
 
-</screen>
+</script>
 
 
 
-<screen id="raw_configuration_screen" class="hidden">
+<script id="raw_configuration_screen" type="text/x-handlebars-template">
   <div class="container">
     <div class="row">
         <h2> Raw configuration editing tool </h2>
@@ -479,9 +479,9 @@ body,html      { height:100%; }
         </button>
       </div>
     </nav>
-</screen>
+</script>
 
-<screen id="raw_configuration_section_screen" class="hidden">
+<script id="raw_configuration_section_screen" type="text/x-handlebars-template">
   <div class="container">
     <div class="row">
         <h2> Editing section : <span class="section_name"></span> </h2>
@@ -512,9 +512,9 @@ body,html      { height:100%; }
         </button>
       </div>
     </nav>
-</screen>
+</script>
 
-<screen id="raw_configuration_option_screen" class="hidden">
+<script id="raw_configuration_option_screen" type="text/x-handlebars-template">
   <div class="container">
     <div class="row">
         <h2> Editing option : <kbd class="option_name"></kbd> </h2>
@@ -578,7 +578,7 @@ body,html      { height:100%; }
         </button>
       </div>
     </nav>
-</screen>
+</script>
 
 
 
