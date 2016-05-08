@@ -83,63 +83,63 @@
         </div>
     </div>
 
-    <div class="option" name="arm_length" type="???" unit="???" title="Arm length">
+    <div class="option" name="arm_length" type="number" unit="millimeters" title="Arm length">
         <div class="description">
             <p>In the case of a linear_delta arm solution, this is the length of an arm from hinge to hinge</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="arm_radius" type="???" unit="???" title="Arm radius">
+    <div class="option" name="arm_radius" type="number" unit="millimeters" title="Arm radius">
         <div class="description">
             <p>In the case of a linear_delta arm solution, this is the horizontal distance from hinge to hinge when the effector is centered</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_angle" type="???" unit="???" title="Alpha angle">
+    <div class="option" name="alpha_angle" type="number" unit="degrees" title="Alpha angle">
         <div class="description">
             <p>In the case of a rotatable_cartesian arm solution, angle by which the plane is rotated</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="arm1_length" type="???" unit="???" title="Arm1 length">
+    <div class="option" name="arm1_length" type="number" unit="millimeters" title="Arm1 length">
         <div class="description">
             <p>In the case of a morgan arm solution, length of the first arm</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="arm2_length" type="???" unit="???" title="Arm2 length">
+    <div class="option" name="arm2_length" type="number" unit="millimeters" title="Arm2 length">
         <div class="description">
             <p>In the case of a morgan arm solution, length of the second arm</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="morgan_offset_x" type="???" unit="???" title="Morgan offset x">
+    <div class="option" name="morgan_offset_x" type="number" unit="millimeters" title="Morgan offset x">
         <div class="description">
             <p>In the case of a morgan arm solution, X offset</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="morgan_offset_y" type="???" unit="???" title="Morgan offset y">
+    <div class="option" name="morgan_offset_y" type="number" unit="millimeters" title="Morgan offset y">
         <div class="description">
             <p>In the case of a morgan arm solution, Y offset</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="axis_scaling_x" type="???" unit="???" title="Axis scaling x">
+    <div class="option" name="axis_scaling_x" type="number" unit="millimeters" title="Axis scaling x">
         <div class="description">
             <p>In the case of a morgan arm solution, scaling in the X axis</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="axis_scaling_y" type="???" unit="???" title="Axis scaling y">
+    <div class="option" name="axis_scaling_y" type="number" unit="millimeters" title="Axis scaling y">
         <div class="description">
             <p>In the case of a morgan arm solution, scaling in the Y axis</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
@@ -197,7 +197,7 @@
         </div>
     </div>
 
-    <div class="option" name="minimum_planner_speed" type="???" unit="???" title="Minimum planner speed">
+    <div class="option" name="minimum_planner_speed" type="number" unit="millimeters/second" title="Minimum planner speed">
         <div class="description">
             <p>Sets the minimum planner speed in millimetres/sec</p>
             <p>This is the lowest speed the planner will ever set a move to</p>
@@ -206,21 +206,21 @@
         </div>
     </div>
 
-    <div class="option" name="microseconds_per_step_pulse" type="???" unit="???" title="Microseconds per step pulse">
+    <div class="option" name="microseconds_per_step_pulse" type="number" unit="microseconds" title="Microseconds per step pulse">
         <div class="description">
             <p>Duration of step pulses to the stepper motor drivers, in microseconds</p>
             <p>If you notice that the stepper motor is skiupping sets, try increasing this value slowly, until the problem goes away.</p>
         </div>
     </div>
 
-    <div class="option" name="base_stepping_frequency" type="???" unit="???" title="Base stepping frequency">
+    <div class="option" name="base_stepping_frequency" type="number" unit="hertz" title="Base stepping frequency">
         <div class="description">
-            <p>Base frequency for stepping, higher values gives smoother movement</p>
-            <p>Do not modify unless you know exactly what you are doing, 100khz is the only officially supported value.</p>
+            <p>Base frequency for stepping, a fixed frequency all step generation is synchronized with, higher values gives smoother movement</p>
+            <p>Do not modify unless you know exactly what you are doing, 100khz ( 100000 ) is the only officially supported value.</p>
         </div>
     </div>
 
-    <div class="option" name="x_axis_max_speed" type="???" unit="???" title="X axis max speed">
+    <div class="option" name="x_axis_max_speed" type="number" unit="millimeters/minute" title="X axis max speed">
         <div class="description">
             <p>Maximum allowable speed for the X axis, in millimetres/minute</p>
             <p>Smoothie will never exceed that value for that axis.</p>
@@ -228,7 +228,7 @@
         </div>
     </div>
 
-    <div class="option" name="y_axis_max_speed" type="???" unit="???" title="Y axis max speed">
+    <div class="option" name="y_axis_max_speed" type="number" unit="millimeters/minute" title="Y axis max speed">
         <div class="description">
             <p>Maximum allowable speed for the Y axis, in millimetres/minute</p>
             <p>Smoothie will never exceed that value for that axis.</p>
@@ -236,7 +236,7 @@
         </div>
     </div>
 
-    <div class="option" name="z_axis_max_speed" type="???" unit="???" title="Z axis max speed">
+    <div class="option" name="z_axis_max_speed" type="number" unit="millimeters/minute" title="Z axis max speed">
         <div class="description">
             <p>Maximum allowable speed for the Z axis, in millimetres/minute</p>
             <p>Smoothie will never exceed that value for that axis.</p>
@@ -246,35 +246,35 @@
 
     <!-- Stepper motors -->
 
-    <div class="option" name="alpha_step_pin" type="???" unit="???" title="Alpha step pin">
+    <div class="option" name="alpha_step_pin" type="pin" unit="" title="Alpha step pin">
         <div class="description">
             <p>Pin for alpha stepper step signal</p>
             <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_dir_pin" type="???" unit="???" title="Alpha dir pin">
+    <div class="option" name="alpha_dir_pin" type="pin" unit="" title="Alpha dir pin">
         <div class="description">
             <p>Pin for alpha stepper direction</p>
             <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_en_pin" type="???" unit="???" title="Alpha en pin">
+    <div class="option" name="alpha_en_pin" type="pin" unit="" title="Alpha en pin">
         <div class="description">
             <p>Pin for alpha enable pin</p>
             <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_current" type="???" unit="???" title="Alpha current">
+    <div class="option" name="alpha_current" type="current" unit="amperes" title="Alpha current">
         <div class="description">
             <p>Alpha, or M1 stepper motor driver current, in Amperes.</p>
             <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_max_rate" type="???" unit="???" title="Alpha max rate">
+    <div class="option" name="alpha_max_rate" type="speed" unit="millimeters/minute" title="Alpha max rate">
         <div class="description">
             <p>Maximum allowable speed for this actuator ( as opposed to axis, they are the same on a cartesian machine, but not on a delta machine for example ), in millimetres/minute.</p>
             <p>Alpha usually refers to the X axis.</p>
