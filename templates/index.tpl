@@ -16,13 +16,15 @@
     <link href="static/css/fabrica.css" rel="stylesheet" inline>
     <!-- Bootstrap touchspin -->
     <link href="static/css/jquery.bootstrap-touchspin.css" rel="stylesheet" inline>
+    <!-- Bootstrap switch -->
+    <link href="static/css/bootstrap-switch.min.css" rel="stylesheet" inline>
 
   </head>
   <body>
 
     <div id="screen"> </div>
     
-    <!-- HTML files for screens -->
+    <!-- html files for screens -->
     @@include('src/screens/connection.html')
     @@include('src/screens/network_scan.html')
     @@include('src/screens/initialization.html')
@@ -33,20 +35,22 @@
     @@include('src/screens/configuration/configuration.html')
     @@include('src/screens/configuration/raw_configuration.html')
 
-    <!-- HTML files for help screens -->
+    <!-- html files for help screens -->
     @@include('src/help/screens/connection.html')
 
-    <!-- HTML files for miscalenous definitions -->
+    <!-- html files for miscalenous definitions -->
     @@include('src/screens/configuration/definitions.html')
-    <!-- HTML files for pin definitions -->
+    <!-- html files for pin definitions -->
     @@include('src/screens/configuration/pin_definitions.html')
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- jquery (necessary for bootstrap's javascript plugins) -->
     <script src="static/js/jquery-2.2.1.min.js" inline></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- include all compiled plugins (below), or include individual files as needed -->
     <script src="static/js/bootstrap.min.js" inline></script>
      <!-- Bootstrap touchspin-->
     <script src="static/js/jquery.bootstrap-touchspin.js" inline></script>
+     <!-- Bootstrap switch-->
+    <script src="static/js/bootstrap-switch.min.js" inline></script>
     <!-- Js.class allows more object-oriented javascript -->
     <script src="src/core/js.class/dist/browser/js.class.min.js" inline></script>
     <!-- HandleBar JS Template system -->
