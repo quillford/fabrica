@@ -88,11 +88,16 @@ var RawConfigurationOptionScreen = Screen.extend({
 
         // Get a list of possible options
         if( this.type.options ){
-            this.options = this.definition.find(".options .option").get().map(function(option){ return {value: $(option).attr('value'), description:$(option).text()}; });
+            this.options = this.definition.find(".options .option").get().map(function(option){ return {value: $(option).attr('value'), description:$(option).text(), active: ( $(option).attr('value') == line.value ? true : false  )}; });
         }
 
         // Display this screen
         this.display('raw_configuration_option_screen');
+
+        // If adequate, add fancy switches
+        if( this.type.options ){
+            $(".edit_options input").bootstrapSwitch(); 
+        }
 
         // If adequate, add a spinner
         if( this.type.number || this.type.speed ){
@@ -122,15 +127,31 @@ var RawConfigurationOptionScreen = Screen.extend({
     },
 
     display_pin_info: function( pin_number ){
+        
+        // Separate the pin number into it's components
+        var name, options;
+        var found = pin_number.match(/(\d+\.\d+)([\^ov\!\@]+)/);
+        if( found !== null ){
+            name = found[1]; options = found[2];
+        }else{
+            name = pin_number;
+        }
+
         // Find the pin in the definitions
-        var pin = $("#pin_definitions div[pin='" + pin_number + "']");
+        var pin = $("#pin_definitions div[pin='" + name + "']");
 
         $("#pin_information").html( this.pin_template({
                 pin: pin,
                 number: pin.attr('pin'),
                 description: pin.html(),     
                 found: pin.length,
+                pullup: ( /\^/.test(options) ? true : false ),
+                pulldown: ( /v/.test(options) ? true : false ),
+                opendrain: ( /o/.test(options) ? true : false ),
+                invert: ( /\!/.test(options) ? true : false ),
+                repeater: ( /\@/.test(options) ? true : false )
         }));
+        $(".pin-options input").bootstrapSwitch(); 
 
     }
 

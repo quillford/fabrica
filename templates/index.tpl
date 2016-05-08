@@ -16,13 +16,15 @@
     <link href="static/css/fabrica.css" rel="stylesheet">
     <!-- Bootstrap touchspin -->
     <link href="static/css/jquery.bootstrap-touchspin.css" rel="stylesheet">
+    <!-- Bootstrap switch -->
+    <link href="static/css/bootstrap-switch.min.css" rel="stylesheet">
 
   </head>
   <body>
 
     <div id="screen"> </div>
     
-    <!-- HTML files for screens -->
+    <!-- html files for screens -->
     <link href="src/screens/connection.html" rel="html">
     <link href="src/screens/network_scan.html" rel="html">
     <link href="src/screens/initialization.html" rel="html">
@@ -33,20 +35,22 @@
     <link href="src/screens/configuration/configuration.html" rel="html">
     <link href="src/screens/configuration/raw_configuration.html" rel="html">
 
-    <!-- HTML files for help screens -->
+    <!-- html files for help screens -->
     <link href="src/help/screens/connection.html" rel="html">
 
-    <!-- HTML files for miscalenous definitions -->
+    <!-- html files for miscalenous definitions -->
     <link href="src/screens/configuration/definitions.html" rel="html">
-    <!-- HTML files for pin definitions -->
+    <!-- html files for pin definitions -->
     <link href="src/screens/configuration/pin_definitions.html" rel="html">
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- jquery (necessary for bootstrap's javascript plugins) -->
     <script src="static/js/jquery-2.2.1.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- include all compiled plugins (below), or include individual files as needed -->
     <script src="static/js/bootstrap.min.js"></script>
      <!-- Bootstrap touchspin-->
     <script src="static/js/jquery.bootstrap-touchspin.js"></script>
+     <!-- Bootstrap switch-->
+    <script src="static/js/bootstrap-switch.min.js"></script>
     <!-- Js.class allows more object-oriented javascript -->
     <script src="src/core/js.class/dist/browser/js.class.min.js"></script>
     <!-- HandleBar JS Template system -->
