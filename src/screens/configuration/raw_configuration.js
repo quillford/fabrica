@@ -85,33 +85,14 @@ var RawConfigurationOptionScreen = Screen.extend({
         this.type = {}; this.type[this.definition.attr('type')] = true;
         this.unit = this.definition.attr('unit');
         // TODO : What to do if no definition of a config option was found ( error message )
-   
+
+        // Get a list of possible options
+        if( this.type.options ){
+            this.options = this.definition.find(".options .option").get().map(function(option){ return {value: $(option).attr('value'), description:$(option).text()}; });
+        }
+
         // Display this screen
         this.display('raw_configuration_option_screen');
-
-   /*     // Set up screen
-    
-        // Get option definitions
-        var definitions = $("#option_definitions");       
-
-        // Get option within definitions
-        var definition = {};
-        definitions.find("div.option").each(function(index){
-            if( $(this).attr("name") == line.option ){ definition = $(this); }
-        });
-        // TODO : What to do if no definition of a config option was found ( error message )
-
-        // Display found information
-        this.html.find(".panel-title").text( definition.attr('title') );
-        this.html.find(".panel-body" ).empty().append( definition.find("div.description").clone() );
-
-        // Display the right edition box
-        var type = definition.attr('type');
-        var unit = definition.attr('unit');
-        this.html.find(".edit_box").addClass('hidden');
-        this.html.find(".edit_" + type).removeClass('hidden'); 
-        this.html.find(".option-units").text(unit);
-    */
 
         // TODO : Allow to comment/uncomment line
         // TODO : Raw edit

@@ -110,11 +110,13 @@
                     <form>
                       <div class="form-group">
                         <div class="input-group">
+                            {{#each options}}
+                                <div class="radio"> <label> <input type="radio" value={{ this.value }}> <span class="option-name"> {{ this.description }} </span> </label> </div>
+                            {{/each}}
                         </div>
                       </div>
                     </form>
                     <div class="hidden">
-                        <div class="radio"> <label> <input type="radio"> <span class="option-name"> </span> </label> </div>
                     </div>
                 </div>
             {{/if}}
