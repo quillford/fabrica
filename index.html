@@ -99,6 +99,48 @@ body,html      { height:100%; }
 
 </style>
 
+    <!-- Bootstrap touchspin -->
+<style rel='stylesheet'>
+
+.bootstrap-touchspin .input-group-btn-vertical {
+  position: relative;
+  white-space: nowrap;
+  width: 1%;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical > .btn {
+  display: block;
+  float: none;
+  width: 100%;
+  max-width: 100%;
+  padding: 8px 10px;
+  margin-left: -1px;
+  position: relative;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-up {
+  border-radius: 0;
+  border-top-right-radius: 4px;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-down {
+  margin-top: -2px;
+  border-radius: 0;
+  border-bottom-right-radius: 4px;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical i {
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  font-size: 9px;
+  font-weight: normal;
+}
+
+</style>
+
 
   </head>
   <body>
@@ -539,13 +581,9 @@ body,html      { height:100%; }
         <h3> Value </h3>
         <p> This option is currently set to the value « <samp> {{ line.value }} </samp> » </p>
         <h3> Description </h3>
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3 class="panel-title"> {{ title }} </h3>
-            </div>
-            <div class="panel-body">
-                {{{ description }}}
-            </div>
+        <div class="bs-callout bs-callout-primary">
+            <h4> {{ title }} </h4>
+            {{{ description }}}
         </div>
         <h3> Edition </h3>
         <div class="edit_boxes">
@@ -591,6 +629,21 @@ body,html      { height:100%; }
                     </form>
                 </div>
             {{/if}}
+            {{#if type.pin }}
+                <div class="edit_box edit_pin">
+                     <form>
+                      <div class="form-group">
+                        <label for="number-input">Enter new pin number</label>
+                        <div class="input-group">
+                            <input type="text" id="pin-input" class="form-control" placeholder="">
+                            <div class="input-group-addon option-units"> pin </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div id="pin_information">
+                    </div>
+                </div>
+            {{/if}}
         </div>
    </div>
   </div>
@@ -607,7 +660,19 @@ body,html      { height:100%; }
     </nav>
 </script>
 
-
+<script id="raw_configuration_option_pin_definition" type="text/x-handlebars-template">
+    {{#if found}}
+        <div class="bs-callout bs-callout-primary">
+            <h4> Information on pin <kbd> {{ number }} </kbd> </h4>
+            <p> {{{ description }}} </p>
+        </div>
+    {{else}}
+        <div class="bs-callout bs-callout-danger">
+            <h4> 404 Pin not found </h4>
+            <p> Are you sure you spelled that right ? </p>
+        </div>
+    {{/if}}
+</script>
 
 
 
@@ -648,7 +713,7 @@ body,html      { height:100%; }
         </div>
     </div>
 
-     <div class="option" name="default_feed_rate" type="speed" unit="millimeters/minute" title="Default feed rate">
+     <div class="option" name="default_feed_rate" type="speed" unit="millimeters/minute" title="Default feed rate" values="5,10,20,50,100,200,500,1000,2000,5000,10000,20000,50000">
         <div class="description">
             <p> The feed rate is the speed for "feed" movements ( G1/G2/G3 ) during which the tool is active, as opposed to "seek" movements ( G0 ) during which the tool is inactive </p>
             <p> This value is the default speed, that will be used for feed moves at boot time, until a speed is actually specificed by a <kbd>F</kbd> parameter </p>
@@ -725,63 +790,63 @@ body,html      { height:100%; }
         </div>
     </div>
 
-    <div class="option" name="arm_length" type="???" unit="???" title="Arm length">
+    <div class="option" name="arm_length" type="number" unit="millimeters" title="Arm length">
         <div class="description">
             <p>In the case of a linear_delta arm solution, this is the length of an arm from hinge to hinge</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="arm_radius" type="???" unit="???" title="Arm radius">
+    <div class="option" name="arm_radius" type="number" unit="millimeters" title="Arm radius">
         <div class="description">
             <p>In the case of a linear_delta arm solution, this is the horizontal distance from hinge to hinge when the effector is centered</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_angle" type="???" unit="???" title="Alpha angle">
+    <div class="option" name="alpha_angle" type="number" unit="degrees" title="Alpha angle">
         <div class="description">
             <p>In the case of a rotatable_cartesian arm solution, angle by which the plane is rotated</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="arm1_length" type="???" unit="???" title="Arm1 length">
+    <div class="option" name="arm1_length" type="number" unit="millimeters" title="Arm1 length">
         <div class="description">
             <p>In the case of a morgan arm solution, length of the first arm</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="arm2_length" type="???" unit="???" title="Arm2 length">
+    <div class="option" name="arm2_length" type="number" unit="millimeters" title="Arm2 length">
         <div class="description">
             <p>In the case of a morgan arm solution, length of the second arm</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="morgan_offset_x" type="???" unit="???" title="Morgan offset x">
+    <div class="option" name="morgan_offset_x" type="number" unit="millimeters" title="Morgan offset x">
         <div class="description">
             <p>In the case of a morgan arm solution, X offset</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="morgan_offset_y" type="???" unit="???" title="Morgan offset y">
+    <div class="option" name="morgan_offset_y" type="number" unit="millimeters" title="Morgan offset y">
         <div class="description">
             <p>In the case of a morgan arm solution, Y offset</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="axis_scaling_x" type="???" unit="???" title="Axis scaling x">
+    <div class="option" name="axis_scaling_x" type="number" unit="millimeters" title="Axis scaling x">
         <div class="description">
             <p>In the case of a morgan arm solution, scaling in the X axis</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
         </div>
     </div>
 
-    <div class="option" name="axis_scaling_y" type="???" unit="???" title="Axis scaling y">
+    <div class="option" name="axis_scaling_y" type="number" unit="millimeters" title="Axis scaling y">
         <div class="description">
             <p>In the case of a morgan arm solution, scaling in the Y axis</p>
             <p>Only change this value if you know for sure that this is the type of machine you have.</p>
@@ -839,7 +904,7 @@ body,html      { height:100%; }
         </div>
     </div>
 
-    <div class="option" name="minimum_planner_speed" type="???" unit="???" title="Minimum planner speed">
+    <div class="option" name="minimum_planner_speed" type="number" unit="millimeters/second" title="Minimum planner speed">
         <div class="description">
             <p>Sets the minimum planner speed in millimetres/sec</p>
             <p>This is the lowest speed the planner will ever set a move to</p>
@@ -848,21 +913,21 @@ body,html      { height:100%; }
         </div>
     </div>
 
-    <div class="option" name="microseconds_per_step_pulse" type="???" unit="???" title="Microseconds per step pulse">
+    <div class="option" name="microseconds_per_step_pulse" type="number" unit="microseconds" title="Microseconds per step pulse">
         <div class="description">
             <p>Duration of step pulses to the stepper motor drivers, in microseconds</p>
             <p>If you notice that the stepper motor is skiupping sets, try increasing this value slowly, until the problem goes away.</p>
         </div>
     </div>
 
-    <div class="option" name="base_stepping_frequency" type="???" unit="???" title="Base stepping frequency">
+    <div class="option" name="base_stepping_frequency" type="number" unit="hertz" title="Base stepping frequency">
         <div class="description">
-            <p>Base frequency for stepping, higher values gives smoother movement</p>
-            <p>Do not modify unless you know exactly what you are doing, 100khz is the only officially supported value.</p>
+            <p>Base frequency for stepping, a fixed frequency all step generation is synchronized with, higher values gives smoother movement</p>
+            <p>Do not modify unless you know exactly what you are doing, 100khz ( 100000 ) is the only officially supported value.</p>
         </div>
     </div>
 
-    <div class="option" name="x_axis_max_speed" type="???" unit="???" title="X axis max speed">
+    <div class="option" name="x_axis_max_speed" type="number" unit="millimeters/minute" title="X axis max speed">
         <div class="description">
             <p>Maximum allowable speed for the X axis, in millimetres/minute</p>
             <p>Smoothie will never exceed that value for that axis.</p>
@@ -870,7 +935,7 @@ body,html      { height:100%; }
         </div>
     </div>
 
-    <div class="option" name="y_axis_max_speed" type="???" unit="???" title="Y axis max speed">
+    <div class="option" name="y_axis_max_speed" type="number" unit="millimeters/minute" title="Y axis max speed">
         <div class="description">
             <p>Maximum allowable speed for the Y axis, in millimetres/minute</p>
             <p>Smoothie will never exceed that value for that axis.</p>
@@ -878,7 +943,7 @@ body,html      { height:100%; }
         </div>
     </div>
 
-    <div class="option" name="z_axis_max_speed" type="???" unit="???" title="Z axis max speed">
+    <div class="option" name="z_axis_max_speed" type="number" unit="millimeters/minute" title="Z axis max speed">
         <div class="description">
             <p>Maximum allowable speed for the Z axis, in millimetres/minute</p>
             <p>Smoothie will never exceed that value for that axis.</p>
@@ -888,35 +953,36 @@ body,html      { height:100%; }
 
     <!-- Stepper motors -->
 
-    <div class="option" name="alpha_step_pin" type="???" unit="???" title="Alpha step pin">
+    <div class="option" name="alpha_step_pin" type="pin" unit="" title="Alpha step pin">
         <div class="description">
             <p>Pin for alpha stepper step signal</p>
             <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_dir_pin" type="???" unit="???" title="Alpha dir pin">
+    <div class="option" name="alpha_dir_pin" type="pin" unit="" title="Alpha dir pin">
         <div class="description">
             <p>Pin for alpha stepper direction</p>
             <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_en_pin" type="???" unit="???" title="Alpha en pin">
+    <div class="option" name="alpha_en_pin" type="pin" unit="" title="Alpha en pin">
         <div class="description">
             <p>Pin for alpha enable pin</p>
             <p>Alpha usually refers to the X axis.</p>
+            <p>When a driver is disabled, the motor has no holding torque and can be moved freely by hand</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_current" type="???" unit="???" title="Alpha current">
+    <div class="option" name="alpha_current" type="current" unit="amperes" title="Alpha current">
         <div class="description">
             <p>Alpha, or M1 stepper motor driver current, in Amperes.</p>
             <p>Alpha usually refers to the X axis.</p>
         </div>
     </div>
 
-    <div class="option" name="alpha_max_rate" type="???" unit="???" title="Alpha max rate">
+    <div class="option" name="alpha_max_rate" type="speed" unit="millimeters/minute" title="Alpha max rate">
         <div class="description">
             <p>Maximum allowable speed for this actuator ( as opposed to axis, they are the same on a cartesian machine, but not on a delta machine for example ), in millimetres/minute.</p>
             <p>Alpha usually refers to the X axis.</p>
@@ -941,6 +1007,7 @@ body,html      { height:100%; }
         <div class="description">
             <p>Pin for beta enable</p>
             <p>Beta usually refers to the Y axis.</p>
+            <p>When a driver is disabled, the motor has no holding torque and can be moved freely by hand</p>
         </div>
     </div>
 
@@ -976,6 +1043,7 @@ body,html      { height:100%; }
         <div class="description">
             <p>Pin for gamma enable</p>
             <p>Gamma usually refers to the Z axis.</p>
+            <p>When a driver is disabled, the motor has no holding torque and can be moved freely by hand</p>
         </div>
     </div>
 
@@ -1237,6 +1305,7 @@ body,html      { height:100%; }
         <div class="description">
             <p>Pin for extruder stepper motor driver's enable signal</p>
             <p>This is the pin the controller uses to tell the stepper motor to turn on or off.</p>
+            <p>When a driver is disabled, the motor has no holding torque and can be moved freely by hand</p>
         </div>
     </div>
 
@@ -2490,6 +2559,66 @@ body,html      { height:100%; }
 </div>
 
 
+    <!-- HTML files for pin definitions -->
+
+<div class="hidden" id="pin_definitions">
+    <div class="pin" pin="" pwm="false" interrupt="true" unused="false" adc="false"> <p> </p> <p> </p> </div>
+    <div class="pin" pin="0.0" pwm="false" interrupt="true" unused="false" adc="false"> <p> I2C-1 SDA. </p><p> Used to communicate with the on-board I2C bus, used to control the digipots that control the current setting of the stepper motor drivers. Do not use this pin as a free GPIO as it would disturb the stepper drivers. </p> </div>
+    <div class="pin" pin="0.1" pwm="false" interrupt="true" unused="false" adc="false"> <p> I2C-1 SCL. </p><p> Used to communicate with the on-board I2C bus, used to control the digipots that control the current setting of the stepper motor drivers. Do not use this pin as a free GPIO as it would disturb the stepper drivers. </p> </div>
+    <div class="pin" pin="0.2" pwm="false" interrupt="true" unused="false" adc="false"> <p> UART0 TX ( transmit ) pin. </p><p> Connecting to this UART port ( for example using a FTDI cable ) allows you to send commands and receive answers the same way you would do using the USB/Serial port or the Ethernet/Telnet post. </p><p> Smoothieboard also sends debug information to this port. It can also be used to <a href="http://smoothieware.org/flashing-the-bootloader"> flash the bootloader </a> and to do <a href="http://smoothieware.org/mri-debugging"> MRI Debugging </a> via GDB </p> </div>
+    <div class="pin" pin="0.3" pwm="false" interrupt="true" unused="false" adc="false"> <p> UART0 RX ( receive ) pin. </p><p> Connecting to this UART port ( for example using a FTDI cable ) allows you to send commands and receive answers the same way you would do using the USB/Serial port or the Ethernet/Telnet post. </p><p> Smoothieboard also sends debug information to this port. It can also be used to <a href="http://smoothieware.org/flashing-the-bootloader"> flash the bootloader </a> and to do <a href="http://smoothieware.org/mri-debugging"> MRI Debugging </a> via GDB </p> </div>
+    <div class="pin" pin="0.4" pwm="false" interrupt="true" unused="false" adc="false"> <p> Alpha ( M1 ) motor driver enable pin (<kbd>alpha_en_pin</kbd>'s default value ). </p> <p> Used to enable or disable the stepper motor driver. When the driver is disabled, the motor has no holding torque and can be moved freely. The driver must be enabled for the motors to rotate. </p> </div>
+    <div class="pin" pin="0.5" pwm="false" interrupt="true" unused="false" adc="false"> <p> Alpha ( M1 ) motor driver direction pin (<kbd>alpha_dir_pin</kbd>'s default value ). </p> <p> Used to signal the stepper motor driver which direction to rotate. </p> </div>
+    <div class="pin" pin="0.6" pwm="false" interrupt="true" unused="false" adc="false"> <p> SPI1 ( SD card SPI port ) SSEL ( selector ) pin. </p><p> Smoothieboard uses the SPI port 1 to talk to the on-board SD-card, and this is one of the pins used to do so. This selector pin is used to tell the SD card it is the peripheral on this port currently being talked to. Other peripherals could be added to the same port if they have their own, separate SSEL pin. </p> </div>
+    <div class="pin" pin="0.7" pwm="false" interrupt="true" unused="false" adc="false"> <p> SPI1 ( SD card SPI port ) SCK ( clock ) pin. </p><p> Smoothieboard uses the SPI port 1 to talk to the on-board SD-card, and this is one of the pins used to do so. This clock pin is used to synchronize communications. </p> </div>
+    <div class="pin" pin="0.8" pwm="false" interrupt="true" unused="false" adc="false"> <p> SPI1 ( SD card SPI port ) MISO ( master in, slave out ) pin. </p><p> Smoothieboard uses the SPI port 1 to talk to the on-board SD-card, and this is one of the pins used to do so. This MISO pin is used to transmit data from the SD card ( slave out ) to the Smoothieboard ( master in ). </p> </div>
+    <div class="pin" pin="0.9" pwm="false" interrupt="true" unused="false" adc="false"> <p> SPI1 ( SD card SPI port ) MOSI ( master out, slave in ) pin. </p><p> Smoothieboard uses the SPI port 1 to talk to the on-board SD-card, and this is one of the pins used to do so. This MOSI pin is used to transmit data from the Smoothieboard ( master out ) to the SD card ( slave in ). </p> </div>
+    <div class="pin" pin="0.10" pwm="false" interrupt="true" unused="false" adc="false"> <p> Beta ( M2 ) motor driver enable pin (<kbd>beta_en_pin</kbd>'s default value ). </p> <p> Used to enable or disable the stepper motor driver. When the driver is disabled, the motor has no holding torque and can be moved freely. The driver must be enabled for the motors to rotate. </p> </div>
+    <div class="pin" pin="0.11" pwm="false" interrupt="true" unused="false" adc="false"> <p> Beta ( M2 ) motor driver direction pin (<kbd>beta_dir_pin</kbd>'s default value ). </p> <p> Used to signal the stepper motor driver which direction to rotate. </p> </div>
+    <div class="pin" pin="0.15" pwm="false" interrupt="true" unused="false" adc="false"> <p> SPI0 ( User SPI port ) SCK ( clock ) pin. </p><p> The user SPI port allows users to connect SPI peripherals ( like LCD screens and thermocouple boards ). This clock pin is used to synchronize communications. </p>  <p> If the User SPI port is not used to talk to a SPI peripheral, this pin can be used as a free GPIO pin </p> </div>
+    <div class="pin" pin="0.16" pwm="false" interrupt="true" unused="false" adc="false"> <p> SPI0 ( User SPI port ) SSEL ( selector ) pin. </p><p> The user SPI port allows users to connect SPI peripherals ( like LCD screens and thermocouple boards ). This selector pin is used to tell a given peripheral it is the peripheral on this port currently being talked to. Other peripherals could be added to the same port if they have their own, separate SSEL pin. </p>  <p> If the User SPI port is not used to talk to a SPI peripheral, this pin can be used as a free GPIO pin </p> </div>
+    <div class="pin" pin="0.17" pwm="false" interrupt="true" unused="false" adc="false"> <p> SPI0 ( User SPI port ) MISO ( master in, slave out ) pin. </p><p> Smoothieboard uses the SPI port 0 to talk to user-connected peripherals, and this is one of the pins used to do so. This MISO pin is used to transmit data from the peripheral ( slave out ) to the Smoothieboard ( master in ). </p>  <p> If the User SPI port is not used to talk to a SPI peripheral, this pin can be used as a free GPIO pin </p> </div>
+    <div class="pin" pin="0.18" pwm="false" interrupt="true" unused="false" adc="false"> <p> SPI0 ( User SPI port ) MOSI ( master out, slave in ) pin. </p><p> Smoothieboard uses the SPI port 0 to talk to user-connected peripherals, and this is one of the pins used to do so. This MOSI pin is used to transmit data from the Smoothieboard ( master out ) to the peripheral ( slave in ). </p> <p> If the User SPI port is not used to talk to a SPI peripheral, this pin can be used as a free GPIO pin </p> </div>
+    <div class="pin" pin="0.19" pwm="false" interrupt="true" unused="false" adc="false"> <p> Gamma ( M3 ) motor driver enable pin (<kbd>gamma_en_pin</kbd>'s default value ). </p> <p> Used to enable or disable the stepper motor driver. When the driver is disabled, the motor has no holding torque and can be moved freely. The driver must be enabled for the motors to rotate. </p> </div>
+    <div class="pin" pin="0.20" pwm="false" interrupt="true" unused="false" adc="false"> <p> Gamma ( M3 ) motor driver direction pin (<kbd>gamma_dir_pin</kbd>'s default value ). </p> <p> Used to signal the stepper motor driver which direction to rotate. </p> </div>
+    <div class="pin" pin="0.21" pwm="false" interrupt="true" unused="false" adc="false"> <p> Delta ( M4 ) motor driver enable pin ( typically M4 is used for the first extruder ). </p> <p> Used to enable or disable the stepper motor driver. When the driver is disabled, the motor has no holding torque and can be moved freely. The driver must be enabled for the motors to rotate. </p>  <p> Is not used by any stepper drivers on the 3X boards and can therefore be used as a free GPIO on those boards, but not on the 5X and 4X </p> </div>
+    <div class="pin" pin="0.22" pwm="false" interrupt="true" unused="false" adc="false"> <p> Delta ( M4 ) motor driver direction pin ( typically M4 is used for the first extruder ). </p> <p> Used to signal the stepper motor driver which direction to rotate. </p>  <p> Is not used by any stepper drivers on the 3X boards and can therefore be used as a free GPIO on those boards, but not on the 4X and 5X </p> <pin    <div class="pin" pin="0.23" pwm="false" interrupt="true" unused="false" adc="true"> <p> T0 ADC ( Analog to Digital Converter ) input. Typically used to read the resistance, and therefore the temperature, of thermistors.</p> <p> T0 is typically used to read the first extruder's hotend's temperature. </p> </div>
+    <div class="pin" pin="0.24" pwm="false" interrupt="true" unused="false" adc="true"> <p> T1 ADC ( Analog to Digital Converter ) input. Typically used to read the resistance, and therefore the temperature, of thermistors.</p> <p> T1 is typically used to read the heated bed temperature. </p> </div>
+    <div class="pin" pin="0.25" pwm="false" interrupt="true" unused="false" adc="true"> <p> T2 ADC ( Analog to Digital Converter ) input. Typically used to read the resistance, and therefore the temperature, of thermistors.</p> <p> T2 is typically used to read the second extruder's hotend's temperature. </p> </div>
+    <div class="pin" pin="0.26" pwm="false" interrupt="true" unused="false" adc="true"> <p> T3 ADC ( Analog to Digital Converter ) input. Typically used to read the resistance, and therefore the temperature, of thermistors.</p> <p> T3 is typically used to read the third extruder's hotend's temperature. </p> </div>
+    <div class="pin" pin="0.27" pwm="false" interrupt="true" unused="false" adc="false"> <p> I2C-0 SDA. </p><p> This I2C bus is left un-used. It can be used to communicate with I2C peripherals ( note however, that SPI is mostly designed to be used for peripherals on the same PCB, using wires will likely result in communication errors ). </p><p> The pin can also be used as a free GPIO pin. Note that because it is used in a I2C bus, the pin has a 2.2Kohm pull-up resistor. </div>
+    <div class="pin" pin="0.28" pwm="false" interrupt="true" unused="false" adc="false"> <p> I2C-0 SCL. </p><p> This I2C bus is left un-used. It can be used to communicate with I2C peripherals ( note however, that SPI is mostly designed to be used for peripherals on the same PCB, using wires will likely result in communication errors ). </p><p> The pin can also be used as a free GPIO pin. Note that because it is used in a I2C bus, the pin has a 2.2Kohm pull-up resistor. </div>
+    <div class="pin" pin="1.18" pwm="false" interrupt="true" unused="false" adc="false"> <p> LED1, first LED in the bar of 4 status LEDs. Used by the firmware to report it's current status. Turns ON if the firmware booted correctly.</p> <p> If the config value <kbd> leds_disable </kbd> is set to <kbd> true </kbd>, then that pin is unused by the firmware and can be used as a free GPIO. </p> </div>
+    <div class="pin" pin="1.19" pwm="false" interrupt="true" unused="false" adc="false"> <p> LED2, second LED in the bar of 4 status LEDs. Used by the firmware to report it's current status. Blinks if the firmware is currently executing.</p> <p> If the config value <kbd> leds_disable </kbd> is set to <kbd> true </kbd>, then that pin is unused by the firmware and can be used as a free GPIO. </p> </div>
+    <div class="pin" pin="1.20" pwm="false" interrupt="true" unused="false" adc="false"> <p> LED3, third LED in the bar of 4 status LEDs. Used by the firmware to report it's current status. Blinks if the firmware is currently executing.</p> <p> If the config value <kbd> leds_disable </kbd> is set to <kbd> true </kbd>, then that pin is unused by the firmware and can be used as a free GPIO. </p> </div>
+    <div class="pin" pin="1.21" pwm="false" interrupt="true" unused="false" adc="false"> <p> LED4, fourth LED in the bar of 4 status LEDs. Used by the firmware to report it's current status. Turns ON if the firmware was able to access the SD card.</p> <p> If the config value <kbd> leds_disable </kbd> is set to <kbd> true </kbd>, then that pin is unused by the firmware and can be used as a free GPIO. </p> </div>
+    <div class="pin" pin="1.22" pwm="false" interrupt="true" unused="false" adc="false"> <p> 3rd small mosfet control pin. This pin controls whether the third small mosfet is turned on or off.</p> <p> Because this mosfet is not present on the 4X and 3X Smoothieboards, this pin can safely be used as a free GPIO on those boards, but not on the 5X boards. </p> </div>
+    <div class="pin" pin="1.23" pwm="false" interrupt="true" unused="false" adc="false"> <p> 3rd large mosfet control pin. This pin controls whether the third large mosfet is turned on or off.</p> <p> Because this mosfet is not present on the 4X and 3X Smoothieboards, this pin can safely be used as a free GPIO on those boards, but not on the 5X boards. </p> </div>
+    <div class="pin" pin="1.24" pwm="false" interrupt="true" unused="false" adc="false"> <p> XMIN endstop input. Reads the endstop status of the "minimum" endstop for the X ( or alpha ) axis. </p> <p> Typically the default pin for the <kbd> alpha_min_pin </kbd> configuration option. </p> <p> Because this is an endstop input, it is equipped with a pull-up resistor, and a capacitor to reduce noise. It is optimally designed to read "Normally Closed" (NC) endstops or switche. </p> </div>
+    <div class="pin" pin="1.25" pwm="false" interrupt="true" unused="false" adc="false"> <p> XMAX endstop input. Reads the endstop status of the "maximum" endstop for the X ( or alpha ) axis. </p> <p> Typically the default pin for the <kbd> alpha_max_pin </kbd> configuration option. </p> <p> Because this is an endstop input, it is equipped with a pull-up resistor, and a capacitor to reduce noise. It is optimally designed to read "Normally Closed" (NC) endstops or switche. </p> </div>
+    <div class="pin" pin="1.26" pwm="false" interrupt="true" unused="false" adc="false"> <p> YMIN endstop input. Reads the endstop status of the "minimum" endstop for the Y ( or beta ) axis. </p> <p> Typically the default pin for the <kbd> beta_min_pin </kbd> configuration option. </p> <p> Because this is an endstop input, it is equipped with a pull-up resistor, and a capacitor to reduce noise. It is optimally designed to read "Normally Closed" (NC) endstops or switche. </p> </div>
+    <div class="pin" pin="1.27" pwm="false" interrupt="true" unused="false" adc="false"> <p> YMAX endstop input. Reads the endstop status of the "maximum" endstop for the Y ( or beta ) axis. </p> <p> Typically the default pin for the <kbd> beta_max_pin </kbd> configuration option. </p> <p> Because this is an endstop input, it is equipped with a pull-up resistor, and a capacitor to reduce noise. It is optimally designed to read "Normally Closed" (NC) endstops or switche. </p> </div>
+    <div class="pin" pin="1.28" pwm="false" interrupt="true" unused="false" adc="false"> <p> ZMIN endstop input. Reads the endstop status of the "minimum" endstop for the Z ( or gamma ) axis. </p> <p> Typically the default pin for the <kbd> gamma_min_pin </kbd> configuration option. </p> <p> Because this is an endstop input, it is equipped with a pull-up resistor, and a capacitor to reduce noise. It is optimally designed to read "Normally Closed" (NC) endstops or switche. </p> </div>
+    <div class="pin" pin="1.29" pwm="false" interrupt="true" unused="false" adc="false"> <p> ZMAX endstop input. Reads the endstop status of the "maximum" endstop for the Z ( or gamma ) axis. </p> <p> Typically the default pin for the <kbd> gamma_max_pin </kbd> configuration option. </p> <p> Because this is an endstop input, it is equipped with a pull-up resistor, and a capacitor to reduce noise. It is optimally designed to read "Normally Closed" (NC) endstops or switche. </p> </div>
+    <div class="pin" pin="1.30" pwm="false" interrupt="true" unused="false" adc="false"> <p> Free GPIO pin. Can be used by the user for anything. </p> <p> If a RRD GLCD is connected, this is used to control it's click button. </p> </div>
+    <div class="pin" pin="1.31" pwm="false" interrupt="true" unused="false" adc="false"> <p> Free GPIO pin. Can be used by the user for anything. </p> <p> If a RRD GLCD is connected, this is used to control it's buzzer. </p> </div>
+    <div class="pin" pin="2.0" pwm="false" interrupt="true" unused="false" adc="false"> <p> Alpha ( M1 ) motor driver step pin (<kbd>alpha_step_pin</kbd>'s default value ). </p> <p> Used to signal the stepper motor driver to move one microstep further. </p> </div>
+    <div class="pin" pin="2.1" pwm="false" interrupt="true" unused="false" adc="false"> <p> Beta ( M2 ) motor driver step pin (<kbd>beta_step_pin</kbd>'s default value ). </p> <p> Used to signal the stepper motor driver to move one microstep further. </p> </div>
+    <div class="pin" pin="2.2" pwm="false" interrupt="true" unused="false" adc="false"> <p> Gamma ( M3 ) motor driver step pin (<kbd>gamma_step_pin</kbd>'s default value ). </p> <p> Used to signal the stepper motor driver to move one microstep further. </p> </div>
+    <div class="pin" pin="2.3" pwm="false" interrupt="true" unused="false" adc="false"> <p> Delta ( M4 ) motor driver step pin ( typically the step pin for the first extruder module ). </p> <p> Used to signal the stepper motor driver to move one microstep further. </p>  <p> Is not used by any stepper drivers on the 3X boards and can therefore be used as a free GPIO on those boards, but not on the 5X and 4X </p> </div>
+    <div class="pin" pin="2.4" pwm="false" interrupt="true" unused="false" adc="false"> <p> First small mosfet control pin. This pin controls whether the first small mosfet is turned on or off.</p> <p> This mosfet is present on all board types, and is therefore always busy controlling the mosfet, and can not be used as a free GPIO pin. </p> </div>
+    <div class="pin" pin="2.5" pwm="false" interrupt="true" unused="false" adc="false"> <p> Second large mosfet control pin. This pin controls whether the third large mosfet is turned on or off.</p> <p> Because this mosfet is not present on the 3X Smoothieboards, this pin can safely be used as a free GPIO on those boards, but not on the 4X and 5X boards. </p> </div>
+    <div class="pin" pin="2.6" pwm="false" interrupt="true" unused="false" adc="false"> <p> Second small mosfet control pin. This pin controls whether the second small mosfet is turned on or off.</p> <p> This mosfet is present on all board types, and is therefore always busy controlling the mosfet, and can not be used as a free GPIO pin. </p> </div>
+    <div class="pin" pin="2.7" pwm="false" interrupt="true" unused="false" adc="false"> <p> First large mosfet control pin. This pin controls whether the first large mosfet is turned on or off.</p> <p> Because this mosfet is not present on the 3X Smoothieboards, this pin can safely be used as a free GPIO on those boards, but not on the 4X and 5X boards. </p> </div>
+    <div class="pin" pin="2.8" pwm="false" interrupt="true" unused="false" adc="false"> <p> Epsion ( M5 ) motor driver step pin ( typically the step pin for the second extruder module ). </p> <p> Used to signal the stepper motor driver to move one microstep further. </p> <p> Is not used by any stepper drivers on the 4X and 3X boards and can therefore be used as a free GPIO on those boards, but not on the 5X </p> </div>
+    <div class="pin" pin="2.11" pwm="false" interrupt="true" unused="false" adc="false"> <p> Free GPIO pin. Can be used by the user for anything. </p> <p> If a RRD GLCD is connected, this is used to control it's pause/kill/back pin. </p> </div>
+    <div class="pin" pin="2.12" pwm="false" interrupt="true" unused="false" adc="false"> <p> Free GPIO pin. Can be used by the user for anything. </p> <p> Typically used as the kill button </p> </div>
+    <div class="pin" pin="2.13" pwm="false" interrupt="true" unused="false" adc="false"> <p> Epsilon ( M5 ) motor driver direction pin ( typically the second extruder's direction pin ). </p> <p> Used to signal the stepper motor driver which direction to rotate. </p> <p> Because there is no M5 driver on the 3X and 4X boards, on those this pin can be used as a free GPIO pin. </p> </div>
+    <div class="pin" pin="3.25" pwm="false" interrupt="true" unused="false" adc="false"> <p> Free GPIO pin. Can be used by the user for anything. </p> <p> If a RRD GLCD is connected, this is used to connect it's encoder. </p> </div>
+    <div class="pin" pin="3.26" pwm="false" interrupt="true" unused="false" adc="false"> <p> Free GPIO pin. Can be used by the user for anything. </p> <p> If a RRD GLCD is connected, this is used to connect it's encoder. </p> </div>
+</div>
+
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script type='text/javascript'>
@@ -2509,6 +2638,700 @@ e=n.propHooks[b]),void 0!==c?e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:a[b]=c:e&
  */
 if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires jQuery");+function(a){"use strict";var b=a.fn.jquery.split(" ")[0].split(".");if(b[0]<2&&b[1]<9||1==b[0]&&9==b[1]&&b[2]<1||b[0]>2)throw new Error("Bootstrap's JavaScript requires jQuery version 1.9.1 or higher, but lower than version 3")}(jQuery),+function(a){"use strict";function b(){var a=document.createElement("bootstrap"),b={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"};for(var c in b)if(void 0!==a.style[c])return{end:b[c]};return!1}a.fn.emulateTransitionEnd=function(b){var c=!1,d=this;a(this).one("bsTransitionEnd",function(){c=!0});var e=function(){c||a(d).trigger(a.support.transition.end)};return setTimeout(e,b),this},a(function(){a.support.transition=b(),a.support.transition&&(a.event.special.bsTransitionEnd={bindType:a.support.transition.end,delegateType:a.support.transition.end,handle:function(b){return a(b.target).is(this)?b.handleObj.handler.apply(this,arguments):void 0}})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var c=a(this),e=c.data("bs.alert");e||c.data("bs.alert",e=new d(this)),"string"==typeof b&&e[b].call(c)})}var c='[data-dismiss="alert"]',d=function(b){a(b).on("click",c,this.close)};d.VERSION="3.3.6",d.TRANSITION_DURATION=150,d.prototype.close=function(b){function c(){g.detach().trigger("closed.bs.alert").remove()}var e=a(this),f=e.attr("data-target");f||(f=e.attr("href"),f=f&&f.replace(/.*(?=#[^\s]*$)/,""));var g=a(f);b&&b.preventDefault(),g.length||(g=e.closest(".alert")),g.trigger(b=a.Event("close.bs.alert")),b.isDefaultPrevented()||(g.removeClass("in"),a.support.transition&&g.hasClass("fade")?g.one("bsTransitionEnd",c).emulateTransitionEnd(d.TRANSITION_DURATION):c())};var e=a.fn.alert;a.fn.alert=b,a.fn.alert.Constructor=d,a.fn.alert.noConflict=function(){return a.fn.alert=e,this},a(document).on("click.bs.alert.data-api",c,d.prototype.close)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.button"),f="object"==typeof b&&b;e||d.data("bs.button",e=new c(this,f)),"toggle"==b?e.toggle():b&&e.setState(b)})}var c=function(b,d){this.$element=a(b),this.options=a.extend({},c.DEFAULTS,d),this.isLoading=!1};c.VERSION="3.3.6",c.DEFAULTS={loadingText:"loading..."},c.prototype.setState=function(b){var c="disabled",d=this.$element,e=d.is("input")?"val":"html",f=d.data();b+="Text",null==f.resetText&&d.data("resetText",d[e]()),setTimeout(a.proxy(function(){d[e](null==f[b]?this.options[b]:f[b]),"loadingText"==b?(this.isLoading=!0,d.addClass(c).attr(c,c)):this.isLoading&&(this.isLoading=!1,d.removeClass(c).removeAttr(c))},this),0)},c.prototype.toggle=function(){var a=!0,b=this.$element.closest('[data-toggle="buttons"]');if(b.length){var c=this.$element.find("input");"radio"==c.prop("type")?(c.prop("checked")&&(a=!1),b.find(".active").removeClass("active"),this.$element.addClass("active")):"checkbox"==c.prop("type")&&(c.prop("checked")!==this.$element.hasClass("active")&&(a=!1),this.$element.toggleClass("active")),c.prop("checked",this.$element.hasClass("active")),a&&c.trigger("change")}else this.$element.attr("aria-pressed",!this.$element.hasClass("active")),this.$element.toggleClass("active")};var d=a.fn.button;a.fn.button=b,a.fn.button.Constructor=c,a.fn.button.noConflict=function(){return a.fn.button=d,this},a(document).on("click.bs.button.data-api",'[data-toggle^="button"]',function(c){var d=a(c.target);d.hasClass("btn")||(d=d.closest(".btn")),b.call(d,"toggle"),a(c.target).is('input[type="radio"]')||a(c.target).is('input[type="checkbox"]')||c.preventDefault()}).on("focus.bs.button.data-api blur.bs.button.data-api",'[data-toggle^="button"]',function(b){a(b.target).closest(".btn").toggleClass("focus",/^focus(in)?$/.test(b.type))})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.carousel"),f=a.extend({},c.DEFAULTS,d.data(),"object"==typeof b&&b),g="string"==typeof b?b:f.slide;e||d.data("bs.carousel",e=new c(this,f)),"number"==typeof b?e.to(b):g?e[g]():f.interval&&e.pause().cycle()})}var c=function(b,c){this.$element=a(b),this.$indicators=this.$element.find(".carousel-indicators"),this.options=c,this.paused=null,this.sliding=null,this.interval=null,this.$active=null,this.$items=null,this.options.keyboard&&this.$element.on("keydown.bs.carousel",a.proxy(this.keydown,this)),"hover"==this.options.pause&&!("ontouchstart"in document.documentElement)&&this.$element.on("mouseenter.bs.carousel",a.proxy(this.pause,this)).on("mouseleave.bs.carousel",a.proxy(this.cycle,this))};c.VERSION="3.3.6",c.TRANSITION_DURATION=600,c.DEFAULTS={interval:5e3,pause:"hover",wrap:!0,keyboard:!0},c.prototype.keydown=function(a){if(!/input|textarea/i.test(a.target.tagName)){switch(a.which){case 37:this.prev();break;case 39:this.next();break;default:return}a.preventDefault()}},c.prototype.cycle=function(b){return b||(this.paused=!1),this.interval&&clearInterval(this.interval),this.options.interval&&!this.paused&&(this.interval=setInterval(a.proxy(this.next,this),this.options.interval)),this},c.prototype.getItemIndex=function(a){return this.$items=a.parent().children(".item"),this.$items.index(a||this.$active)},c.prototype.getItemForDirection=function(a,b){var c=this.getItemIndex(b),d="prev"==a&&0===c||"next"==a&&c==this.$items.length-1;if(d&&!this.options.wrap)return b;var e="prev"==a?-1:1,f=(c+e)%this.$items.length;return this.$items.eq(f)},c.prototype.to=function(a){var b=this,c=this.getItemIndex(this.$active=this.$element.find(".item.active"));return a>this.$items.length-1||0>a?void 0:this.sliding?this.$element.one("slid.bs.carousel",function(){b.to(a)}):c==a?this.pause().cycle():this.slide(a>c?"next":"prev",this.$items.eq(a))},c.prototype.pause=function(b){return b||(this.paused=!0),this.$element.find(".next, .prev").length&&a.support.transition&&(this.$element.trigger(a.support.transition.end),this.cycle(!0)),this.interval=clearInterval(this.interval),this},c.prototype.next=function(){return this.sliding?void 0:this.slide("next")},c.prototype.prev=function(){return this.sliding?void 0:this.slide("prev")},c.prototype.slide=function(b,d){var e=this.$element.find(".item.active"),f=d||this.getItemForDirection(b,e),g=this.interval,h="next"==b?"left":"right",i=this;if(f.hasClass("active"))return this.sliding=!1;var j=f[0],k=a.Event("slide.bs.carousel",{relatedTarget:j,direction:h});if(this.$element.trigger(k),!k.isDefaultPrevented()){if(this.sliding=!0,g&&this.pause(),this.$indicators.length){this.$indicators.find(".active").removeClass("active");var l=a(this.$indicators.children()[this.getItemIndex(f)]);l&&l.addClass("active")}var m=a.Event("slid.bs.carousel",{relatedTarget:j,direction:h});return a.support.transition&&this.$element.hasClass("slide")?(f.addClass(b),f[0].offsetWidth,e.addClass(h),f.addClass(h),e.one("bsTransitionEnd",function(){f.removeClass([b,h].join(" ")).addClass("active"),e.removeClass(["active",h].join(" ")),i.sliding=!1,setTimeout(function(){i.$element.trigger(m)},0)}).emulateTransitionEnd(c.TRANSITION_DURATION)):(e.removeClass("active"),f.addClass("active"),this.sliding=!1,this.$element.trigger(m)),g&&this.cycle(),this}};var d=a.fn.carousel;a.fn.carousel=b,a.fn.carousel.Constructor=c,a.fn.carousel.noConflict=function(){return a.fn.carousel=d,this};var e=function(c){var d,e=a(this),f=a(e.attr("data-target")||(d=e.attr("href"))&&d.replace(/.*(?=#[^\s]+$)/,""));if(f.hasClass("carousel")){var g=a.extend({},f.data(),e.data()),h=e.attr("data-slide-to");h&&(g.interval=!1),b.call(f,g),h&&f.data("bs.carousel").to(h),c.preventDefault()}};a(document).on("click.bs.carousel.data-api","[data-slide]",e).on("click.bs.carousel.data-api","[data-slide-to]",e),a(window).on("load",function(){a('[data-ride="carousel"]').each(function(){var c=a(this);b.call(c,c.data())})})}(jQuery),+function(a){"use strict";function b(b){var c,d=b.attr("data-target")||(c=b.attr("href"))&&c.replace(/.*(?=#[^\s]+$)/,"");return a(d)}function c(b){return this.each(function(){var c=a(this),e=c.data("bs.collapse"),f=a.extend({},d.DEFAULTS,c.data(),"object"==typeof b&&b);!e&&f.toggle&&/show|hide/.test(b)&&(f.toggle=!1),e||c.data("bs.collapse",e=new d(this,f)),"string"==typeof b&&e[b]()})}var d=function(b,c){this.$element=a(b),this.options=a.extend({},d.DEFAULTS,c),this.$trigger=a('[data-toggle="collapse"][href="#'+b.id+'"],[data-toggle="collapse"][data-target="#'+b.id+'"]'),this.transitioning=null,this.options.parent?this.$parent=this.getParent():this.addAriaAndCollapsedClass(this.$element,this.$trigger),this.options.toggle&&this.toggle()};d.VERSION="3.3.6",d.TRANSITION_DURATION=350,d.DEFAULTS={toggle:!0},d.prototype.dimension=function(){var a=this.$element.hasClass("width");return a?"width":"height"},d.prototype.show=function(){if(!this.transitioning&&!this.$element.hasClass("in")){var b,e=this.$parent&&this.$parent.children(".panel").children(".in, .collapsing");if(!(e&&e.length&&(b=e.data("bs.collapse"),b&&b.transitioning))){var f=a.Event("show.bs.collapse");if(this.$element.trigger(f),!f.isDefaultPrevented()){e&&e.length&&(c.call(e,"hide"),b||e.data("bs.collapse",null));var g=this.dimension();this.$element.removeClass("collapse").addClass("collapsing")[g](0).attr("aria-expanded",!0),this.$trigger.removeClass("collapsed").attr("aria-expanded",!0),this.transitioning=1;var h=function(){this.$element.removeClass("collapsing").addClass("collapse in")[g](""),this.transitioning=0,this.$element.trigger("shown.bs.collapse")};if(!a.support.transition)return h.call(this);var i=a.camelCase(["scroll",g].join("-"));this.$element.one("bsTransitionEnd",a.proxy(h,this)).emulateTransitionEnd(d.TRANSITION_DURATION)[g](this.$element[0][i])}}}},d.prototype.hide=function(){if(!this.transitioning&&this.$element.hasClass("in")){var b=a.Event("hide.bs.collapse");if(this.$element.trigger(b),!b.isDefaultPrevented()){var c=this.dimension();this.$element[c](this.$element[c]())[0].offsetHeight,this.$element.addClass("collapsing").removeClass("collapse in").attr("aria-expanded",!1),this.$trigger.addClass("collapsed").attr("aria-expanded",!1),this.transitioning=1;var e=function(){this.transitioning=0,this.$element.removeClass("collapsing").addClass("collapse").trigger("hidden.bs.collapse")};return a.support.transition?void this.$element[c](0).one("bsTransitionEnd",a.proxy(e,this)).emulateTransitionEnd(d.TRANSITION_DURATION):e.call(this)}}},d.prototype.toggle=function(){this[this.$element.hasClass("in")?"hide":"show"]()},d.prototype.getParent=function(){return a(this.options.parent).find('[data-toggle="collapse"][data-parent="'+this.options.parent+'"]').each(a.proxy(function(c,d){var e=a(d);this.addAriaAndCollapsedClass(b(e),e)},this)).end()},d.prototype.addAriaAndCollapsedClass=function(a,b){var c=a.hasClass("in");a.attr("aria-expanded",c),b.toggleClass("collapsed",!c).attr("aria-expanded",c)};var e=a.fn.collapse;a.fn.collapse=c,a.fn.collapse.Constructor=d,a.fn.collapse.noConflict=function(){return a.fn.collapse=e,this},a(document).on("click.bs.collapse.data-api",'[data-toggle="collapse"]',function(d){var e=a(this);e.attr("data-target")||d.preventDefault();var f=b(e),g=f.data("bs.collapse"),h=g?"toggle":e.data();c.call(f,h)})}(jQuery),+function(a){"use strict";function b(b){var c=b.attr("data-target");c||(c=b.attr("href"),c=c&&/#[A-Za-z]/.test(c)&&c.replace(/.*(?=#[^\s]*$)/,""));var d=c&&a(c);return d&&d.length?d:b.parent()}function c(c){c&&3===c.which||(a(e).remove(),a(f).each(function(){var d=a(this),e=b(d),f={relatedTarget:this};e.hasClass("open")&&(c&&"click"==c.type&&/input|textarea/i.test(c.target.tagName)&&a.contains(e[0],c.target)||(e.trigger(c=a.Event("hide.bs.dropdown",f)),c.isDefaultPrevented()||(d.attr("aria-expanded","false"),e.removeClass("open").trigger(a.Event("hidden.bs.dropdown",f)))))}))}function d(b){return this.each(function(){var c=a(this),d=c.data("bs.dropdown");d||c.data("bs.dropdown",d=new g(this)),"string"==typeof b&&d[b].call(c)})}var e=".dropdown-backdrop",f='[data-toggle="dropdown"]',g=function(b){a(b).on("click.bs.dropdown",this.toggle)};g.VERSION="3.3.6",g.prototype.toggle=function(d){var e=a(this);if(!e.is(".disabled, :disabled")){var f=b(e),g=f.hasClass("open");if(c(),!g){"ontouchstart"in document.documentElement&&!f.closest(".navbar-nav").length&&a(document.createElement("div")).addClass("dropdown-backdrop").insertAfter(a(this)).on("click",c);var h={relatedTarget:this};if(f.trigger(d=a.Event("show.bs.dropdown",h)),d.isDefaultPrevented())return;e.trigger("focus").attr("aria-expanded","true"),f.toggleClass("open").trigger(a.Event("shown.bs.dropdown",h))}return!1}},g.prototype.keydown=function(c){if(/(38|40|27|32)/.test(c.which)&&!/input|textarea/i.test(c.target.tagName)){var d=a(this);if(c.preventDefault(),c.stopPropagation(),!d.is(".disabled, :disabled")){var e=b(d),g=e.hasClass("open");if(!g&&27!=c.which||g&&27==c.which)return 27==c.which&&e.find(f).trigger("focus"),d.trigger("click");var h=" li:not(.disabled):visible a",i=e.find(".dropdown-menu"+h);if(i.length){var j=i.index(c.target);38==c.which&&j>0&&j--,40==c.which&&j<i.length-1&&j++,~j||(j=0),i.eq(j).trigger("focus")}}}};var h=a.fn.dropdown;a.fn.dropdown=d,a.fn.dropdown.Constructor=g,a.fn.dropdown.noConflict=function(){return a.fn.dropdown=h,this},a(document).on("click.bs.dropdown.data-api",c).on("click.bs.dropdown.data-api",".dropdown form",function(a){a.stopPropagation()}).on("click.bs.dropdown.data-api",f,g.prototype.toggle).on("keydown.bs.dropdown.data-api",f,g.prototype.keydown).on("keydown.bs.dropdown.data-api",".dropdown-menu",g.prototype.keydown)}(jQuery),+function(a){"use strict";function b(b,d){return this.each(function(){var e=a(this),f=e.data("bs.modal"),g=a.extend({},c.DEFAULTS,e.data(),"object"==typeof b&&b);f||e.data("bs.modal",f=new c(this,g)),"string"==typeof b?f[b](d):g.show&&f.show(d)})}var c=function(b,c){this.options=c,this.$body=a(document.body),this.$element=a(b),this.$dialog=this.$element.find(".modal-dialog"),this.$backdrop=null,this.isShown=null,this.originalBodyPad=null,this.scrollbarWidth=0,this.ignoreBackdropClick=!1,this.options.remote&&this.$element.find(".modal-content").load(this.options.remote,a.proxy(function(){this.$element.trigger("loaded.bs.modal")},this))};c.VERSION="3.3.6",c.TRANSITION_DURATION=300,c.BACKDROP_TRANSITION_DURATION=150,c.DEFAULTS={backdrop:!0,keyboard:!0,show:!0},c.prototype.toggle=function(a){return this.isShown?this.hide():this.show(a)},c.prototype.show=function(b){var d=this,e=a.Event("show.bs.modal",{relatedTarget:b});this.$element.trigger(e),this.isShown||e.isDefaultPrevented()||(this.isShown=!0,this.checkScrollbar(),this.setScrollbar(),this.$body.addClass("modal-open"),this.escape(),this.resize(),this.$element.on("click.dismiss.bs.modal",'[data-dismiss="modal"]',a.proxy(this.hide,this)),this.$dialog.on("mousedown.dismiss.bs.modal",function(){d.$element.one("mouseup.dismiss.bs.modal",function(b){a(b.target).is(d.$element)&&(d.ignoreBackdropClick=!0)})}),this.backdrop(function(){var e=a.support.transition&&d.$element.hasClass("fade");d.$element.parent().length||d.$element.appendTo(d.$body),d.$element.show().scrollTop(0),d.adjustDialog(),e&&d.$element[0].offsetWidth,d.$element.addClass("in"),d.enforceFocus();var f=a.Event("shown.bs.modal",{relatedTarget:b});e?d.$dialog.one("bsTransitionEnd",function(){d.$element.trigger("focus").trigger(f)}).emulateTransitionEnd(c.TRANSITION_DURATION):d.$element.trigger("focus").trigger(f)}))},c.prototype.hide=function(b){b&&b.preventDefault(),b=a.Event("hide.bs.modal"),this.$element.trigger(b),this.isShown&&!b.isDefaultPrevented()&&(this.isShown=!1,this.escape(),this.resize(),a(document).off("focusin.bs.modal"),this.$element.removeClass("in").off("click.dismiss.bs.modal").off("mouseup.dismiss.bs.modal"),this.$dialog.off("mousedown.dismiss.bs.modal"),a.support.transition&&this.$element.hasClass("fade")?this.$element.one("bsTransitionEnd",a.proxy(this.hideModal,this)).emulateTransitionEnd(c.TRANSITION_DURATION):this.hideModal())},c.prototype.enforceFocus=function(){a(document).off("focusin.bs.modal").on("focusin.bs.modal",a.proxy(function(a){this.$element[0]===a.target||this.$element.has(a.target).length||this.$element.trigger("focus")},this))},c.prototype.escape=function(){this.isShown&&this.options.keyboard?this.$element.on("keydown.dismiss.bs.modal",a.proxy(function(a){27==a.which&&this.hide()},this)):this.isShown||this.$element.off("keydown.dismiss.bs.modal")},c.prototype.resize=function(){this.isShown?a(window).on("resize.bs.modal",a.proxy(this.handleUpdate,this)):a(window).off("resize.bs.modal")},c.prototype.hideModal=function(){var a=this;this.$element.hide(),this.backdrop(function(){a.$body.removeClass("modal-open"),a.resetAdjustments(),a.resetScrollbar(),a.$element.trigger("hidden.bs.modal")})},c.prototype.removeBackdrop=function(){this.$backdrop&&this.$backdrop.remove(),this.$backdrop=null},c.prototype.backdrop=function(b){var d=this,e=this.$element.hasClass("fade")?"fade":"";if(this.isShown&&this.options.backdrop){var f=a.support.transition&&e;if(this.$backdrop=a(document.createElement("div")).addClass("modal-backdrop "+e).appendTo(this.$body),this.$element.on("click.dismiss.bs.modal",a.proxy(function(a){return this.ignoreBackdropClick?void(this.ignoreBackdropClick=!1):void(a.target===a.currentTarget&&("static"==this.options.backdrop?this.$element[0].focus():this.hide()))},this)),f&&this.$backdrop[0].offsetWidth,this.$backdrop.addClass("in"),!b)return;f?this.$backdrop.one("bsTransitionEnd",b).emulateTransitionEnd(c.BACKDROP_TRANSITION_DURATION):b()}else if(!this.isShown&&this.$backdrop){this.$backdrop.removeClass("in");var g=function(){d.removeBackdrop(),b&&b()};a.support.transition&&this.$element.hasClass("fade")?this.$backdrop.one("bsTransitionEnd",g).emulateTransitionEnd(c.BACKDROP_TRANSITION_DURATION):g()}else b&&b()},c.prototype.handleUpdate=function(){this.adjustDialog()},c.prototype.adjustDialog=function(){var a=this.$element[0].scrollHeight>document.documentElement.clientHeight;this.$element.css({paddingLeft:!this.bodyIsOverflowing&&a?this.scrollbarWidth:"",paddingRight:this.bodyIsOverflowing&&!a?this.scrollbarWidth:""})},c.prototype.resetAdjustments=function(){this.$element.css({paddingLeft:"",paddingRight:""})},c.prototype.checkScrollbar=function(){var a=window.innerWidth;if(!a){var b=document.documentElement.getBoundingClientRect();a=b.right-Math.abs(b.left)}this.bodyIsOverflowing=document.body.clientWidth<a,this.scrollbarWidth=this.measureScrollbar()},c.prototype.setScrollbar=function(){var a=parseInt(this.$body.css("padding-right")||0,10);this.originalBodyPad=document.body.style.paddingRight||"",this.bodyIsOverflowing&&this.$body.css("padding-right",a+this.scrollbarWidth)},c.prototype.resetScrollbar=function(){this.$body.css("padding-right",this.originalBodyPad)},c.prototype.measureScrollbar=function(){var a=document.createElement("div");a.className="modal-scrollbar-measure",this.$body.append(a);var b=a.offsetWidth-a.clientWidth;return this.$body[0].removeChild(a),b};var d=a.fn.modal;a.fn.modal=b,a.fn.modal.Constructor=c,a.fn.modal.noConflict=function(){return a.fn.modal=d,this},a(document).on("click.bs.modal.data-api",'[data-toggle="modal"]',function(c){var d=a(this),e=d.attr("href"),f=a(d.attr("data-target")||e&&e.replace(/.*(?=#[^\s]+$)/,"")),g=f.data("bs.modal")?"toggle":a.extend({remote:!/#/.test(e)&&e},f.data(),d.data());d.is("a")&&c.preventDefault(),f.one("show.bs.modal",function(a){a.isDefaultPrevented()||f.one("hidden.bs.modal",function(){d.is(":visible")&&d.trigger("focus")})}),b.call(f,g,this)})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tooltip"),f="object"==typeof b&&b;(e||!/destroy|hide/.test(b))&&(e||d.data("bs.tooltip",e=new c(this,f)),"string"==typeof b&&e[b]())})}var c=function(a,b){this.type=null,this.options=null,this.enabled=null,this.timeout=null,this.hoverState=null,this.$element=null,this.inState=null,this.init("tooltip",a,b)};c.VERSION="3.3.6",c.TRANSITION_DURATION=150,c.DEFAULTS={animation:!0,placement:"top",selector:!1,template:'<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',trigger:"hover focus",title:"",delay:0,html:!1,container:!1,viewport:{selector:"body",padding:0}},c.prototype.init=function(b,c,d){if(this.enabled=!0,this.type=b,this.$element=a(c),this.options=this.getOptions(d),this.$viewport=this.options.viewport&&a(a.isFunction(this.options.viewport)?this.options.viewport.call(this,this.$element):this.options.viewport.selector||this.options.viewport),this.inState={click:!1,hover:!1,focus:!1},this.$element[0]instanceof document.constructor&&!this.options.selector)throw new Error("`selector` option must be specified when initializing "+this.type+" on the window.document object!");for(var e=this.options.trigger.split(" "),f=e.length;f--;){var g=e[f];if("click"==g)this.$element.on("click."+this.type,this.options.selector,a.proxy(this.toggle,this));else if("manual"!=g){var h="hover"==g?"mouseenter":"focusin",i="hover"==g?"mouseleave":"focusout";this.$element.on(h+"."+this.type,this.options.selector,a.proxy(this.enter,this)),this.$element.on(i+"."+this.type,this.options.selector,a.proxy(this.leave,this))}}this.options.selector?this._options=a.extend({},this.options,{trigger:"manual",selector:""}):this.fixTitle()},c.prototype.getDefaults=function(){return c.DEFAULTS},c.prototype.getOptions=function(b){return b=a.extend({},this.getDefaults(),this.$element.data(),b),b.delay&&"number"==typeof b.delay&&(b.delay={show:b.delay,hide:b.delay}),b},c.prototype.getDelegateOptions=function(){var b={},c=this.getDefaults();return this._options&&a.each(this._options,function(a,d){c[a]!=d&&(b[a]=d)}),b},c.prototype.enter=function(b){var c=b instanceof this.constructor?b:a(b.currentTarget).data("bs."+this.type);return c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c)),b instanceof a.Event&&(c.inState["focusin"==b.type?"focus":"hover"]=!0),c.tip().hasClass("in")||"in"==c.hoverState?void(c.hoverState="in"):(clearTimeout(c.timeout),c.hoverState="in",c.options.delay&&c.options.delay.show?void(c.timeout=setTimeout(function(){"in"==c.hoverState&&c.show()},c.options.delay.show)):c.show())},c.prototype.isInStateTrue=function(){for(var a in this.inState)if(this.inState[a])return!0;return!1},c.prototype.leave=function(b){var c=b instanceof this.constructor?b:a(b.currentTarget).data("bs."+this.type);return c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c)),b instanceof a.Event&&(c.inState["focusout"==b.type?"focus":"hover"]=!1),c.isInStateTrue()?void 0:(clearTimeout(c.timeout),c.hoverState="out",c.options.delay&&c.options.delay.hide?void(c.timeout=setTimeout(function(){"out"==c.hoverState&&c.hide()},c.options.delay.hide)):c.hide())},c.prototype.show=function(){var b=a.Event("show.bs."+this.type);if(this.hasContent()&&this.enabled){this.$element.trigger(b);var d=a.contains(this.$element[0].ownerDocument.documentElement,this.$element[0]);if(b.isDefaultPrevented()||!d)return;var e=this,f=this.tip(),g=this.getUID(this.type);this.setContent(),f.attr("id",g),this.$element.attr("aria-describedby",g),this.options.animation&&f.addClass("fade");var h="function"==typeof this.options.placement?this.options.placement.call(this,f[0],this.$element[0]):this.options.placement,i=/\s?auto?\s?/i,j=i.test(h);j&&(h=h.replace(i,"")||"top"),f.detach().css({top:0,left:0,display:"block"}).addClass(h).data("bs."+this.type,this),this.options.container?f.appendTo(this.options.container):f.insertAfter(this.$element),this.$element.trigger("inserted.bs."+this.type);var k=this.getPosition(),l=f[0].offsetWidth,m=f[0].offsetHeight;if(j){var n=h,o=this.getPosition(this.$viewport);h="bottom"==h&&k.bottom+m>o.bottom?"top":"top"==h&&k.top-m<o.top?"bottom":"right"==h&&k.right+l>o.width?"left":"left"==h&&k.left-l<o.left?"right":h,f.removeClass(n).addClass(h)}var p=this.getCalculatedOffset(h,k,l,m);this.applyPlacement(p,h);var q=function(){var a=e.hoverState;e.$element.trigger("shown.bs."+e.type),e.hoverState=null,"out"==a&&e.leave(e)};a.support.transition&&this.$tip.hasClass("fade")?f.one("bsTransitionEnd",q).emulateTransitionEnd(c.TRANSITION_DURATION):q()}},c.prototype.applyPlacement=function(b,c){var d=this.tip(),e=d[0].offsetWidth,f=d[0].offsetHeight,g=parseInt(d.css("margin-top"),10),h=parseInt(d.css("margin-left"),10);isNaN(g)&&(g=0),isNaN(h)&&(h=0),b.top+=g,b.left+=h,a.offset.setOffset(d[0],a.extend({using:function(a){d.css({top:Math.round(a.top),left:Math.round(a.left)})}},b),0),d.addClass("in");var i=d[0].offsetWidth,j=d[0].offsetHeight;"top"==c&&j!=f&&(b.top=b.top+f-j);var k=this.getViewportAdjustedDelta(c,b,i,j);k.left?b.left+=k.left:b.top+=k.top;var l=/top|bottom/.test(c),m=l?2*k.left-e+i:2*k.top-f+j,n=l?"offsetWidth":"offsetHeight";d.offset(b),this.replaceArrow(m,d[0][n],l)},c.prototype.replaceArrow=function(a,b,c){this.arrow().css(c?"left":"top",50*(1-a/b)+"%").css(c?"top":"left","")},c.prototype.setContent=function(){var a=this.tip(),b=this.getTitle();a.find(".tooltip-inner")[this.options.html?"html":"text"](b),a.removeClass("fade in top bottom left right")},c.prototype.hide=function(b){function d(){"in"!=e.hoverState&&f.detach(),e.$element.removeAttr("aria-describedby").trigger("hidden.bs."+e.type),b&&b()}var e=this,f=a(this.$tip),g=a.Event("hide.bs."+this.type);return this.$element.trigger(g),g.isDefaultPrevented()?void 0:(f.removeClass("in"),a.support.transition&&f.hasClass("fade")?f.one("bsTransitionEnd",d).emulateTransitionEnd(c.TRANSITION_DURATION):d(),this.hoverState=null,this)},c.prototype.fixTitle=function(){var a=this.$element;(a.attr("title")||"string"!=typeof a.attr("data-original-title"))&&a.attr("data-original-title",a.attr("title")||"").attr("title","")},c.prototype.hasContent=function(){return this.getTitle()},c.prototype.getPosition=function(b){b=b||this.$element;var c=b[0],d="BODY"==c.tagName,e=c.getBoundingClientRect();null==e.width&&(e=a.extend({},e,{width:e.right-e.left,height:e.bottom-e.top}));var f=d?{top:0,left:0}:b.offset(),g={scroll:d?document.documentElement.scrollTop||document.body.scrollTop:b.scrollTop()},h=d?{width:a(window).width(),height:a(window).height()}:null;return a.extend({},e,g,h,f)},c.prototype.getCalculatedOffset=function(a,b,c,d){return"bottom"==a?{top:b.top+b.height,left:b.left+b.width/2-c/2}:"top"==a?{top:b.top-d,left:b.left+b.width/2-c/2}:"left"==a?{top:b.top+b.height/2-d/2,left:b.left-c}:{top:b.top+b.height/2-d/2,left:b.left+b.width}},c.prototype.getViewportAdjustedDelta=function(a,b,c,d){var e={top:0,left:0};if(!this.$viewport)return e;var f=this.options.viewport&&this.options.viewport.padding||0,g=this.getPosition(this.$viewport);if(/right|left/.test(a)){var h=b.top-f-g.scroll,i=b.top+f-g.scroll+d;h<g.top?e.top=g.top-h:i>g.top+g.height&&(e.top=g.top+g.height-i)}else{var j=b.left-f,k=b.left+f+c;j<g.left?e.left=g.left-j:k>g.right&&(e.left=g.left+g.width-k)}return e},c.prototype.getTitle=function(){var a,b=this.$element,c=this.options;return a=b.attr("data-original-title")||("function"==typeof c.title?c.title.call(b[0]):c.title)},c.prototype.getUID=function(a){do a+=~~(1e6*Math.random());while(document.getElementById(a));return a},c.prototype.tip=function(){if(!this.$tip&&(this.$tip=a(this.options.template),1!=this.$tip.length))throw new Error(this.type+" `template` option must consist of exactly 1 top-level element!");return this.$tip},c.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".tooltip-arrow")},c.prototype.enable=function(){this.enabled=!0},c.prototype.disable=function(){this.enabled=!1},c.prototype.toggleEnabled=function(){this.enabled=!this.enabled},c.prototype.toggle=function(b){var c=this;b&&(c=a(b.currentTarget).data("bs."+this.type),c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c))),b?(c.inState.click=!c.inState.click,c.isInStateTrue()?c.enter(c):c.leave(c)):c.tip().hasClass("in")?c.leave(c):c.enter(c)},c.prototype.destroy=function(){var a=this;clearTimeout(this.timeout),this.hide(function(){a.$element.off("."+a.type).removeData("bs."+a.type),a.$tip&&a.$tip.detach(),a.$tip=null,a.$arrow=null,a.$viewport=null})};var d=a.fn.tooltip;a.fn.tooltip=b,a.fn.tooltip.Constructor=c,a.fn.tooltip.noConflict=function(){return a.fn.tooltip=d,this}}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.popover"),f="object"==typeof b&&b;(e||!/destroy|hide/.test(b))&&(e||d.data("bs.popover",e=new c(this,f)),"string"==typeof b&&e[b]())})}var c=function(a,b){this.init("popover",a,b)};if(!a.fn.tooltip)throw new Error("Popover requires tooltip.js");c.VERSION="3.3.6",c.DEFAULTS=a.extend({},a.fn.tooltip.Constructor.DEFAULTS,{placement:"right",trigger:"click",content:"",template:'<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'}),c.prototype=a.extend({},a.fn.tooltip.Constructor.prototype),c.prototype.constructor=c,c.prototype.getDefaults=function(){return c.DEFAULTS},c.prototype.setContent=function(){var a=this.tip(),b=this.getTitle(),c=this.getContent();a.find(".popover-title")[this.options.html?"html":"text"](b),a.find(".popover-content").children().detach().end()[this.options.html?"string"==typeof c?"html":"append":"text"](c),a.removeClass("fade top bottom left right in"),a.find(".popover-title").html()||a.find(".popover-title").hide()},c.prototype.hasContent=function(){return this.getTitle()||this.getContent()},c.prototype.getContent=function(){var a=this.$element,b=this.options;return a.attr("data-content")||("function"==typeof b.content?b.content.call(a[0]):b.content)},c.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".arrow")};var d=a.fn.popover;a.fn.popover=b,a.fn.popover.Constructor=c,a.fn.popover.noConflict=function(){return a.fn.popover=d,this}}(jQuery),+function(a){"use strict";function b(c,d){this.$body=a(document.body),this.$scrollElement=a(a(c).is(document.body)?window:c),this.options=a.extend({},b.DEFAULTS,d),this.selector=(this.options.target||"")+" .nav li > a",this.offsets=[],this.targets=[],this.activeTarget=null,this.scrollHeight=0,this.$scrollElement.on("scroll.bs.scrollspy",a.proxy(this.process,this)),this.refresh(),this.process()}function c(c){return this.each(function(){var d=a(this),e=d.data("bs.scrollspy"),f="object"==typeof c&&c;e||d.data("bs.scrollspy",e=new b(this,f)),"string"==typeof c&&e[c]()})}b.VERSION="3.3.6",b.DEFAULTS={offset:10},b.prototype.getScrollHeight=function(){return this.$scrollElement[0].scrollHeight||Math.max(this.$body[0].scrollHeight,document.documentElement.scrollHeight)},b.prototype.refresh=function(){var b=this,c="offset",d=0;this.offsets=[],this.targets=[],this.scrollHeight=this.getScrollHeight(),a.isWindow(this.$scrollElement[0])||(c="position",d=this.$scrollElement.scrollTop()),this.$body.find(this.selector).map(function(){var b=a(this),e=b.data("target")||b.attr("href"),f=/^#./.test(e)&&a(e);return f&&f.length&&f.is(":visible")&&[[f[c]().top+d,e]]||null}).sort(function(a,b){return a[0]-b[0]}).each(function(){b.offsets.push(this[0]),b.targets.push(this[1])})},b.prototype.process=function(){var a,b=this.$scrollElement.scrollTop()+this.options.offset,c=this.getScrollHeight(),d=this.options.offset+c-this.$scrollElement.height(),e=this.offsets,f=this.targets,g=this.activeTarget;if(this.scrollHeight!=c&&this.refresh(),b>=d)return g!=(a=f[f.length-1])&&this.activate(a);if(g&&b<e[0])return this.activeTarget=null,this.clear();for(a=e.length;a--;)g!=f[a]&&b>=e[a]&&(void 0===e[a+1]||b<e[a+1])&&this.activate(f[a])},b.prototype.activate=function(b){this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+this.selector+'[href="'+b+'"]',d=a(c).parents("li").addClass("active");
 d.parent(".dropdown-menu").length&&(d=d.closest("li.dropdown").addClass("active")),d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector).parentsUntil(this.options.target,".active").removeClass("active")};var d=a.fn.scrollspy;a.fn.scrollspy=c,a.fn.scrollspy.Constructor=b,a.fn.scrollspy.noConflict=function(){return a.fn.scrollspy=d,this},a(window).on("load.bs.scrollspy.data-api",function(){a('[data-spy="scroll"]').each(function(){var b=a(this);c.call(b,b.data())})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tab");e||d.data("bs.tab",e=new c(this)),"string"==typeof b&&e[b]()})}var c=function(b){this.element=a(b)};c.VERSION="3.3.6",c.TRANSITION_DURATION=150,c.prototype.show=function(){var b=this.element,c=b.closest("ul:not(.dropdown-menu)"),d=b.data("target");if(d||(d=b.attr("href"),d=d&&d.replace(/.*(?=#[^\s]*$)/,"")),!b.parent("li").hasClass("active")){var e=c.find(".active:last a"),f=a.Event("hide.bs.tab",{relatedTarget:b[0]}),g=a.Event("show.bs.tab",{relatedTarget:e[0]});if(e.trigger(f),b.trigger(g),!g.isDefaultPrevented()&&!f.isDefaultPrevented()){var h=a(d);this.activate(b.closest("li"),c),this.activate(h,h.parent(),function(){e.trigger({type:"hidden.bs.tab",relatedTarget:b[0]}),b.trigger({type:"shown.bs.tab",relatedTarget:e[0]})})}}},c.prototype.activate=function(b,d,e){function f(){g.removeClass("active").find("> .dropdown-menu > .active").removeClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!1),b.addClass("active").find('[data-toggle="tab"]').attr("aria-expanded",!0),h?(b[0].offsetWidth,b.addClass("in")):b.removeClass("fade"),b.parent(".dropdown-menu").length&&b.closest("li.dropdown").addClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!0),e&&e()}var g=d.find("> .active"),h=e&&a.support.transition&&(g.length&&g.hasClass("fade")||!!d.find("> .fade").length);g.length&&h?g.one("bsTransitionEnd",f).emulateTransitionEnd(c.TRANSITION_DURATION):f(),g.removeClass("in")};var d=a.fn.tab;a.fn.tab=b,a.fn.tab.Constructor=c,a.fn.tab.noConflict=function(){return a.fn.tab=d,this};var e=function(c){c.preventDefault(),b.call(a(this),"show")};a(document).on("click.bs.tab.data-api",'[data-toggle="tab"]',e).on("click.bs.tab.data-api",'[data-toggle="pill"]',e)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.affix"),f="object"==typeof b&&b;e||d.data("bs.affix",e=new c(this,f)),"string"==typeof b&&e[b]()})}var c=function(b,d){this.options=a.extend({},c.DEFAULTS,d),this.$target=a(this.options.target).on("scroll.bs.affix.data-api",a.proxy(this.checkPosition,this)).on("click.bs.affix.data-api",a.proxy(this.checkPositionWithEventLoop,this)),this.$element=a(b),this.affixed=null,this.unpin=null,this.pinnedOffset=null,this.checkPosition()};c.VERSION="3.3.6",c.RESET="affix affix-top affix-bottom",c.DEFAULTS={offset:0,target:window},c.prototype.getState=function(a,b,c,d){var e=this.$target.scrollTop(),f=this.$element.offset(),g=this.$target.height();if(null!=c&&"top"==this.affixed)return c>e?"top":!1;if("bottom"==this.affixed)return null!=c?e+this.unpin<=f.top?!1:"bottom":a-d>=e+g?!1:"bottom";var h=null==this.affixed,i=h?e:f.top,j=h?g:b;return null!=c&&c>=e?"top":null!=d&&i+j>=a-d?"bottom":!1},c.prototype.getPinnedOffset=function(){if(this.pinnedOffset)return this.pinnedOffset;this.$element.removeClass(c.RESET).addClass("affix");var a=this.$target.scrollTop(),b=this.$element.offset();return this.pinnedOffset=b.top-a},c.prototype.checkPositionWithEventLoop=function(){setTimeout(a.proxy(this.checkPosition,this),1)},c.prototype.checkPosition=function(){if(this.$element.is(":visible")){var b=this.$element.height(),d=this.options.offset,e=d.top,f=d.bottom,g=Math.max(a(document).height(),a(document.body).height());"object"!=typeof d&&(f=e=d),"function"==typeof e&&(e=d.top(this.$element)),"function"==typeof f&&(f=d.bottom(this.$element));var h=this.getState(g,b,e,f);if(this.affixed!=h){null!=this.unpin&&this.$element.css("top","");var i="affix"+(h?"-"+h:""),j=a.Event(i+".bs.affix");if(this.$element.trigger(j),j.isDefaultPrevented())return;this.affixed=h,this.unpin="bottom"==h?this.getPinnedOffset():null,this.$element.removeClass(c.RESET).addClass(i).trigger(i.replace("affix","affixed")+".bs.affix")}"bottom"==h&&this.$element.offset({top:g-b-f})}};var d=a.fn.affix;a.fn.affix=b,a.fn.affix.Constructor=c,a.fn.affix.noConflict=function(){return a.fn.affix=d,this},a(window).on("load",function(){a('[data-spy="affix"]').each(function(){var c=a(this),d=c.data();d.offset=d.offset||{},null!=d.offsetBottom&&(d.offset.bottom=d.offsetBottom),null!=d.offsetTop&&(d.offset.top=d.offsetTop),b.call(c,d)})})}(jQuery);
+</script>
+
+     <!-- Bootstrap touchspin-->
+<script type='text/javascript'>
+(function($) {
+  'use strict';
+
+  var _currentSpinnerId = 0;
+
+  function _scopedEventName(name, id) {
+    return name + '.touchspin_' + id;
+  }
+
+  function _scopeEventNames(names, id) {
+    return $.map(names, function(name) {
+      return _scopedEventName(name, id);
+    });
+  }
+
+  $.fn.TouchSpin = function(options) {
+
+    if (options === 'destroy') {
+      this.each(function() {
+        var originalinput = $(this),
+            originalinput_data = originalinput.data();
+        $(document).off(_scopeEventNames([
+          'mouseup',
+          'touchend',
+          'touchcancel',
+          'mousemove',
+          'touchmove',
+          'scroll',
+          'scrollstart'], originalinput_data.spinnerid).join(' '));
+      });
+      return;
+    }
+
+    var defaults = {
+      min: 0,
+      max: 100,
+      initval: '',
+      replacementval: '',
+      step: 1,
+      decimals: 0,
+      stepinterval: 100,
+      forcestepdivisibility: 'round', // none | floor | round | ceil
+      stepintervaldelay: 500,
+      verticalbuttons: false,
+      verticalupclass: 'glyphicon glyphicon-chevron-up',
+      verticaldownclass: 'glyphicon glyphicon-chevron-down',
+      prefix: '',
+      postfix: '',
+      prefix_extraclass: '',
+      postfix_extraclass: '',
+      booster: true,
+      boostat: 10,
+      maxboostedstep: false,
+      mousewheel: true,
+      buttondown_class: 'btn btn-default',
+      buttonup_class: 'btn btn-default',
+	  buttondown_txt: '-',
+	  buttonup_txt: '+'
+    };
+
+    var attributeMap = {
+      min: 'min',
+      max: 'max',
+      initval: 'init-val',
+      replacementval: 'replacement-val',
+      step: 'step',
+      decimals: 'decimals',
+      stepinterval: 'step-interval',
+      verticalbuttons: 'vertical-buttons',
+      verticalupclass: 'vertical-up-class',
+      verticaldownclass: 'vertical-down-class',
+      forcestepdivisibility: 'force-step-divisibility',
+      stepintervaldelay: 'step-interval-delay',
+      prefix: 'prefix',
+      postfix: 'postfix',
+      prefix_extraclass: 'prefix-extra-class',
+      postfix_extraclass: 'postfix-extra-class',
+      booster: 'booster',
+      boostat: 'boostat',
+      maxboostedstep: 'max-boosted-step',
+      mousewheel: 'mouse-wheel',
+      buttondown_class: 'button-down-class',
+      buttonup_class: 'button-up-class',
+	  buttondown_txt: 'button-down-txt',
+	  buttonup_txt: 'button-up-txt'
+    };
+
+    return this.each(function() {
+
+      var settings,
+          originalinput = $(this),
+          originalinput_data = originalinput.data(),
+          container,
+          elements,
+          value,
+          downSpinTimer,
+          upSpinTimer,
+          downDelayTimeout,
+          upDelayTimeout,
+          spincount = 0,
+          spinning = false;
+
+      init();
+
+
+      function init() {
+        if (originalinput.data('alreadyinitialized')) {
+          return;
+        }
+
+        originalinput.data('alreadyinitialized', true);
+        _currentSpinnerId += 1;
+        originalinput.data('spinnerid', _currentSpinnerId);
+
+
+        if (!originalinput.is('input')) {
+          console.log('Must be an input.');
+          return;
+        }
+
+        _initSettings();
+        _setInitval();
+        _checkValue();
+        _buildHtml();
+        _initElements();
+        _hideEmptyPrefixPostfix();
+        _bindEvents();
+        _bindEventsInterface();
+        elements.input.css('display', 'block');
+      }
+
+      function _setInitval() {
+        if (settings.initval !== '' && originalinput.val() === '') {
+          originalinput.val(settings.initval);
+        }
+      }
+
+      function changeSettings(newsettings) {
+        _updateSettings(newsettings);
+        _checkValue();
+
+        var value = elements.input.val();
+
+        if (value !== '') {
+          value = Number(elements.input.val());
+          elements.input.val(value.toFixed(settings.decimals));
+        }
+      }
+
+      function _initSettings() {
+        settings = $.extend({}, defaults, originalinput_data, _parseAttributes(), options);
+      }
+
+      function _parseAttributes() {
+        var data = {};
+        $.each(attributeMap, function(key, value) {
+          var attrName = 'bts-' + value + '';
+          if (originalinput.is('[data-' + attrName + ']')) {
+            data[key] = originalinput.data(attrName);
+          }
+        });
+        return data;
+      }
+
+      function _updateSettings(newsettings) {
+        settings = $.extend({}, settings, newsettings);
+      }
+
+      function _buildHtml() {
+        var initval = originalinput.val(),
+            parentelement = originalinput.parent();
+
+        if (initval !== '') {
+          initval = Number(initval).toFixed(settings.decimals);
+        }
+
+        originalinput.data('initvalue', initval).val(initval);
+        originalinput.addClass('form-control');
+
+        if (parentelement.hasClass('input-group')) {
+          _advanceInputGroup(parentelement);
+        }
+        else {
+          _buildInputGroup();
+        }
+      }
+
+      function _advanceInputGroup(parentelement) {
+        parentelement.addClass('bootstrap-touchspin');
+
+        var prev = originalinput.prev(),
+            next = originalinput.next();
+
+        var downhtml,
+            uphtml,
+            prefixhtml = '<span class="input-group-addon bootstrap-touchspin-prefix">' + settings.prefix + '</span>',
+            postfixhtml = '<span class="input-group-addon bootstrap-touchspin-postfix">' + settings.postfix + '</span>';
+
+        if (prev.hasClass('input-group-btn')) {
+          downhtml = '<button class="' + settings.buttondown_class + ' bootstrap-touchspin-down" type="button">' + settings.buttondown_txt + '</button>';
+          prev.append(downhtml);
+        }
+        else {
+          downhtml = '<span class="input-group-btn"><button class="' + settings.buttondown_class + ' bootstrap-touchspin-down" type="button">' + settings.buttondown_txt + '</button></span>';
+          $(downhtml).insertBefore(originalinput);
+        }
+
+        if (next.hasClass('input-group-btn')) {
+          uphtml = '<button class="' + settings.buttonup_class + ' bootstrap-touchspin-up" type="button">' + settings.buttonup_txt + '</button>';
+          next.prepend(uphtml);
+        }
+        else {
+          uphtml = '<span class="input-group-btn"><button class="' + settings.buttonup_class + ' bootstrap-touchspin-up" type="button">' + settings.buttonup_txt + '</button></span>';
+          $(uphtml).insertAfter(originalinput);
+        }
+
+        $(prefixhtml).insertBefore(originalinput);
+        $(postfixhtml).insertAfter(originalinput);
+
+        container = parentelement;
+      }
+
+      function _buildInputGroup() {
+        var html;
+
+        if (settings.verticalbuttons) {
+          html = '<div class="input-group bootstrap-touchspin"><span class="input-group-addon bootstrap-touchspin-prefix">' + settings.prefix + '</span><span class="input-group-addon bootstrap-touchspin-postfix">' + settings.postfix + '</span><span class="input-group-btn-vertical"><button class="' + settings.buttondown_class + ' bootstrap-touchspin-up" type="button"><i class="' + settings.verticalupclass + '"></i></button><button class="' + settings.buttonup_class + ' bootstrap-touchspin-down" type="button"><i class="' + settings.verticaldownclass + '"></i></button></span></div>';
+        }
+        else {
+          html = '<div class="input-group bootstrap-touchspin"><span class="input-group-btn"><button class="' + settings.buttondown_class + ' bootstrap-touchspin-down" type="button">' + settings.buttondown_txt + '</button></span><span class="input-group-addon bootstrap-touchspin-prefix">' + settings.prefix + '</span><span class="input-group-addon bootstrap-touchspin-postfix">' + settings.postfix + '</span><span class="input-group-btn"><button class="' + settings.buttonup_class + ' bootstrap-touchspin-up" type="button">' + settings.buttonup_txt + '</button></span></div>';
+        }
+
+        container = $(html).insertBefore(originalinput);
+
+        $('.bootstrap-touchspin-prefix', container).after(originalinput);
+
+        if (originalinput.hasClass('input-sm')) {
+          container.addClass('input-group-sm');
+        }
+        else if (originalinput.hasClass('input-lg')) {
+          container.addClass('input-group-lg');
+        }
+      }
+
+      function _initElements() {
+        elements = {
+          down: $('.bootstrap-touchspin-down', container),
+          up: $('.bootstrap-touchspin-up', container),
+          input: $('input', container),
+          prefix: $('.bootstrap-touchspin-prefix', container).addClass(settings.prefix_extraclass),
+          postfix: $('.bootstrap-touchspin-postfix', container).addClass(settings.postfix_extraclass)
+        };
+      }
+
+      function _hideEmptyPrefixPostfix() {
+        if (settings.prefix === '') {
+          elements.prefix.hide();
+        }
+
+        if (settings.postfix === '') {
+          elements.postfix.hide();
+        }
+      }
+
+      function _bindEvents() {
+        originalinput.on('keydown', function(ev) {
+          var code = ev.keyCode || ev.which;
+
+          if (code === 38) {
+            if (spinning !== 'up') {
+              upOnce();
+              startUpSpin();
+            }
+            ev.preventDefault();
+          }
+          else if (code === 40) {
+            if (spinning !== 'down') {
+              downOnce();
+              startDownSpin();
+            }
+            ev.preventDefault();
+          }
+        });
+
+        originalinput.on('keyup', function(ev) {
+          var code = ev.keyCode || ev.which;
+
+          if (code === 38) {
+            stopSpin();
+          }
+          else if (code === 40) {
+            stopSpin();
+          }
+        });
+
+        originalinput.on('blur', function() {
+          _checkValue();
+        });
+
+        elements.down.on('keydown', function(ev) {
+          var code = ev.keyCode || ev.which;
+
+          if (code === 32 || code === 13) {
+            if (spinning !== 'down') {
+              downOnce();
+              startDownSpin();
+            }
+            ev.preventDefault();
+          }
+        });
+
+        elements.down.on('keyup', function(ev) {
+          var code = ev.keyCode || ev.which;
+
+          if (code === 32 || code === 13) {
+            stopSpin();
+          }
+        });
+
+        elements.up.on('keydown', function(ev) {
+          var code = ev.keyCode || ev.which;
+
+          if (code === 32 || code === 13) {
+            if (spinning !== 'up') {
+              upOnce();
+              startUpSpin();
+            }
+            ev.preventDefault();
+          }
+        });
+
+        elements.up.on('keyup', function(ev) {
+          var code = ev.keyCode || ev.which;
+
+          if (code === 32 || code === 13) {
+            stopSpin();
+          }
+        });
+
+        elements.down.on('mousedown.touchspin', function(ev) {
+          elements.down.off('touchstart.touchspin');  // android 4 workaround
+
+          if (originalinput.is(':disabled')) {
+            return;
+          }
+
+          downOnce();
+          startDownSpin();
+
+          ev.preventDefault();
+          ev.stopPropagation();
+        });
+
+        elements.down.on('touchstart.touchspin', function(ev) {
+          elements.down.off('mousedown.touchspin');  // android 4 workaround
+
+          if (originalinput.is(':disabled')) {
+            return;
+          }
+
+          downOnce();
+          startDownSpin();
+
+          ev.preventDefault();
+          ev.stopPropagation();
+        });
+
+        elements.up.on('mousedown.touchspin', function(ev) {
+          elements.up.off('touchstart.touchspin');  // android 4 workaround
+
+          if (originalinput.is(':disabled')) {
+            return;
+          }
+
+          upOnce();
+          startUpSpin();
+
+          ev.preventDefault();
+          ev.stopPropagation();
+        });
+
+        elements.up.on('touchstart.touchspin', function(ev) {
+          elements.up.off('mousedown.touchspin');  // android 4 workaround
+
+          if (originalinput.is(':disabled')) {
+            return;
+          }
+
+          upOnce();
+          startUpSpin();
+
+          ev.preventDefault();
+          ev.stopPropagation();
+        });
+
+        elements.up.on('mouseout touchleave touchend touchcancel', function(ev) {
+          if (!spinning) {
+            return;
+          }
+
+          ev.stopPropagation();
+          stopSpin();
+        });
+
+        elements.down.on('mouseout touchleave touchend touchcancel', function(ev) {
+          if (!spinning) {
+            return;
+          }
+
+          ev.stopPropagation();
+          stopSpin();
+        });
+
+        elements.down.on('mousemove touchmove', function(ev) {
+          if (!spinning) {
+            return;
+          }
+
+          ev.stopPropagation();
+          ev.preventDefault();
+        });
+
+        elements.up.on('mousemove touchmove', function(ev) {
+          if (!spinning) {
+            return;
+          }
+
+          ev.stopPropagation();
+          ev.preventDefault();
+        });
+
+        $(document).on(_scopeEventNames(['mouseup', 'touchend', 'touchcancel'], _currentSpinnerId).join(' '), function(ev) {
+          if (!spinning) {
+            return;
+          }
+
+          ev.preventDefault();
+          stopSpin();
+        });
+
+        $(document).on(_scopeEventNames(['mousemove', 'touchmove', 'scroll', 'scrollstart'], _currentSpinnerId).join(' '), function(ev) {
+          if (!spinning) {
+            return;
+          }
+
+          ev.preventDefault();
+          stopSpin();
+        });
+
+        originalinput.on('mousewheel DOMMouseScroll', function(ev) {
+          if (!settings.mousewheel || !originalinput.is(':focus')) {
+            return;
+          }
+
+          var delta = ev.originalEvent.wheelDelta || -ev.originalEvent.deltaY || -ev.originalEvent.detail;
+
+          ev.stopPropagation();
+          ev.preventDefault();
+
+          if (delta < 0) {
+            downOnce();
+          }
+          else {
+            upOnce();
+          }
+        });
+      }
+
+      function _bindEventsInterface() {
+        originalinput.on('touchspin.uponce', function() {
+          stopSpin();
+          upOnce();
+        });
+
+        originalinput.on('touchspin.downonce', function() {
+          stopSpin();
+          downOnce();
+        });
+
+        originalinput.on('touchspin.startupspin', function() {
+          startUpSpin();
+        });
+
+        originalinput.on('touchspin.startdownspin', function() {
+          startDownSpin();
+        });
+
+        originalinput.on('touchspin.stopspin', function() {
+          stopSpin();
+        });
+
+        originalinput.on('touchspin.updatesettings', function(e, newsettings) {
+          changeSettings(newsettings);
+        });
+      }
+
+      function _forcestepdivisibility(value) {
+        switch (settings.forcestepdivisibility) {
+          case 'round':
+            return (Math.round(value / settings.step) * settings.step).toFixed(settings.decimals);
+          case 'floor':
+            return (Math.floor(value / settings.step) * settings.step).toFixed(settings.decimals);
+          case 'ceil':
+            return (Math.ceil(value / settings.step) * settings.step).toFixed(settings.decimals);
+          default:
+            return value;
+        }
+      }
+
+      function _checkValue() {
+        var val, parsedval, returnval;
+
+        val = originalinput.val();
+
+        if (val === '') {
+          if (settings.replacementval !== '') {
+            originalinput.val(settings.replacementval);
+            originalinput.trigger('change');
+          }
+          return;
+        }
+
+        if (settings.decimals > 0 && val === '.') {
+          return;
+        }
+
+        parsedval = parseFloat(val);
+
+        if (isNaN(parsedval)) {
+          if (settings.replacementval !== '') {
+            parsedval = settings.replacementval;
+          }
+          else {
+            parsedval = 0;
+          }
+        }
+
+        returnval = parsedval;
+
+        if (parsedval.toString() !== val) {
+          returnval = parsedval;
+        }
+
+        if (parsedval < settings.min) {
+          returnval = settings.min;
+        }
+
+        if (parsedval > settings.max) {
+          returnval = settings.max;
+        }
+
+        returnval = _forcestepdivisibility(returnval);
+
+        if (Number(val).toString() !== returnval.toString()) {
+          originalinput.val(returnval);
+          originalinput.trigger('change');
+        }
+      }
+
+      function _getBoostedStep() {
+        if (!settings.booster) {
+          return settings.step;
+        }
+        else {
+          var boosted = Math.pow(2, Math.floor(spincount / settings.boostat)) * settings.step;
+
+          if (settings.maxboostedstep) {
+            if (boosted > settings.maxboostedstep) {
+              boosted = settings.maxboostedstep;
+              value = Math.round((value / boosted)) * boosted;
+            }
+          }
+
+          return Math.max(settings.step, boosted);
+        }
+      }
+
+      function upOnce() {
+        _checkValue();
+
+        value = parseFloat(elements.input.val());
+        if (isNaN(value)) {
+          value = 0;
+        }
+
+        var initvalue = value,
+            boostedstep = _getBoostedStep();
+
+        value = value + boostedstep;
+
+        if (value > settings.max) {
+          value = settings.max;
+          originalinput.trigger('touchspin.on.max');
+          stopSpin();
+        }
+
+        elements.input.val(Number(value).toFixed(settings.decimals));
+
+        if (initvalue !== value) {
+          originalinput.trigger('change');
+        }
+      }
+
+      function downOnce() {
+        _checkValue();
+
+        value = parseFloat(elements.input.val());
+        if (isNaN(value)) {
+          value = 0;
+        }
+
+        var initvalue = value,
+            boostedstep = _getBoostedStep();
+
+        value = value - boostedstep;
+
+        if (value < settings.min) {
+          value = settings.min;
+          originalinput.trigger('touchspin.on.min');
+          stopSpin();
+        }
+
+        elements.input.val(value.toFixed(settings.decimals));
+
+        if (initvalue !== value) {
+          originalinput.trigger('change');
+        }
+      }
+
+      function startDownSpin() {
+        stopSpin();
+
+        spincount = 0;
+        spinning = 'down';
+
+        originalinput.trigger('touchspin.on.startspin');
+        originalinput.trigger('touchspin.on.startdownspin');
+
+        downDelayTimeout = setTimeout(function() {
+          downSpinTimer = setInterval(function() {
+            spincount++;
+            downOnce();
+          }, settings.stepinterval);
+        }, settings.stepintervaldelay);
+      }
+
+      function startUpSpin() {
+        stopSpin();
+
+        spincount = 0;
+        spinning = 'up';
+
+        originalinput.trigger('touchspin.on.startspin');
+        originalinput.trigger('touchspin.on.startupspin');
+
+        upDelayTimeout = setTimeout(function() {
+          upSpinTimer = setInterval(function() {
+            spincount++;
+            upOnce();
+          }, settings.stepinterval);
+        }, settings.stepintervaldelay);
+      }
+
+      function stopSpin() {
+        clearTimeout(downDelayTimeout);
+        clearTimeout(upDelayTimeout);
+        clearInterval(downSpinTimer);
+        clearInterval(upSpinTimer);
+
+        switch (spinning) {
+          case 'up':
+            originalinput.trigger('touchspin.on.stopupspin');
+            originalinput.trigger('touchspin.on.stopspin');
+            break;
+          case 'down':
+            originalinput.trigger('touchspin.on.stopdownspin');
+            originalinput.trigger('touchspin.on.stopspin');
+            break;
+        }
+
+        spincount = 0;
+        spinning = false;
+      }
+
+    });
+
+  };
+
+})(jQuery);
+
 </script>
 
     <!-- Js.class allows more object-oriented javascript -->
@@ -10508,9 +11331,47 @@ var RawConfigurationOptionScreen = Screen.extend({
         // Display this screen
         this.display('raw_configuration_option_screen');
 
+        // If adequate, add a spinner
+        if( this.type.number || this.type.speed ){
+            var input = $(".edit_box input");
+            input.TouchSpin({min:0, max:1000000});
+            // If a list of values is set, use those
+            if( this.definition.attr("values") !== undefined ){
+                var values = this.definition.attr("values");
+                input.on("touchspin.on.startupspin", function(){
+                    for( value of values.split(',') ){ if( parseInt(value) > parseInt(input.val()) ){ input.val(value); break; } }
+                });
+                input.on("touchspin.on.startdownspin", function(){
+                    for( value of values.split(',').reverse() ){ if( parseInt(value) < parseInt(input.val()) ){ input.val(value); break; } }
+                });
+            }
+        } 
+
+        // Display pin information
+        if( this.type.pin ){
+            // Set up event 
+            $(".edit_pin input").on('input', function(){ _that.display_pin_info( $(this).val() ); });
+            
+            // Compile and store template
+            this.pin_template = Handlebars.compile( $("#raw_configuration_option_pin_definition").html() ); 
+        }
+
         // TODO : Allow to comment/uncomment line
         // TODO : Raw edit
         // TODO : Assisted edit
+
+    },
+
+    display_pin_info: function( pin_number ){
+        // Find the pin in the definitions
+        var pin = $("#pin_definitions div[pin='" + pin_number + "']");
+
+        $("#pin_information").html( this.pin_template({
+                pin: pin,
+                number: pin.attr('pin'),
+                description: pin.html(),     
+                found: pin.length,
+        }));
 
     }
 

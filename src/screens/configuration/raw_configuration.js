@@ -94,9 +94,47 @@ var RawConfigurationOptionScreen = Screen.extend({
         // Display this screen
         this.display('raw_configuration_option_screen');
 
+        // If adequate, add a spinner
+        if( this.type.number || this.type.speed ){
+            var input = $(".edit_box input");
+            input.TouchSpin({min:0, max:1000000});
+            // If a list of values is set, use those
+            if( this.definition.attr("values") !== undefined ){
+                var values = this.definition.attr("values");
+                input.on("touchspin.on.startupspin", function(){
+                    for( value of values.split(',') ){ if( parseInt(value) > parseInt(input.val()) ){ input.val(value); break; } }
+                });
+                input.on("touchspin.on.startdownspin", function(){
+                    for( value of values.split(',').reverse() ){ if( parseInt(value) < parseInt(input.val()) ){ input.val(value); break; } }
+                });
+            }
+        } 
+
+        // Display pin information
+        if( this.type.pin ){
+            // Set up event 
+            $(".edit_pin input").on('input', function(){ _that.display_pin_info( $(this).val() ); });
+            
+            // Compile and store template
+            this.pin_template = Handlebars.compile( $("#raw_configuration_option_pin_definition").html() ); 
+        }
+
         // TODO : Allow to comment/uncomment line
         // TODO : Raw edit
         // TODO : Assisted edit
+
+    },
+
+    display_pin_info: function( pin_number ){
+        // Find the pin in the definitions
+        var pin = $("#pin_definitions div[pin='" + pin_number + "']");
+
+        $("#pin_information").html( this.pin_template({
+                pin: pin,
+                number: pin.attr('pin'),
+                description: pin.html(),     
+                found: pin.length,
+        }));
 
     }
 

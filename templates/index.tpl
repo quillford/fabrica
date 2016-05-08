@@ -14,6 +14,8 @@
     <link href="static/css/bootstrap-callouts.css" rel="stylesheet">
     <!-- Fabrica custom CSS -->
     <link href="static/css/fabrica.css" rel="stylesheet">
+    <!-- Bootstrap touchspin -->
+    <link href="static/css/jquery.bootstrap-touchspin.css" rel="stylesheet">
 
   </head>
   <body>
@@ -36,11 +38,15 @@
 
     <!-- HTML files for miscalenous definitions -->
     <link href="src/screens/configuration/definitions.html" rel="html">
+    <!-- HTML files for pin definitions -->
+    <link href="src/screens/configuration/pin_definitions.html" rel="html">
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="static/js/jquery-2.2.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="static/js/bootstrap.min.js"></script>
+     <!-- Bootstrap touchspin-->
+    <script src="static/js/jquery.bootstrap-touchspin.js"></script>
     <!-- Js.class allows more object-oriented javascript -->
     <script src="src/core/js.class/dist/browser/js.class.min.js"></script>
     <!-- HandleBar JS Template system -->
