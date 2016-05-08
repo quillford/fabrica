@@ -83,6 +83,11 @@
     <!-- Raw Configuration screen -->
     <script src="src/screens/configuration/raw_configuration.js" inline></script>
 
+    <!--removeIf(production)-->
+    <!-- Mock module -->
+    <script src="static/js/jquery.mockjax.min.js" inline></script>
+    <script src="src/core/mock.js" inline></script>
+    <!--endRemoveIf(production)-->
 
     <script>
         // Manually enter the first screen
