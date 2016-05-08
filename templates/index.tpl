@@ -9,13 +9,13 @@
     <title>fabrica.</title>
 
     <!-- Bootstrap -->
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" inline>
     <!-- Bootstrap callouts -->
-    <link href="static/css/bootstrap-callouts.css" rel="stylesheet">
+    <link href="static/css/bootstrap-callouts.css" rel="stylesheet" inline>
     <!-- Fabrica custom CSS -->
-    <link href="static/css/fabrica.css" rel="stylesheet">
+    <link href="static/css/fabrica.css" rel="stylesheet" inline>
     <!-- Bootstrap touchspin -->
-    <link href="static/css/jquery.bootstrap-touchspin.css" rel="stylesheet">
+    <link href="static/css/jquery.bootstrap-touchspin.css" rel="stylesheet" inline>
 
   </head>
   <body>
@@ -23,65 +23,65 @@
     <div id="screen"> </div>
     
     <!-- HTML files for screens -->
-    <link href="src/screens/connection.html" rel="html">
-    <link href="src/screens/network_scan.html" rel="html">
-    <link href="src/screens/initialization.html" rel="html">
-    <link href="src/screens/welcome.html" rel="html">
-    <link href="src/screens/main.html" rel="html">
-    <link href="src/screens/control/control.html" rel="html">
-    <link href="src/screens/control/move.html" rel="html">
-    <link href="src/screens/configuration/configuration.html" rel="html">
-    <link href="src/screens/configuration/raw_configuration.html" rel="html">
+    @@include('src/screens/connection.html')
+    @@include('src/screens/network_scan.html')
+    @@include('src/screens/initialization.html')
+    @@include('src/screens/welcome.html')
+    @@include('src/screens/main.html')
+    @@include('src/screens/control/control.html')
+    @@include('src/screens/control/move.html')
+    @@include('src/screens/configuration/configuration.html')
+    @@include('src/screens/configuration/raw_configuration.html')
 
     <!-- HTML files for help screens -->
-    <link href="src/help/screens/connection.html" rel="html">
+    @@include('src/help/screens/connection.html')
 
     <!-- HTML files for miscalenous definitions -->
-    <link href="src/screens/configuration/definitions.html" rel="html">
+    @@include('src/screens/configuration/definitions.html')
     <!-- HTML files for pin definitions -->
-    <link href="src/screens/configuration/pin_definitions.html" rel="html">
+    @@include('src/screens/configuration/pin_definitions.html')
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="static/js/jquery-2.2.1.min.js"></script>
+    <script src="static/js/jquery-2.2.1.min.js" inline></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/bootstrap.min.js" inline></script>
      <!-- Bootstrap touchspin-->
-    <script src="static/js/jquery.bootstrap-touchspin.js"></script>
+    <script src="static/js/jquery.bootstrap-touchspin.js" inline></script>
     <!-- Js.class allows more object-oriented javascript -->
-    <script src="src/core/js.class/dist/browser/js.class.min.js"></script>
+    <script src="src/core/js.class/dist/browser/js.class.min.js" inline></script>
     <!-- HandleBar JS Template system -->
-    <script src="static/js/handlebar.js"></script>
+    <script src="static/js/handlebar.js" inline></script>
 
     <!-- Smoothie Happy ( Smoothie API ) submodule -->
-    <script src="static/js/sh/src/smoothie-happy.js"></script>
+    <script src="static/js/sh/src/smoothie-happy.js" inline></script>
 
     <!-- Core Fabrica object -->
-    <script src="src/core/fabrica.js"></script>
+    <script src="src/core/fabrica.js" inline></script>
     <!-- Base class for all screens -->
-    <script src="src/core/screen.class.js"></script>
+    <script src="src/core/screen.class.js" inline></script>
     <!-- Describes a machine, stores information about it, communicates with it -->
-    <script src="src/core/machine.js"></script>
+    <script src="src/core/machine.js" inline></script>
     <!-- Parses and stores configuration for a machine -->
-    <script src="src/core/configuration.js"></script>
+    <script src="src/core/configuration.js" inline></script>
 
     <!-- Connection screen -->
-    <script src="src/screens/connection.js"></script>
+    <script src="src/screens/connection.js" inline></script>
     <!-- Network scan screen -->
-    <script src="src/screens/network_scan.js"></scrip
+    <script src="src/screens/network_scan.js" inline></scrip
     <!-- Initialization screen -->
-    <script src="src/screens/initialization.js"></script>
+    <script src="src/screens/initialization.js" inline></script>
     <!-- Welcome screen -->
-    <script src="src/screens/welcome.js"></script>
+    <script src="src/screens/welcome.js" inline></script>
     <!-- Main screen -->
-    <script src="src/screens/main.js"></script>
+    <script src="src/screens/main.js" inline></script>
     <!-- Control screen -->
-    <script src="src/screens/control/control.js"></script>
+    <script src="src/screens/control/control.js" inline></script>
     <!-- Move screen -->
-    <script src="src/screens/control/move.js"></script>
+    <script src="src/screens/control/move.js" inline></script>
     <!-- Configuration screen -->
-    <script src="src/screens/configuration/configuration.js"></script>
+    <script src="src/screens/configuration/configuration.js" inline></script>
     <!-- Raw Configuration screen -->
-    <script src="src/screens/configuration/raw_configuration.js"></script>
+    <script src="src/screens/configuration/raw_configuration.js" inline></script>
 
 
     <script>
