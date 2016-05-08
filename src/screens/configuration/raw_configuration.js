@@ -101,12 +101,8 @@ var RawConfigurationOptionScreen = Screen.extend({
             // If a list of values is set, use those
             if( this.definition.attr("values") !== undefined ){
                 var values = this.definition.attr("values");
-                input.on("touchspin.on.startupspin", function(){
-                    for( value of values.split(',') ){ if( parseInt(value) > parseInt(input.val()) ){ input.val(value); break; } }
-                });
-                input.on("touchspin.on.startdownspin", function(){
-                    for( value of values.split(',').reverse() ){ if( parseInt(value) < parseInt(input.val()) ){ input.val(value); break; } }
-                });
+                input.on("touchspin.on.startupspin", function(){ for( value of values.split(',') ){ if( parseInt(value) > parseInt(input.val()) ){ input.val(value); break; } } });
+                input.on("touchspin.on.startdownspin", function(){  for( value of values.split(',').reverse() ){ if( parseInt(value) < parseInt(input.val()) ){ input.val(value); break; } } });
             }
         } 
 
