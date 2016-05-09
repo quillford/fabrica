@@ -8,6 +8,9 @@ use utf8;
 # Get the template file
 my $template = read_file("templates/index.tpl");
 
+# Remove mocks
+$template =~ s/<!--removeIf.*-->(.|\n)*<!--endRemoveIf.*-->//s;
+
 # Find and replace 
 my @replaced;
 for my $to_replace ( split("\n", $template) ){
@@ -20,9 +23,8 @@ for my $to_replace ( split("\n", $template) ){
         my $url = $element->attr("href");
         print "found '$url'\n";
         push @replaced, "<style rel='" . $element->attr("rel") . "'>\n" . read_file("$url") . "\n</style>\n";
-    }elsif( $to_replace =~ m{link.*(static|src).*html} ){
-        my $element = HTML::TreeBuilder->new_from_content( $to_replace )->look_down( _tag => "link", href => qr/(static|src)/ );
-        my $url = $element->attr("href");
+    }elsif( $to_replace =~ m/\@\@include\('(.*html)/ ){
+        my $url = $1;
         print "found '$url'\n";
         push @replaced, "\n" . read_file("$url") . "\n";
     }else{
