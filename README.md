@@ -9,8 +9,22 @@ Looking for contributors/help ! Contact us !
 
 Please after cloning the repository, do 
 
-git submodule init
+`git submodule init`  
+`git submodule update`  
+so the submodules are initialized ( duh ! )
 
-so the submodules are initialized ( duh ! )
 
+## using gulp
 
+You need to have Node.js (Node) installed onto your computer before you can install Gulp.  
+If you do not have Node installed already, you can get it by [downloading the package installer from Node's website.](https://nodejs.org/)   
+
+Install `gulp` using:  
+`npm install --global gulp`  
+this command will install gulp system wide. You should now be able to hit gulp in your command line.
+
+Then use:  
+`npm install`  
+this command will read all the dependencies that were defined in the `package.json` file and automatically installs them for you.
+
+To build use `gulp` (default task) or `gulp demo` for version with mocked data
