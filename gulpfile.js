@@ -59,4 +59,16 @@ gulp.task('demo', function () {
                 'inlinesource', 
                 'rename');
 });
-    
+
+// Starts watcher. Watcher runs gulp task on changes
+gulp.task('watch', function () {
+    gulp.watch('./src/**/*.js', ['default']);
+    gulp.watch('./src/**/*.html', ['default']);
+    gulp.watch('./templates/**/*.tpl', ['default']);
+});
+
+gulp.task('watchDemo', function () {
+    gulp.watch('./src/**/*.js', ['demo']);
+    gulp.watch('./src/**/*.html', ['demo']);
+    gulp.watch('./templates/**/*.tpl', ['demo']);
+});
