@@ -5,19 +5,20 @@ var TerminalScreen = Screen.extend({
         // Display this screen
         this.display('terminal_screen');
 
-        var _that = this;
+        $(".terminal-output").text( fabrica.machine.communication_log );
+
         // Handle button clicks       
-        this.html.find(".btn-terminal-send").off().click(function(){ _that.append_terminal_output($(".terminal-input").val()+"\n"); fabrica.machine.send_command($(".terminal-input").val()); });
+        this.html.find(".btn-terminal-send").off().click(function(){ fabrica.machine.send_command($(".terminal-input").val()); });
+    },
+
+    // listen for gcode being sent so that we can show it
+    on_gcode_send: function(gcode){
+        $(".terminal-output").html($(".terminal-output").html() + "<b>" + gcode + "</b>");
     },
 
     // listen for gcode responses so that we can show them
     on_gcode_response: function(response){
-        this.append_terminal_output(response);
-    },
-
-    // add text to the terminal output
-    append_terminal_output: function(text){
-        $(".terminal-output").text($(".terminal-output").text() + text);
+        $(".terminal-output").html($(".terminal-output").html() + "<b>" + response + "</b>");
     }
 
 });

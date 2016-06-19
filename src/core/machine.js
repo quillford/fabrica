@@ -4,6 +4,7 @@ var Machine = Class({
 
     // Constructor method
     create: function(){
+        this.communication_log = "";
     },
 
     // Attempt connecting to a machine, and report results
@@ -42,7 +43,11 @@ var Machine = Class({
     // Send a command to the board
     send_command: function( command ){
         console.log("sending command: " + command);
-        $.post("http://" + this.ip + "/command", command+"\n").done( function(data){ fabrica.call_event('on_gcode_response', data); } ) ;
+
+        fabrica.call_event('on_gcode_send', command + "\n");
+        this.communication_log += command+"\n";
+        var _that = this;
+        $.post("http://" + this.ip + "/command", command+"\n").done( function(data){ _that.communication_log += data; fabrica.call_event('on_gcode_response', data); } ) ;
     },
 
     // Home an axis or all axes
