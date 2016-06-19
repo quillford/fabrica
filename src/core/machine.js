@@ -34,6 +34,16 @@ var Machine = Class({
             // Parsing done
             fabrica.call_event('on_config_parse_end');
         });
+    },
+
+    // Send a command to the board
+    send_command: function( command ){
+        $.post("http://" + this.ip + "/command", command+"\n");
+    },
+
+    // Home an axis or all axes
+    home: function( axis ){
+        this.send_command(axis.includes("all") ? "G28" : "G28 " + axis);
     }
 
 }); 
