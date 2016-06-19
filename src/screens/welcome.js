@@ -6,10 +6,15 @@ var WelcomeScreen = Screen.extend({
         // Display this screen
         this.display('welcome_screen');
 
-        //TODO : Make "do not show this next time" actually do what it says
+        if( localStorage.getItem("skip_welcome") === "true" ){
+            fabrica.screens.main.enter();
+        }
 
         // Add handler
-        this.html.find(".btn_next").off().click(function(){ fabrica.screens.main.enter(); });
+        this.html.find(".btn_next").off().click(function(){
+            localStorage.setItem("skip_welcome", $(".skip-welcome").is(':checked'));
+            fabrica.screens.main.enter();
+        });
     }, 
 
     on_initialization_complete: function(){
