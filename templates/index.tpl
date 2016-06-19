@@ -71,6 +71,8 @@
     <script src="src/core/machine.js" inline></script>
     <!-- Parses and stores configuration for a machine -->
     <script src="src/core/configuration.js" inline></script>
+    <!-- Stores and retrieves local configuration -->
+    <script src="src/core/local_config.js" inline></script>
 
     <!-- Connection screen -->
     <script src="src/screens/connection.js" inline></script>

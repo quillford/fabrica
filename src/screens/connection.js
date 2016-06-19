@@ -5,6 +5,11 @@ var ConnectionScreen = Screen.extend({
         // Display this screen
         this.display('connection_screen');
 
+        // if the user has come here before and we know their machine's ip, put the ip in the ip field 
+        if( fabrica.local_config.get("ip") && fabrica.local_config.get("ip") !== "undefined" ){
+            $(".input-ip").val(fabrica.local_config.get("ip"));
+        }
+
         // Add handlers
         this.html.find(".btn-connect").off().click(function(){ fabrica.screens.connection.attempt_connection(); });
         this.html.find(".btn-start-search").off().click(function(){ fabrica.screens.network_scan.enter(); });
