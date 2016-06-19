@@ -6,14 +6,15 @@ var HomeScreen = Screen.extend({
         this.display('home_screen');
 
         // Handle button clicks
-        this.html.find(".btn-home-x").off().click(function(){  fabrica.machine.home("X"); }); 
-        this.html.find(".btn-home-y").off().click(function(){  fabrica.machine.home("Y"); });
-        this.html.find(".btn-home-z").off().click(function(){  fabrica.machine.home("Z"); });
-        this.html.find(".btn-home-all").off().click(function(){  fabrica.machine.home("all"); });    
+        
+        var _that = this;
+        ['x', 'y', 'z', 'all'].forEach(function(axis) {
+            _that.html.find(".btn-home-" + axis).off().click(function(){ fabrica.machine.home( axis.toUpperCase() ); }); 
+        });
     }
 
 });
 
 
-fabrica.add_screen('home', new HomeScreen()); 
+fabrica.add_screen('home', new HomeScreen());
 
