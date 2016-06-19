@@ -10,6 +10,7 @@ var ControlScreen = Screen.extend({
         this.html.find(".btn-home").off().click(function(){ fabrica.screens.home.enter(); });
         this.html.find(".btn-spindle").off().click(function(){ fabrica.screens.spindle.enter(); });
         this.html.find(".btn-temperature").off().click(function(){ fabrica.screens.temperature.enter(); });
+        this.html.find(".btn-extruder").off().click(function(){ fabrica.screens.extruder.enter(); });
     },
 
 });
