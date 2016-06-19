@@ -45,6 +45,10 @@ var Machine = Class({
     // Home an axis or all axes
     home: function( axis ){
         this.send_command(axis.includes("all") ? "G28" : "G28 " + axis);
+    },
+
+    jog: function( axis, direction, distance, feedrate ){
+        this.send_command("G91\nG1 " + axis + distance*direction + " F" + feedrate + "\nG90");
     }
 
 }); 

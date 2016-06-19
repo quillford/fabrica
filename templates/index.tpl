@@ -35,6 +35,7 @@
     @@include('src/screens/control/home.html')
     @@include('src/screens/control/spindle.html')
     @@include('src/screens/control/temperature.html')
+    @@include('src/screens/control/extruder.html')
     @@include('src/screens/configuration/configuration.html')
     @@include('src/screens/configuration/raw_configuration.html')
 
@@ -91,6 +92,8 @@
     <script src="src/screens/control/spindle.js" inline></script>
     <!-- Temperature screen -->
     <script src="src/screens/control/temperature.js" inline></script>
+    <!-- Extruder screen -->
+    <script src="src/screens/control/extruder.js" inline></script>
     <!-- Configuration screen -->
     <script src="src/screens/configuration/configuration.js" inline></script>
     <!-- Raw Configuration screen -->
