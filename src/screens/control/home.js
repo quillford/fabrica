@@ -1,4 +1,4 @@
-// Home screen : allows homing the machine's axes
+// Home screen : allows homing the machine's axes independently or all at once
 
 var HomeScreen = Screen.extend({
     enter: function(){
@@ -6,10 +6,10 @@ var HomeScreen = Screen.extend({
         this.display('home_screen');
 
         // Handle button clicks
-        this.html.find(".btn-home-x").off().click(function(){  /*fabrica.machine.home("X");*/ }); 
-        this.html.find(".btn-home-y").off().click(function(){  /*fabrica.machine.home("Y");*/ });
-        this.html.find(".btn-home-z").off().click(function(){  /*fabrica.machine.home("Z");*/ });
-        this.html.find(".btn-home-all").off().click(function(){  /*fabrica.machine.home("all");*/ });    
+        this.html.find(".btn-home-x").off().click(function(){  fabrica.machine.home("X"); }); 
+        this.html.find(".btn-home-y").off().click(function(){  fabrica.machine.home("Y"); });
+        this.html.find(".btn-home-z").off().click(function(){  fabrica.machine.home("Z"); });
+        this.html.find(".btn-home-all").off().click(function(){  fabrica.machine.home("all"); });    
     }
 
 });
