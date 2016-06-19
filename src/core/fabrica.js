@@ -14,12 +14,12 @@ var Fabrica = Class({
         screen.fabrica = this;
     },
 
-    // Call an even upon all modules that want to hear it
-    call_event: function( event_name ){
+    // Call an event upon all modules that want to hear it
+    call_event: function( event_name, parameters ){
         $.each(this.screens, function(name, screen){
             $.each(screen, function(property_name, property){
                 if( property_name == event_name ){
-                    property.call(screen);
+                    property.call(screen, parameters);
                 }
             });
         });

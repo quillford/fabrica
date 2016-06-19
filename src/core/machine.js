@@ -38,7 +38,8 @@ var Machine = Class({
 
     // Send a command to the board
     send_command: function( command ){
-        $.post("http://" + this.ip + "/command", command+"\n");
+        console.log("sending command: " + command);
+        $.post("http://" + this.ip + "/command", command+"\n").done( function(data){ fabrica.call_event('on_gcode_response', data); } ) ;
     },
 
     // Home an axis or all axes
