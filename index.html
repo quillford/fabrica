@@ -392,37 +392,37 @@ body,html      { height:100%; }
 
     <script id="control_screen" type="text/x-handlebars-template">
 
-<div style="padding-bottom: 70px; ">
+  <div style="padding-bottom: 70px;">
 
-  <div class="container">
-    <div class="row">
-        <a class="btn btn-default col-xs-12 btn-lg btn-move" href="#">Move</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-home" href="#">Home</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-offsets" href="#">Offsets</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-probe" href="#">Probe</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-spindle" href="#">Spindle</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-laser" href="#">Laser</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-temperature" href="#">Temperature</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-extruder" href="#">Extruder</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-filament" href="#">Filament</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-calibration" href="#">Calibration</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-levelling" href="#">Levelling</a>
-        <a class="btn btn-default col-xs-12 btn-lg btn-terminal" href="#">Terminal</a>
-    </div>
-  </div>
-
-    <nav class="navbar navbar-default navbar-fixed-bottom">
-      <div class="container">
-        <button type="button" class="btn btn-default navbar-btn navbar-left col-md-2 btn-help"> 
-            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
-        </button>
-        <button type="button" class="btn btn-default navbar-btn navbar-right col-md-2 btn-back">
-            <span class="glyphicon glyphicon-back" aria-hidden="true"></span> Back
-        </button>
+    <div class="container">
+      <div class="row">
+          <a class="btn btn-default col-xs-12 btn-lg btn-move" href="#">Move</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-home" href="#">Home</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-offsets" href="#">Offsets</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-probe" href="#">Probe</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-spindle" href="#">Spindle</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-laser" href="#">Laser</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-temperature" href="#">Temperature</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-extruder" href="#">Extruder</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-filament" href="#">Filament</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-calibration" href="#">Calibration</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-levelling" href="#">Levelling</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-terminal" href="#">Terminal</a>
       </div>
-    </nav>
+    </div>
 
-</div>
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+          <button type="button" class="btn btn-default navbar-btn navbar-left col-md-2 btn-help"> 
+              <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
+          </button>
+          <button type="button" class="btn btn-default navbar-btn navbar-right col-md-2 btn-back">
+              <span class="glyphicon glyphicon-back" aria-hidden="true"></span> Back
+          </button>
+        </div>
+      </nav>
+
+  </div>
 
 </script>
 
@@ -589,28 +589,36 @@ body,html      { height:100%; }
 
     <script id="terminal_screen" type="text/x-handlebars-template">
 
-    <div class="input-group" style="max-width: 450px;">
-      <input type="text" class="form-control terminal-input">
-      <span class="input-group-btn">
-        <button class="btn btn-default btn-terminal-send" type="button">Send</button>
-      </span>
-    </div>
+    <!-- Gcode/Commands input -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container" style="display: flex;">
+            <div class="input-group col-md-9" style="max-width: 450px; padding-top: 8px; margin: auto;">
+                <input type="text" class="form-control terminal-input" placeholder="enter command...">
+                <span class="input-group-btn">
+            <button class="btn btn-default btn-terminal-send" type="button">Send</button>
+          </span>
+            </div>
+            <button type="button" class="btn btn-default navbar-btn navbar-right col-md-3 active btn-auto-scroll" data-toggle="button" aria-pressed="true" autocomplete="off">
+                Auto Scroll
+            </button>
+        </div>
+    </nav>
 
-    <pre class="well terminal-output" style="margin: 10px 10px 10px 10px;"></pre>
+    <pre class="well terminal-output" style="padding: 65px 5px 65px 20px; height: 100vh; width: 100vw; position: fixed; overflow: scroll;"></pre>
 
+    <!-- Fabrica Navigation -->
     <nav class="navbar navbar-default navbar-fixed-bottom">
-      <div class="container">
-        <button type="button" class="btn btn-default navbar-btn navbar-left col-md-2 btn-help"> 
-            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
-        </button>
-        <button type="button" class="btn btn-default navbar-btn navbar-right col-md-2 btn-back">
-            <span class="glyphicon glyphicon-back" aria-hidden="true"></span> Back
-        </button>
-      </div>
+        <div class="container">
+            <button type="button" class="btn btn-default navbar-btn navbar-left col-md-2 btn-help">
+                <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
+            </button>
+            <button type="button" class="btn btn-default navbar-btn navbar-right col-md-2 btn-back">
+                <span class="glyphicon glyphicon-back" aria-hidden="true"></span> Back
+            </button>
+        </div>
     </nav>
 
 </script>
-
     <script id="configuration_screen" type="text/x-handlebars-template">
 
 <div class="container">
@@ -11516,20 +11524,25 @@ var TerminalScreen = Screen.extend({
         // Display this screen
         this.display('terminal_screen');
 
-        $(".terminal-output").text( fabrica.machine.communication_log );
+        this.update_terminal_output( fabrica.machine.communication_log , true );
 
         // Handle button clicks       
-        this.html.find(".btn-terminal-send").off().click(function(){ fabrica.machine.send_command($(".terminal-input").val()); });
+        this.html.find(".btn-terminal-send").off().click(function(){ if($(".terminal-input").val().length > 0){ fabrica.machine.send_command($(".terminal-input").val()); } });
     },
 
     // listen for gcode being sent so that we can show it
     on_gcode_send: function(gcode){
-        $(".terminal-output").html($(".terminal-output").html() + "<b>" + gcode + "</b>");
+        this.update_terminal_output( $(".terminal-output").html() + "<b>" + gcode + "</b>", $(".btn-auto-scroll").attr("aria-pressed") );
     },
 
     // listen for gcode responses so that we can show them
     on_gcode_response: function(response){
-        $(".terminal-output").html($(".terminal-output").html() + "<b>" + response + "</b>");
+        this.update_terminal_output( $(".terminal-output").html() + "<b>" + response + "</b>", $(".btn-auto-scroll").attr("aria-pressed") );
+    },
+
+    update_terminal_output: function( terminal_output, scroll_to_bottom ){
+        $(".terminal-output").html( terminal_output );
+        if(scroll_to_bottom === "true"){ $(".terminal-output").scrollTop( $(".terminal-output").prop("scrollHeight") ); }
     }
 
 });
