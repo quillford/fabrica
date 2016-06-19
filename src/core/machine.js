@@ -19,6 +19,9 @@ var Machine = Class({
         this.address = "http://" + ip ;
         this.version_string = data;
 
+        // Remember the machine's ip after the user leaves or refreshs
+        localStorage.setItem("ip", this.ip);
+
         // Tell the system that a new connection was established
         fabrica.call_event('on_succesful_connection');
     

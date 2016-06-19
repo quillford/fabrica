@@ -11049,6 +11049,9 @@ var Machine = Class({
         this.address = "http://" + ip ;
         this.version_string = data;
 
+        // Remember the machine's ip after the user leaves or refreshs
+        localStorage.setItem("ip", this.ip);
+
         // Tell the system that a new connection was established
         fabrica.call_event('on_succesful_connection');
     
@@ -11165,6 +11168,11 @@ var ConnectionScreen = Screen.extend({
     enter: function(){
         // Display this screen
         this.display('connection_screen');
+
+        // if the user has come here before and we know their machine's ip, put the ip in the ip field 
+        if(localStorage.getItem("ip")){
+            $(".input-ip").val(localStorage.getItem("ip"));
+        }
 
         // Add handlers
         this.html.find(".btn-connect").off().click(function(){ fabrica.screens.connection.attempt_connection(); });
@@ -11360,11 +11368,7 @@ var HomeScreen = Screen.extend({
         this.display('home_screen');
 
         // Handle button clicks
-        // this.html.find(".btn-home-x").off().click(function(){  fabrica.machine.home("X"); }); 
-        // this.html.find(".btn-home-y").off().click(function(){  fabrica.machine.home("Y"); });
-        // this.html.find(".btn-home-z").off().click(function(){  fabrica.machine.home("Z"); });
-        // this.html.find(".btn-home-all").off().click(function(){  fabrica.machine.home("all"); });
-
+        
         var _that = this;
         ['x', 'y', 'z', 'all'].forEach(function(axis) {
             _that.html.find(".btn-home-" + axis).off().click(function(){ fabrica.machine.home( axis.toUpperCase() ); }); 
