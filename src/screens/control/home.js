@@ -1,4 +1,4 @@
-// Home screen : allows homing the machine's axes
+// Home screen : allows homing the machine's axes independently or all at once
 
 var HomeScreen = Screen.extend({
     enter: function(){

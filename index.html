@@ -470,6 +470,24 @@ body,html      { height:100%; }
 
 </script>
 
+    <script id="spindle_screen" type="text/x-handlebars-template">
+
+    <button type="button" class="btn btn-success btn-lg btn-spindle-on">Spindle On</button>
+    <button type="button" class="btn btn-danger btn-lg btn-spindle-off">Spindle Off</button>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container">
+        <button type="button" class="btn btn-default navbar-btn navbar-left col-md-2 btn-help"> 
+            <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
+        </button>
+        <button type="button" class="btn btn-default navbar-btn navbar-right col-md-2 btn-back">
+            <span class="glyphicon glyphicon-back" aria-hidden="true"></span> Back
+        </button>
+      </div>
+    </nav>
+
+</script>
+
     <script id="configuration_screen" type="text/x-handlebars-template">
 
 <div class="container">
@@ -10956,7 +10974,7 @@ var Machine = Class({
 
     // Send a command to the board
     send_command: function( command ){
-        console.log("sedning: "  +command);
+        console.log("sending command: "  + command);
         // $.post("http://" + this.ip + "/command", command+"\n");
     },
 
@@ -11201,6 +11219,7 @@ var ControlScreen = Screen.extend({
         // Setup button clicks       
         this.html.find(".btn-move").off().click(function(){ fabrica.screens.move.enter(); });
         this.html.find(".btn-home").off().click(function(){ fabrica.screens.home.enter(); });
+        this.html.find(".btn-spindle").off().click(function(){ fabrica.screens.spindle.enter(); });
     },
 
 });
@@ -11224,7 +11243,7 @@ fabrica.add_screen('move', new MoveScreen());
 
 </script>
     <!-- Home screen -->
-    <script>// Home screen : allows homing the machine's axes
+    <script>// Home screen : allows homing the machine's axes independently or all at once
 
 var HomeScreen = Screen.extend({
     enter: function(){
@@ -11243,6 +11262,23 @@ var HomeScreen = Screen.extend({
 
 fabrica.add_screen('home', new HomeScreen()); 
 
+</script>
+    <!-- Home screen -->
+    <script>// Spindle screen : spindle on/off control
+
+var SpindleScreen = Screen.extend({
+    enter: function(){
+        // Display this screen
+        this.display('spindle_screen');
+
+        // Handle button clicks       
+        this.html.find(".btn-spindle-on").off().click(function(){ fabrica.machine.send_command("M3"); });
+        this.html.find(".btn-spindle-off").off().click(function(){ fabrica.machine.send_command("M5"); });
+    },
+
+});
+
+fabrica.add_screen('spindle', new SpindleScreen()); 
 </script>
     <!-- Configuration screen -->
     <script>// Configuration screen : lists different configuration activities and allows to select which to use
