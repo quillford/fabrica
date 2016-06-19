@@ -32,6 +32,7 @@
     @@include('src/screens/main.html')
     @@include('src/screens/control/control.html')
     @@include('src/screens/control/move.html')
+    @@include('src/screens/control/home.html')
     @@include('src/screens/configuration/configuration.html')
     @@include('src/screens/configuration/raw_configuration.html')
 
@@ -82,6 +83,8 @@
     <script src="src/screens/control/control.js" inline></script>
     <!-- Move screen -->
     <script src="src/screens/control/move.js" inline></script>
+    <!-- Home screen -->
+    <script src="src/screens/control/home.js" inline></script>
     <!-- Configuration screen -->
     <script src="src/screens/configuration/configuration.js" inline></script>
     <!-- Raw Configuration screen -->
