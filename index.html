@@ -11160,6 +11160,29 @@ fabrica.machine.config = new Configuration();
 
 
 </script>
+    <!-- Stores and retrieves local configuration -->
+    <script>var LocalConfig = Class({
+    // Constructor method
+    create: function(){
+
+    },
+
+    // set a local config value
+    set: function( name, value ){
+        localStorage.setItem(name, value);
+    },
+
+    // get a local config value
+    get: function( name ){
+        return localStorage.getItem(name);
+    }
+
+
+});
+
+fabrica.local_config = new LocalConfig();
+
+</script>
 
     <!-- Connection screen -->
     <script>// Connection screen : shows connection status, tries to automatically connect, offers the option to manually enter parameters
@@ -11170,8 +11193,8 @@ var ConnectionScreen = Screen.extend({
         this.display('connection_screen');
 
         // if the user has come here before and we know their machine's ip, put the ip in the ip field 
-        if(localStorage.getItem("ip")){
-            $(".input-ip").val(localStorage.getItem("ip"));
+        if( fabrica.local_config.get("ip") && fabrica.local_config.get("ip") !== "undefined" ){
+            $(".input-ip").val(fabrica.local_config.get("ip"));
         }
 
         // Add handlers
@@ -11277,13 +11300,13 @@ var WelcomeScreen = Screen.extend({
         // Display this screen
         this.display('welcome_screen');
 
-        if( localStorage.getItem("skip_welcome") === "true" ){
+        if( fabrica.local_config.get("skip_welcome") === "true" ){
             fabrica.screens.main.enter();
         }
 
         // Add handler
         this.html.find(".btn_next").off().click(function(){
-            localStorage.setItem("skip_welcome", $(".skip-welcome").is(':checked'));
+            fabrica.local_config.set("skip_welcome", $(".skip-welcome").is(':checked'));
             fabrica.screens.main.enter();
         });
     }, 

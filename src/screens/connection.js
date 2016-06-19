@@ -6,8 +6,8 @@ var ConnectionScreen = Screen.extend({
         this.display('connection_screen');
 
         // if the user has come here before and we know their machine's ip, put the ip in the ip field 
-        if(localStorage.getItem("ip")){
-            $(".input-ip").val(localStorage.getItem("ip"));
+        if( fabrica.local_config.get("ip") && fabrica.local_config.get("ip") !== "undefined" ){
+            $(".input-ip").val(fabrica.local_config.get("ip"));
         }
 
         // Add handlers
