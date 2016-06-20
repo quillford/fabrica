@@ -18,6 +18,8 @@
     <link href="static/css/jquery.bootstrap-touchspin.css" rel="stylesheet" inline>
     <!-- Bootstrap switch -->
     <link href="static/css/bootstrap-switch.min.css" rel="stylesheet" inline>
+    <!-- Bootstrap slider -->
+    <link href="static/css/bootstrap-slider.min.css" rel="stylesheet" inline>
 
   </head>
   <body>
@@ -56,6 +58,8 @@
     <script src="static/js/jquery.bootstrap-touchspin.js" inline></script>
      <!-- Bootstrap switch-->
     <script src="static/js/bootstrap-switch.min.js" inline></script>
+    <!-- Bootstrap slider switch-->
+    <script src="static/js/bootstrap-slider.min.js" inline></script>
     <!-- Js.class allows more object-oriented javascript -->
     <script src="src/core/js.class/dist/browser/js.class.min.js" inline></script>
     <!-- HandleBar JS Template system -->

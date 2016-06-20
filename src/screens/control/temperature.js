@@ -5,18 +5,44 @@ var TemperatureScreen = Screen.extend({
         // Display this screen
         this.display('temperature_screen');
 
+        // Get an initial temperature reading
+        fabrica.machine.send_command("M105");
+
+        // Create the sliders        
+        $(".hotend-slider").slider({
+            tooltip: 'always',
+            formatter: function(value) {
+                return value;
+            }
+        });
+
+        $(".bed-slider").slider({
+            tooltip: 'always',
+            formatter: function(value) {
+                return value;
+            }
+        });
+
+        // Apply styling to sliders
+        $(".slider").css({
+            "max-width": "500px",
+            "width": "100%",
+            "margin-top": "30px"
+        });
+
+
         // Handle button clicks       
-        this.html.find(".btn-set-hotend-temp").off().click(function(){ fabrica.machine.send_command("M104 S" + $(".hotend-temp").val()); });
-        this.html.find(".btn-set-bed-temp").off().click(function(){ fabrica.machine.send_command("M140 S" + $(".bed-temp").val()); });
-        this.html.find(".btn-get-temp").off().click(function(){ fabrica.machine.send_command("M105"); });
+        this.html.find(".btn-set-hotend-temperature").off().click(function(){ fabrica.machine.send_command("M104 S" + $("#hotend-slider .tooltip-inner").text()); });
+        this.html.find(".btn-set-bed-temperature").off().click(function(){ fabrica.machine.send_command("M140 S" + $("#bed-slider .tooltip-inner").text()); });
+        this.html.find(".btn-set-hotend-heater-off").off().click(function(){ fabrica.machine.send_command("M104 S0"); });
+        this.html.find(".btn-set-bed-heater-off").off().click(function(){ fabrica.machine.send_command("M140 S0"); });
+        this.html.find(".btn-update-temperature").off().click(function(){ fabrica.machine.send_command("M105"); });
     },
 
     on_gcode_response: function(response){
-        console.log(response);
-
         // check if it contains temperature data and display it if it does
         if(response.includes("ok T:")){
-            $(".temp-readout").text(response);
+            $(".temperature-readout").html(response);
         }
     }
 
