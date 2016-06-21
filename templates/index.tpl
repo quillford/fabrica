@@ -39,6 +39,7 @@
     @@include('src/screens/control/temperature.html')
     @@include('src/screens/control/extruder.html')
     @@include('src/screens/control/terminal.html')
+    @@include('src/screens/make/make.html')
     @@include('src/screens/configuration/configuration.html')
     @@include('src/screens/configuration/raw_configuration.html')
 
@@ -103,6 +104,8 @@
     <script src="src/screens/control/extruder.js" inline></script>
     <!-- Terminal screen -->
     <script src="src/screens/control/terminal.js" inline></script>
+    <!-- Make screen -->
+    <script src="src/screens/make/make.js" inline></script>
     <!-- Configuration screen -->
     <script src="src/screens/configuration/configuration.js" inline></script>
     <!-- Raw Configuration screen -->
