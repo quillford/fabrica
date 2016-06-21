@@ -11394,8 +11394,9 @@ var Updater = Class({
     },
 
     update: function(){
-        if(fabrica.machine.state === "printing" || fabrica.machine.state === "idle"){
+        if(fabrica.machine.state === "printing"){
             fabrica.machine.send_command("progress");
+        }else if(fabrica.machine.state === "idle"){
             fabrica.machine.send_command("M105");
         }
     },
