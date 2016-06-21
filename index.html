@@ -670,7 +670,6 @@ body,html      { height:100%; }
 </script>
     <script id="make_screen" type="text/x-handlebars-template">
 
-
     <h2 class="screen-status">Loading...</h2>
 
     <div class="file-manager" >
@@ -11213,6 +11212,7 @@ var Machine = Class({
     // Constructor method
     create: function(){
         this.communication_log = "";
+        this.state = "disconnected";
     },
 
     // Attempt connecting to a machine, and report results
@@ -11227,13 +11227,14 @@ var Machine = Class({
         this.ip = ip;
         this.address = "http://" + ip ;
         this.version_string = data;
+        this.state = "idle";
 
         // Remember the machine's ip after the user leaves or refreshs
         localStorage.setItem("ip", this.ip);
 
         // Tell the system that a new connection was established
         fabrica.call_event('on_succesful_connection');
-    
+
         // Next step is obtaining the configuration file from the SD card
         // TODO : Handle errors
         $.ajax(this.address + "/sd/config").done(function(file){
@@ -11365,6 +11366,35 @@ fabrica.machine.config = new Configuration();
 
 fabrica.local_config = new LocalConfig();
 
+</script>
+    <!-- Updates machine position, temperature, etc -->
+    <script>// Core updater object, used to update machine information frequently such as temperature, position, and progress of file playing
+
+var Updater = Class({
+
+    // Constructor method
+    create: function(){
+        window.setInterval(this.update, 5000);
+    },
+
+    update: function(){
+        if(fabrica.machine.state === "printing" || fabrica.machine.state === "idle"){
+            fabrica.machine.send_command("progress");
+            fabrica.machine.send_command("M105");
+        }
+    },
+
+    on_gcode_response: function(response){
+        if(response.includes("Not currently playing")){
+            fabrica.machine.state = "idle";
+        }else if(response.includes("file") && response.includes("complete")) {
+            fabrica.machine.state = "printing";
+        }
+    }
+
+}); 
+
+fabrica.machine.updater = new Updater();
 </script>
 
     <!-- Connection screen -->
@@ -11799,9 +11829,9 @@ var MakeScreen = Screen.extend({
             $(".playing-file").show();
 
             $(".file-title").text( response.match("/sd/(.*?), ")[1] );
-            $(".file-progress").text( response.match(", (.*) %")[1] + "%" );
+            $(".file-progress").text( response.match(", (.*?) %")[1] + "%" );
             $(".file-progress-bar").css("width", response.match(", (.*) %")[1]);
-            $(".file-time-elapsed").text( new Date(response.match("time: (.*) s")[1] * 1000).toISOString().substr(11, 8) );
+            $(".file-time-elapsed").text( new Date(response.match("time: (.*?) s")[1] * 1000).toISOString().substr(11, 8) );
         }
     }
 });

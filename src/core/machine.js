@@ -5,6 +5,7 @@ var Machine = Class({
     // Constructor method
     create: function(){
         this.communication_log = "";
+        this.state = "disconnected";
     },
 
     // Attempt connecting to a machine, and report results
@@ -19,13 +20,14 @@ var Machine = Class({
         this.ip = ip;
         this.address = "http://" + ip ;
         this.version_string = data;
+        this.state = "idle";
 
         // Remember the machine's ip after the user leaves or refreshs
         localStorage.setItem("ip", this.ip);
 
         // Tell the system that a new connection was established
         fabrica.call_event('on_succesful_connection');
-    
+
         // Next step is obtaining the configuration file from the SD card
         // TODO : Handle errors
         $.ajax(this.address + "/sd/config").done(function(file){

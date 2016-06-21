@@ -80,9 +80,9 @@ var MakeScreen = Screen.extend({
             $(".playing-file").show();
 
             $(".file-title").text( response.match("/sd/(.*?), ")[1] );
-            $(".file-progress").text( response.match(", (.*) %")[1] + "%" );
+            $(".file-progress").text( response.match(", (.*?) %")[1] + "%" );
             $(".file-progress-bar").css("width", response.match(", (.*) %")[1]);
-            $(".file-time-elapsed").text( new Date(response.match("time: (.*) s")[1] * 1000).toISOString().substr(11, 8) );
+            $(".file-time-elapsed").text( new Date(response.match("time: (.*?) s")[1] * 1000).toISOString().substr(11, 8) );
         }
     }
 });
