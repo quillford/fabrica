@@ -7,38 +7,43 @@
         <li role="presentation"><a href="#">Relative</a></li>
         <li role="presentation"><a href="#">Absolute</a></li>
       </ul>
+
+
+      <!-- Jogging buttons -->
+      <div style="margin-top: 15px;">
+        <div class="btn-group btn-group-lg" role="group">
+          <button type="button" class="btn btn-default btn-jog-x-neg">X-</button>
+          <button type="button" class="btn btn-default btn-jog-x-pos">X+</button>
+        </div>
+
+        <div class="btn-group btn-group-lg" role="group">
+          <button type="button" class="btn btn-default btn-jog-y-neg">Y-</button>
+          <button type="button" class="btn btn-default btn-jog-y-pos">Y+</button>
+        </div>
+
+        <div class="btn-group btn-group-lg" role="group">
+          <button type="button" class="btn btn-default btn-jog-z-neg">Z-</button>
+          <button type="button" class="btn btn-default btn-jog-z-pos">Z+</button>
+        </div>
+      </div>
+
+
+      <br>
+
+      <div class="input-group" style="max-width: 800px;">
+          <input type="number" class="form-control jog-distance" value="10">
+          <span class="input-group-addon">mm</span>
+          <input type="number" class="form-control jog-xy-feedrate" value="3000">
+          <span class="input-group-addon">XY feedrate</span>
+          <input type="number" class="form-control jog-z-feedrate" value="200">
+          <span class="input-group-addon">Z feedrate</span>
+      </div>
+
+      <br>
+
+      <button class="btn btn-default btn-lg btn-motors-off">Motors Off</button>
+
   </div>
-
-  <div class="btn-group btn-group-lg" role="group">
-    <button type="button" class="btn btn-default btn-jog-x-neg">X-</button>
-    <button type="button" class="btn btn-default btn-jog-x-pos">X+</button>
-  </div>
-
-  <div class="btn-group btn-group-lg" role="group">
-    <button type="button" class="btn btn-default btn-jog-y-neg">Y-</button>
-    <button type="button" class="btn btn-default btn-jog-y-pos">Y+</button>
-  </div>
-
-  <div class="btn-group btn-group-lg" role="group">
-    <button type="button" class="btn btn-default btn-jog-z-neg">Z-</button>
-    <button type="button" class="btn btn-default btn-jog-z-pos">Z+</button>
-  </div>
-
-
-  <br>
-
-  <div class="input-group">
-      <input type="number" class="form-control jog-distance" value="10">
-      <span class="input-group-addon">mm</span>
-      <input type="number" class="form-control jog-xy-feedrate" value="3000">
-      <span class="input-group-addon">XY feedrate</span>
-      <input type="number" class="form-control jog-z-feedrate" value="200">
-      <span class="input-group-addon">Z feedrate</span>
-  </div>
-
-  <br>
-
-  <button class="btn btn-default btn-lg btn-motors-off">Motors Off</button>
 
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
