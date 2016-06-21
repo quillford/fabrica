@@ -11,6 +11,9 @@ var MakeScreen = Screen.extend({
         $(".playing-file").hide();
         $(".file-manager").hide();
         
+
+        // Button click handlers
+        this.html.find(".btn-abort-play").off().click(function(){ fabrica.machine.send_command("M26"); });
     },
 
 

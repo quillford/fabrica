@@ -670,7 +670,6 @@ body,html      { height:100%; }
 </script>
     <script id="make_screen" type="text/x-handlebars-template">
 
-
     <h2 class="screen-status">Loading...</h2>
 
     <div class="file-manager" >
@@ -713,6 +712,8 @@ body,html      { height:100%; }
         </div>
         <br>
         <h2 class="file-time-elapsed"></h3>
+        <br>
+        <button type="button" class="btn btn-danger btn-abort-play">Abort</button>
     </div>
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
@@ -11730,6 +11731,9 @@ var MakeScreen = Screen.extend({
         $(".playing-file").hide();
         $(".file-manager").hide();
         
+
+        // Button click handlers
+        this.html.find(".btn-abort-play").off().click(function(){ fabrica.machine.send_command("M26"); });
     },
 
 
