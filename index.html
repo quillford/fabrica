@@ -723,6 +723,9 @@ body,html      { height:100%; }
         </div>
         <br>
         <h2 class="file-time-elapsed"></h3>
+
+        <button type="button" class="btn btn-lg btn-danger btn-abort">Abort</button>
+        <button type="button" class="btn btn-lg btn-primary btn-suspend-resume">Suspend</button>
     </div>
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
@@ -11397,6 +11400,7 @@ var Updater = Class({
 
     // Parse the result of our query. It should contain temperature, endstop, postion, and play data in that order.
     update_received: function( response ){
+        console.log(response);
         var result = {};
 
         var lines = response.split("\n");
@@ -11442,21 +11446,32 @@ var Updater = Class({
         }
 
         // Extract progress
-        // Example : "file: /sd/vive-basestation-mount.gcode, 5 % complete, elapsed time: 32 s, est time: 565 s" or "Not currently playing"
         result.progress = {};
         result.progress.string = lines[4].replace(/([\s\r]*)$/,'');
         if( result.progress.string.match(/currently/g) ){
+            // Not playing "Not currently playing"
             result.progress.playing = false;
-        }else{
+            result.progress.paused = false;
+        }else if(result.progress.string.match(/complete/g) && result.progress.string.match(/est/g)) {
+            // Playing, not paused
+            // Example : "file: /sd/vive-basestation-mount.gcode, 5 % complete, elapsed time: 32 s, est time: 565 s" or "Not currently playing"
             result.progress.playing = true;
+            result.progress.paused = false;
 
             result.progress.filename = result.progress.string.match("/sd/(.*?), ")[1];
             result.progress.percent_complete = result.progress.string.match(", (.*?) %")[1];
             result.progress.elapsed_time = response.match("elapsed time: (.*?) s")[1];
             
-            if(result.progress.string.match(/est/g)){ result.progress.estimated_time = response.match("est time: (.*?) s")[1]; }       
+            if(result.progress.string.match(/est/g)){ result.progress.estimated_time = result.progress.string.match("est time: (.*) s")[1]; }       
+        }else {
+            // Paused
+            // Example: SD print is paused at 0/115274
+
+            result.progress.playing = true;
+            result.progress.paused = true;
         }
         fabrica.machine.playing = result.progress.playing;
+        fabrica.machine.paused = result.progress.paused;
 
         fabrica.call_event("on_value_update", result);
     }
@@ -11817,6 +11832,8 @@ var MakeScreen = Screen.extend({
         // Display this screen
         this.display('make_screen');
 
+        this.html.find(".btn-abort").off().click(function(){ fabrica.machine.send_command("abort"); });
+        this.html.find(".btn-suspend-resume").off().click(function(){ fabrica.machine.send_command( $(".btn-suspend-resume").text().toLowerCase() ); });
         
         $(".playing-file").hide();
         $(".file-manager").hide();
@@ -11870,7 +11887,14 @@ var MakeScreen = Screen.extend({
     },
 
     on_value_update: function( value ){
-        if(value.progress.playing){
+
+
+        if(value.progress.paused){
+            // Paused
+
+            $(".btn-suspend-resume").text("Resume");
+
+        }else if(value.progress.playing){
             // Example: file: /sd/test.gcode, 6 % complete, elapsed time: 3 s 
 
             // The machine is playing a file, so we should display information about that job and hide the file manager
@@ -11878,13 +11902,17 @@ var MakeScreen = Screen.extend({
             $(".file-manager").hide();
             $(".playing-file").show();
 
+            $(".btn-suspend-resume").text("Suspend");
+
             $(".file-title").text( value.progress.filename );
             $(".file-progress").text( value.progress.percent_complete + "%" );
             $(".file-progress-bar").css("width", value.progress.percent_complete);
             $(".file-time-elapsed").text("Elapsed: " + new Date(value.progress.elapsed_time * 1000).toISOString().substr(11, 8) );
         }else {
+            // Not paused and not playing
+
+            // If the file manager isn't visible and we are on this screen, ask for the files 
             if(!$(".file-manager").is(":visible") && fabrica.current_screen.name === "make_screen"){
-                // Ask for the files
                 fabrica.machine.send_command("M20");
             }
             $(".screen-status").hide();

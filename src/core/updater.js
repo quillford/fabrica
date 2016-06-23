@@ -61,21 +61,32 @@ var Updater = Class({
         }
 
         // Extract progress
-        // Example : "file: /sd/vive-basestation-mount.gcode, 5 % complete, elapsed time: 32 s, est time: 565 s" or "Not currently playing"
         result.progress = {};
         result.progress.string = lines[4].replace(/([\s\r]*)$/,'');
         if( result.progress.string.match(/currently/g) ){
+            // Not playing "Not currently playing"
             result.progress.playing = false;
-        }else{
+            result.progress.paused = false;
+        }else if(result.progress.string.match(/complete/g) && result.progress.string.match(/est/g)) {
+            // Playing, not paused
+            // Example : "file: /sd/vive-basestation-mount.gcode, 5 % complete, elapsed time: 32 s, est time: 565 s" or "Not currently playing"
             result.progress.playing = true;
+            result.progress.paused = false;
 
             result.progress.filename = result.progress.string.match("/sd/(.*?), ")[1];
             result.progress.percent_complete = result.progress.string.match(", (.*?) %")[1];
             result.progress.elapsed_time = response.match("elapsed time: (.*?) s")[1];
             
-            if(result.progress.string.match(/est/g)){ result.progress.estimated_time = response.match("est time: (.*?) s")[1]; }       
+            if(result.progress.string.match(/est/g)){ result.progress.estimated_time = result.progress.string.match("est time: (.*) s")[1]; }       
+        }else {
+            // Paused
+            // Example: SD print is paused at 0/115274
+
+            result.progress.playing = true;
+            result.progress.paused = true;
         }
         fabrica.machine.playing = result.progress.playing;
+        fabrica.machine.paused = result.progress.paused;
 
         fabrica.call_event("on_value_update", result);
     }

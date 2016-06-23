@@ -5,6 +5,8 @@ var MakeScreen = Screen.extend({
         // Display this screen
         this.display('make_screen');
 
+        this.html.find(".btn-abort").off().click(function(){ fabrica.machine.send_command("abort"); });
+        this.html.find(".btn-suspend-resume").off().click(function(){ fabrica.machine.send_command( $(".btn-suspend-resume").text().toLowerCase() ); });
         
         $(".playing-file").hide();
         $(".file-manager").hide();
@@ -58,7 +60,14 @@ var MakeScreen = Screen.extend({
     },
 
     on_value_update: function( value ){
-        if(value.progress.playing){
+
+
+        if(value.progress.paused){
+            // Paused
+
+            $(".btn-suspend-resume").text("Resume");
+
+        }else if(value.progress.playing){
             // Example: file: /sd/test.gcode, 6 % complete, elapsed time: 3 s 
 
             // The machine is playing a file, so we should display information about that job and hide the file manager
@@ -66,13 +75,17 @@ var MakeScreen = Screen.extend({
             $(".file-manager").hide();
             $(".playing-file").show();
 
+            $(".btn-suspend-resume").text("Suspend");
+
             $(".file-title").text( value.progress.filename );
             $(".file-progress").text( value.progress.percent_complete + "%" );
             $(".file-progress-bar").css("width", value.progress.percent_complete);
             $(".file-time-elapsed").text("Elapsed: " + new Date(value.progress.elapsed_time * 1000).toISOString().substr(11, 8) );
         }else {
+            // Not paused and not playing
+
+            // If the file manager isn't visible and we are on this screen, ask for the files 
             if(!$(".file-manager").is(":visible") && fabrica.current_screen.name === "make_screen"){
-                // Ask for the files
                 fabrica.machine.send_command("M20");
             }
             $(".screen-status").hide();
