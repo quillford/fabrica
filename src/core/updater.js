@@ -61,13 +61,19 @@ var Updater = Class({
         }
 
         // Extract progress
-        // Example : "13 % complete, elapsed time: 14 s, est time: 86 s" or "Not currently playing"
+        // Example : "file: /sd/vive-basestation-mount.gcode, 5 % complete, elapsed time: 32 s, est time: 565 s" or "Not currently playing"
         result.progress = {};
         result.progress.string = lines[4].replace(/([\s\r]*)$/,'');
         if( result.progress.string.match(/currently/g) ){
             result.progress.playing = false;
         }else{
             result.progress.playing = true;
+
+            result.progress.filename = result.progress.string.match("/sd/(.*?), ")[1];
+            result.progress.percent_complete = result.progress.string.match(", (.*?) %")[1];
+            result.progress.elapsed_time = response.match("elapsed time: (.*?) s")[1];
+            
+            if(result.progress.string.match(/est/g)){ result.progress.estimated_time = response.match("est time: (.*?) s")[1]; }       
         }
         fabrica.machine.playing = result.progress.playing;
 

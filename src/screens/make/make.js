@@ -49,8 +49,6 @@ var MakeScreen = Screen.extend({
 
                             // Close the modal
                             $(".file-options-modal").modal("hide");
-
-                            fabrica.machine.send_command("progress");
                         });
                     });    
                 }
@@ -68,10 +66,10 @@ var MakeScreen = Screen.extend({
             $(".file-manager").hide();
             $(".playing-file").show();
 
-            $(".file-title").text( value.progress.string.match("/sd/(.*?), ")[1] );
-            $(".file-progress").text( value.progress.string.match(", (.*?) %")[1] + "%" );
-            $(".file-progress-bar").css("width", value.progress.string.match(", (.*) %")[1]);
-            $(".file-time-elapsed").text( new Date(value.progress.string.match("time: (.*?) s")[1] * 1000).toISOString().substr(11, 8) );
+            $(".file-title").text( value.progress.filename );
+            $(".file-progress").text( value.progress.percent_complete + "%" );
+            $(".file-progress-bar").css("width", value.progress.percent_complete);
+            $(".file-time-elapsed").text("Elapsed: " + new Date(value.progress.elapsed_time * 1000).toISOString().substr(11, 8) );
         }else {
             if(!$(".file-manager").is(":visible") && fabrica.current_screen.name === "make_screen"){
                 // Ask for the files

@@ -11442,13 +11442,19 @@ var Updater = Class({
         }
 
         // Extract progress
-        // Example : "13 % complete, elapsed time: 14 s, est time: 86 s" or "Not currently playing"
+        // Example : "file: /sd/vive-basestation-mount.gcode, 5 % complete, elapsed time: 32 s, est time: 565 s" or "Not currently playing"
         result.progress = {};
         result.progress.string = lines[4].replace(/([\s\r]*)$/,'');
         if( result.progress.string.match(/currently/g) ){
             result.progress.playing = false;
         }else{
             result.progress.playing = true;
+
+            result.progress.filename = result.progress.string.match("/sd/(.*?), ")[1];
+            result.progress.percent_complete = result.progress.string.match(", (.*?) %")[1];
+            result.progress.elapsed_time = response.match("elapsed time: (.*?) s")[1];
+            
+            if(result.progress.string.match(/est/g)){ result.progress.estimated_time = response.match("est time: (.*?) s")[1]; }       
         }
         fabrica.machine.playing = result.progress.playing;
 
@@ -11855,8 +11861,6 @@ var MakeScreen = Screen.extend({
 
                             // Close the modal
                             $(".file-options-modal").modal("hide");
-
-                            fabrica.machine.send_command("progress");
                         });
                     });    
                 }
@@ -11874,10 +11878,10 @@ var MakeScreen = Screen.extend({
             $(".file-manager").hide();
             $(".playing-file").show();
 
-            $(".file-title").text( value.progress.string.match("/sd/(.*?), ")[1] );
-            $(".file-progress").text( value.progress.string.match(", (.*?) %")[1] + "%" );
-            $(".file-progress-bar").css("width", value.progress.string.match(", (.*) %")[1]);
-            $(".file-time-elapsed").text( new Date(value.progress.string.match("time: (.*?) s")[1] * 1000).toISOString().substr(11, 8) );
+            $(".file-title").text( value.progress.filename );
+            $(".file-progress").text( value.progress.percent_complete + "%" );
+            $(".file-progress-bar").css("width", value.progress.percent_complete);
+            $(".file-time-elapsed").text("Elapsed: " + new Date(value.progress.elapsed_time * 1000).toISOString().substr(11, 8) );
         }else {
             if(!$(".file-manager").is(":visible") && fabrica.current_screen.name === "make_screen"){
                 // Ask for the files
