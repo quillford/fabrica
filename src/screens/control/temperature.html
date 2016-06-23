@@ -1,7 +1,7 @@
 <script id="temperature_screen" type="text/x-handlebars-template">
 
 
-    <div class="container">
+    <div>
         <!-- Hotend -->
         <div style="width: 100vw; margin-top: 20px;" class="container">
             <div class="container">
@@ -31,12 +31,7 @@
             <input data-slider-id='bed-slider' class="bed-slider" type="text" data-slider-min="0" data-slider-max="140" data-slider-step="1" data-slider-value="100"/>
         </div>
 
-        <div class="input-group input-group-lg" style="margin: 10px 0px 0px 0px;">
-            <span class="input-group-addon temperature-readout"></span>
-            <span class="input-group-btn">
-                <button class="btn btn-default btn-update-temperature" type="button">Update</button>
-            </span>
-        </div>
+        <pre class="well temperature-readout" style="margin: 10px 15px 0px 15px; overflow: scroll; font-size: 135%;"></pre>
 
     </div>
 

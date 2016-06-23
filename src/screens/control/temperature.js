@@ -5,9 +5,6 @@ var TemperatureScreen = Screen.extend({
         // Display this screen
         this.display('temperature_screen');
 
-        // Get an initial temperature reading
-        fabrica.machine.send_command("M105");
-
         // Create the sliders        
         $(".hotend-slider").slider({
             tooltip: 'always',
@@ -36,14 +33,10 @@ var TemperatureScreen = Screen.extend({
         this.html.find(".btn-set-bed-temperature").off().click(function(){ fabrica.machine.send_command("M140 S" + $("#bed-slider .tooltip-inner").text()); });
         this.html.find(".btn-set-hotend-heater-off").off().click(function(){ fabrica.machine.send_command("M104 S0"); });
         this.html.find(".btn-set-bed-heater-off").off().click(function(){ fabrica.machine.send_command("M140 S0"); });
-        this.html.find(".btn-update-temperature").off().click(function(){ fabrica.machine.send_command("M105"); });
     },
 
-    on_gcode_response: function(response){
-        // check if it contains temperature data and display it if it does
-        if(response.includes("ok T:")){
-            $(".temperature-readout").html(response);
-        }
+    on_value_update: function( value ){
+        $(".temperature-readout").html(value.temperature.string);
     }
 
 });
