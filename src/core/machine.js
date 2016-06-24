@@ -19,13 +19,14 @@ var Machine = Class({
         this.ip = ip;
         this.address = "http://" + ip ;
         this.version_string = data;
+        this.state = "idle";
 
-        // Remember the machine's ip after the user leaves or refreshs
-        localStorage.setItem("ip", this.ip);
+        // Remember the machine's ip after the user leaves or reloads
+        fabrica.local_config.set("ip", this.ip);
 
         // Tell the system that a new connection was established
         fabrica.call_event('on_succesful_connection');
-    
+
         // Next step is obtaining the configuration file from the SD card
         // TODO : Handle errors
         $.ajax(this.address + "/sd/config").done(function(file){
@@ -41,13 +42,14 @@ var Machine = Class({
     },
 
     // Send a command to the board
-    send_command: function( command ){
+    send_command: function( command, callback ){
         console.log("sending command: " + command);
 
         fabrica.call_event('on_gcode_send', command + "\n");
         this.communication_log += command+"\n";
         var _that = this;
-        $.post("http://" + this.ip + "/command", command+"\n").done( function(data){ _that.communication_log += data; fabrica.call_event('on_gcode_response', data); } ) ;
+
+        $.post("http://" + this.ip + "/command", command+"\n").done( function(data){ _that.communication_log += data; ( (callback ? callback(data) : fabrica.call_event('on_gcode_response', data))); } ) ;
     },
 
     // Home an axis or all axes

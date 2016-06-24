@@ -565,46 +565,13 @@ body,html      { height:100%; }
 
     <script id="temperature_screen" type="text/x-handlebars-template">
 
+    <h1 class="no-temperature-control-modules-found">No (enabled) temperature_control modules found</h1>
 
-    <div class="container">
-        <!-- Hotend -->
-        <div style="width: 100vw; margin-top: 20px;" class="container">
-            <div class="container">
-                <div class="row" style="height: 40px;">
-                    <p class="col-xs-8 hotend-temperature" style="font-size: 130%; text-decoration: none;">Hotend</p>
-                    <div class="col-xs-4 btn-group">
-                        <button class="btn btn-danger btn-set-hotend-hotend-off" style="width:50%; float: left;">Off</button>
-                        <button class="btn btn-primary btn-set-hotend-temperature" style="width:50%;">Set</button>
-                    </div>
-                </div>
-            </div>
-            <input data-slider-id='hotend-slider' class="hotend-slider" type="text" data-slider-min="0" data-slider-max="300" data-slider-step="1" data-slider-value="100"/>
-        </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs temperature-control-tabs" role="tablist"></ul>
 
-
-        <!-- Bed -->
-        <div style="width: 100vw; margin-top: 30px;" class="container">
-            <div class="container">
-                <div class="row" style="height: 40px;">
-                    <p class="col-xs-8 bed-temperature" style="font-size: 130%; text-decoration: none;">Bed</p>
-                    <div class="col-xs-4 btn-group">
-                        <button class="btn btn-danger btn-set-bed-heater-off" style="width:50%; float: left;">Off</button>
-                        <button class="btn btn-primary btn-set-bed-temperature" style="width:50%;">Set</button>
-                    </div>
-                </div>
-            </div>
-            <input data-slider-id='bed-slider' class="bed-slider" type="text" data-slider-min="0" data-slider-max="140" data-slider-step="1" data-slider-value="100"/>
-        </div>
-
-        <div class="input-group input-group-lg" style="margin: 10px 0px 0px 0px;">
-            <span class="input-group-addon temperature-readout"></span>
-            <span class="input-group-btn">
-                <button class="btn btn-default btn-update-temperature" type="button">Update</button>
-            </span>
-        </div>
-
-    </div>
-
+      <!-- Tab panes -->
+    <div class="tab-content temperature-control-tabs-content"></div>
 
     <!-- Fabrica Navigation -->
     <nav class="navbar navbar-default navbar-fixed-bottom">
@@ -686,7 +653,6 @@ body,html      { height:100%; }
 </script>
     <script id="make_screen" type="text/x-handlebars-template">
 
-
     <h2 class="screen-status">Loading...</h2>
 
     <div class="file-manager" >
@@ -729,6 +695,9 @@ body,html      { height:100%; }
         </div>
         <br>
         <h2 class="file-time-elapsed"></h3>
+
+        <button type="button" class="btn btn-lg btn-danger btn-abort">Abort</button>
+        <button type="button" class="btn btn-lg btn-primary btn-suspend-resume">Suspend</button>
     </div>
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
@@ -11243,13 +11212,14 @@ var Machine = Class({
         this.ip = ip;
         this.address = "http://" + ip ;
         this.version_string = data;
+        this.state = "idle";
 
-        // Remember the machine's ip after the user leaves or refreshs
-        localStorage.setItem("ip", this.ip);
+        // Remember the machine's ip after the user leaves or reloads
+        fabrica.local_config.set("ip", this.ip);
 
         // Tell the system that a new connection was established
         fabrica.call_event('on_succesful_connection');
-    
+
         // Next step is obtaining the configuration file from the SD card
         // TODO : Handle errors
         $.ajax(this.address + "/sd/config").done(function(file){
@@ -11265,13 +11235,14 @@ var Machine = Class({
     },
 
     // Send a command to the board
-    send_command: function( command ){
+    send_command: function( command, callback ){
         console.log("sending command: " + command);
 
         fabrica.call_event('on_gcode_send', command + "\n");
         this.communication_log += command+"\n";
         var _that = this;
-        $.post("http://" + this.ip + "/command", command+"\n").done( function(data){ _that.communication_log += data; fabrica.call_event('on_gcode_response', data); } ) ;
+
+        $.post("http://" + this.ip + "/command", command+"\n").done( function(data){ _that.communication_log += data; ( (callback ? callback(data) : fabrica.call_event('on_gcode_response', data))); } ) ;
     },
 
     // Home an axis or all axes
@@ -11381,6 +11352,104 @@ fabrica.machine.config = new Configuration();
 
 fabrica.local_config = new LocalConfig();
 
+</script>
+    <!-- Updates machine position, temperature, etc -->
+    <script>// Core updater object, used to update machine information frequently such as temperature, position, and progress of file playing
+
+var Updater = Class({
+
+    // TODO: do not send a check for data if the module that would contain that data is not enabled (e.g. M105 and temperature_control)
+
+    // Constructor method
+    create: function(){
+
+        var _that = this;
+        this.update_timer = setInterval(function(){
+            fabrica.machine.send_command("M105\nM119\nM114\nprogress\n", _that.update_received);
+        }, 5000);
+    },
+
+
+    // Parse the result of our query. It should contain temperature, endstop, postion, and play data in that order.
+    update_received: function( response ){
+        var result = {};
+
+        var lines = response.split("\n");
+
+
+        // Extract temperatures
+        // Cut into different readings
+        var decomposed = lines[0].replace(/\s\r$/gi, '').split(/([A-Z])/);
+        decomposed.shift();
+
+        // For each reading, add values to the result
+        result.temperature = {};
+        result.temperature.string = lines[0];
+        while( decomposed.length ){
+            var letter = decomposed.shift();
+            var reading = decomposed.shift().replace(/^(:)*/g,'').replace(/(\s)*$/g,'');
+            var values = reading.split(/\s/g);
+            result.temperature[letter] = {
+                temperature: values[0],
+                target: values[1].replace(/(\/)/g,''),
+                pwm: values[2].replace(/\@/g,'')
+            }; 
+            
+        }
+
+        // Extract endstop readings
+        result.endstops = {};
+        var endstop_readings = lines[1].replace(/(\s*\r)$/g,'').split(' ');
+        for( var index in endstop_readings){
+            var endstop = endstop_readings[index]; 
+            var couple = endstop.split(":");
+            result.endstops[couple[0]] = couple[1]; 
+        }
+
+        // Extract positions
+        result.positions = {};
+        var decomp = lines[3].split(/([A-Z])/);
+        decomp.shift();
+        while( decomp.length ){
+            var letter = decomp.shift();
+            var value = decomp.shift().replace(/^(:)/g,'').replace(/([\s\r]*)$/,'');
+            result.positions[letter] = value;
+        }
+
+        // Extract progress
+        result.progress = {};
+        result.progress.string = lines[4].replace(/([\s\r]*)$/,'');
+        if( result.progress.string.match(/currently/g) ){
+            // Not playing "Not currently playing"
+            result.progress.playing = false;
+            result.progress.paused = false;
+        }else if(result.progress.string.match(/complete/g) && result.progress.string.match(/est/g)) {
+            // Playing, not paused
+            // Example : "file: /sd/vive-basestation-mount.gcode, 5 % complete, elapsed time: 32 s, est time: 565 s" or "Not currently playing"
+            result.progress.playing = true;
+            result.progress.paused = false;
+
+            result.progress.filename = result.progress.string.match("/sd/(.*?), ")[1];
+            result.progress.percent_complete = result.progress.string.match(", (.*?) %")[1];
+            result.progress.elapsed_time = response.match("elapsed time: (.*?) s")[1];
+            
+            if(result.progress.string.match(/est/g)){ result.progress.estimated_time = result.progress.string.match("est time: (.*) s")[1]; }       
+        }else {
+            // Paused
+            // Example: SD print is paused at 0/115274
+
+            result.progress.playing = true;
+            result.progress.paused = true;
+        }
+        fabrica.machine.playing = result.progress.playing;
+        fabrica.machine.paused = result.progress.paused;
+
+        fabrica.call_event("on_value_update", result);
+    }
+
+}); 
+
+fabrica.machine.updater = new Updater();
 </script>
 
     <!-- Connection screen -->
@@ -11637,45 +11706,73 @@ var TemperatureScreen = Screen.extend({
         // Display this screen
         this.display('temperature_screen');
 
-        // Get an initial temperature reading
-        fabrica.machine.send_command("M105");
+        // Find temperature_control modules and make a tab for each of them
+        if(fabrica.machine.config.temperature_control){
+            var _that = this;
+            $.each(fabrica.machine.config.temperature_control, function( name ){
+                var temperature_control = fabrica.machine.config.temperature_control[name];
 
-        // Create the sliders        
-        $(".hotend-slider").slider({
-            tooltip: 'always',
-            formatter: function(value) {
-                return value;
-            }
-        });
+                if(temperature_control.enable){
+                    // We found an enabled temperature_control module, so we can hide the message
+                    $(".no-temperature-control-modules-found").hide();
 
-        $(".bed-slider").slider({
-            tooltip: 'always',
-            formatter: function(value) {
-                return value;
-            }
-        });
+                    // Make a tab
+                    $(".temperature-control-tabs").append('<li role="presentation"><a href="#'+name+'" class="'+name+'-tab" aria-controls="'+name+'" role="tab" data-toggle="tab">'+name+'</a></li>');
+
+                    // Add content to the tab
+                    $(".temperature-control-tabs-content").append('<div role="tabpanel" class="tab-pane" id="'+name+'"></div>');
+
+                    $("#"+name).append('<div class="container '+name+'-content '+temperature_control.designator+'-content"></div>');
+
+                    // Temperature readout
+                    $("."+name+"-content").append('<h1 class="well '+temperature_control.designator+'-readout" style="text-align: center; margin-top: 12px;"></h1>');
+                    
+                    // Add a warning if the temperature is invalid
+                    $("."+name+"-content").append('<div class="bs-callout bs-callout-danger '+temperature_control.designator+'-warning"><h4>Warning</h4>Make sure that your thermistor is plugged in and not shorted.</div>');
+                    // initially hide the warning
+                    $("."+temperature_control.designator+"-warning").hide();
+
+                    // Temperature slider
+                    $("."+name+"-content").append('<input data-slider-id="'+name+'-slider" class="'+name+'-slider" type="text" data-slider-min="0" data-slider-max="'+(temperature_control.max_temp || "300" )+'" data-slider-step="1" data-slider-value="0"/><br>');
+
+                    $("."+name+"-slider").slider({
+                        tooltip: 'always',
+                        formatter: function(value) {
+                            return value;
+                        }
+                    })
+
+                    // Buttons
+                    $("."+name+"-content").append('<button class="btn btn-lg btn-default btn-'+name+'-set-temperature">Set</button>');
+                    $("."+name+"-content").append('<button class="btn btn-lg btn-danger btn-'+name+'-heater-off">Off</button>');
+
+                    // Handle button clicks       
+                    _that.html.find(".btn-"+name+"-set-temperature").off().click(function(){ fabrica.machine.send_command("M"+temperature_control.set_m_code+" S" + $("#"+name+"-slider .tooltip-inner").text()); });
+                    _that.html.find(".btn-"+name+"-heater-off").off().click(function(){ fabrica.machine.send_command("M"+temperature_control.set_m_code+" S0"); });
+                    
+                    // Show the first tab
+                    if($(".temperature-control-tabs > li").length == 1){ $("."+name+"-tab").tab('show'); }
+                }
+            });
+        }
 
         // Apply styling to sliders
         $(".slider").css({
-            "max-width": "500px",
-            "width": "100%",
-            "margin-top": "30px"
+            "max-width": "600px",
+            "width": "90%",
+            "margin-top": "35px",
+            "margin-bottom": "20px"
         });
-
-
-        // Handle button clicks       
-        this.html.find(".btn-set-hotend-temperature").off().click(function(){ fabrica.machine.send_command("M104 S" + $("#hotend-slider .tooltip-inner").text()); });
-        this.html.find(".btn-set-bed-temperature").off().click(function(){ fabrica.machine.send_command("M140 S" + $("#bed-slider .tooltip-inner").text()); });
-        this.html.find(".btn-set-hotend-heater-off").off().click(function(){ fabrica.machine.send_command("M104 S0"); });
-        this.html.find(".btn-set-bed-heater-off").off().click(function(){ fabrica.machine.send_command("M140 S0"); });
-        this.html.find(".btn-update-temperature").off().click(function(){ fabrica.machine.send_command("M105"); });
     },
 
-    on_gcode_response: function(response){
-        // check if it contains temperature data and display it if it does
-        if(response.includes("ok T:")){
-            $(".temperature-readout").html(response);
-        }
+    on_value_update: function( value ){
+        $.each(value.temperature, function( designator ){
+            // Make sure we are looking at valid designators and not the temperature string
+            if(value.temperature[designator].temperature){
+                $("."+designator+"-readout").html(value.temperature[designator].temperature+'°C / ' +value.temperature[designator].target+ (value.temperature[designator].target > 0 ? '°C <span class="label label-danger">Heating</span>': '°C') );
+                $("."+designator+"-warning").toggle(value.temperature[designator].temperature.includes("inf"));
+            }
+        });
     }
 
 });
@@ -11741,9 +11838,9 @@ var MakeScreen = Screen.extend({
         // Display this screen
         this.display('make_screen');
 
-        // Check if a file is being played
-        fabrica.machine.send_command("progress");
-
+        this.html.find(".btn-abort").off().click(function(){ fabrica.machine.send_command("abort"); });
+        this.html.find(".btn-suspend-resume").off().click(function(){ fabrica.machine.send_command( $(".btn-suspend-resume").text().toLowerCase() ); });
+        
         $(".playing-file").hide();
         $(".file-manager").hide();
         
@@ -11752,11 +11849,7 @@ var MakeScreen = Screen.extend({
 
     // listen for gcode files
     on_gcode_response: function( response ){
-        if(response.includes("Begin file list")){
-            $(".screen-status").hide();
-            $(".playing-file").hide();
-            $(".file-manager").show();
-
+        if(response.includes("Begin file list")){ // Update the file list
             // Empty the file list
             $(".file-list").empty();
 
@@ -11791,34 +11884,46 @@ var MakeScreen = Screen.extend({
 
                             // Close the modal
                             $(".file-options-modal").modal("hide");
-
-                            fabrica.machine.send_command("progress");
                         });
                     });    
                 }
             });
 
-            
-        }else if(response.includes("Not currently playing")){
-            // The machine is not printing, so we should display the playable files
-            $(".screen-status").hide();
-            $(".playing-file").hide();
-            $(".file-manager").show();
+        }
+    },
 
-            // Ask for the files
-            fabrica.machine.send_command("M20");
-        }else if(response.includes("complete") && response.includes("elapsed time")){
+    on_value_update: function( value ){
+
+
+        if(value.progress.paused){
+            // Paused
+
+            $(".btn-suspend-resume").text("Resume");
+
+        }else if(value.progress.playing){
             // Example: file: /sd/test.gcode, 6 % complete, elapsed time: 3 s 
 
-            // The machine is playing a file, so we should display information about that job
+            // The machine is playing a file, so we should display information about that job and hide the file manager
             $(".screen-status").hide();
             $(".file-manager").hide();
             $(".playing-file").show();
 
-            $(".file-title").text( response.match("/sd/(.*?), ")[1] );
-            $(".file-progress").text( response.match(", (.*) %")[1] + "%" );
-            $(".file-progress-bar").css("width", response.match(", (.*) %")[1]);
-            $(".file-time-elapsed").text( new Date(response.match("time: (.*) s")[1] * 1000).toISOString().substr(11, 8) );
+            $(".btn-suspend-resume").text("Suspend");
+
+            $(".file-title").text( value.progress.filename );
+            $(".file-progress").text( value.progress.percent_complete + "%" );
+            $(".file-progress-bar").css("width", value.progress.percent_complete);
+            $(".file-time-elapsed").text("Elapsed: " + new Date(value.progress.elapsed_time * 1000).toISOString().substr(11, 8) );
+        }else {
+            // Not paused and not playing
+
+            // If the file manager isn't visible and we are on this screen, ask for the files 
+            if(!$(".file-manager").is(":visible") && fabrica.current_screen.name === "make_screen"){
+                fabrica.machine.send_command("M20");
+            }
+            $(".screen-status").hide();
+            $(".playing-file").hide();
+            $(".file-manager").show();
         }
     }
 });

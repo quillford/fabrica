@@ -1,45 +1,12 @@
 <script id="temperature_screen" type="text/x-handlebars-template">
 
+    <h1 class="no-temperature-control-modules-found">No (enabled) temperature_control modules found</h1>
 
-    <div class="container">
-        <!-- Hotend -->
-        <div style="width: 100vw; margin-top: 20px;" class="container">
-            <div class="container">
-                <div class="row" style="height: 40px;">
-                    <p class="col-xs-8 hotend-temperature" style="font-size: 130%; text-decoration: none;">Hotend</p>
-                    <div class="col-xs-4 btn-group">
-                        <button class="btn btn-danger btn-set-hotend-hotend-off" style="width:50%; float: left;">Off</button>
-                        <button class="btn btn-primary btn-set-hotend-temperature" style="width:50%;">Set</button>
-                    </div>
-                </div>
-            </div>
-            <input data-slider-id='hotend-slider' class="hotend-slider" type="text" data-slider-min="0" data-slider-max="300" data-slider-step="1" data-slider-value="100"/>
-        </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs temperature-control-tabs" role="tablist"></ul>
 
-
-        <!-- Bed -->
-        <div style="width: 100vw; margin-top: 30px;" class="container">
-            <div class="container">
-                <div class="row" style="height: 40px;">
-                    <p class="col-xs-8 bed-temperature" style="font-size: 130%; text-decoration: none;">Bed</p>
-                    <div class="col-xs-4 btn-group">
-                        <button class="btn btn-danger btn-set-bed-heater-off" style="width:50%; float: left;">Off</button>
-                        <button class="btn btn-primary btn-set-bed-temperature" style="width:50%;">Set</button>
-                    </div>
-                </div>
-            </div>
-            <input data-slider-id='bed-slider' class="bed-slider" type="text" data-slider-min="0" data-slider-max="140" data-slider-step="1" data-slider-value="100"/>
-        </div>
-
-        <div class="input-group input-group-lg" style="margin: 10px 0px 0px 0px;">
-            <span class="input-group-addon temperature-readout"></span>
-            <span class="input-group-btn">
-                <button class="btn btn-default btn-update-temperature" type="button">Update</button>
-            </span>
-        </div>
-
-    </div>
-
+      <!-- Tab panes -->
+    <div class="tab-content temperature-control-tabs-content"></div>
 
     <!-- Fabrica Navigation -->
     <nav class="navbar navbar-default navbar-fixed-bottom">
