@@ -21,11 +21,16 @@ var TemperatureScreen = Screen.extend({
                     // Add content to the tab
                     $(".temperature-control-tabs-content").append('<div role="tabpanel" class="tab-pane" id="'+name+'"></div>');
 
-                    $("#"+name).append('<div class="container '+name+'-content"></div>');
+                    $("#"+name).append('<div class="container '+name+'-content '+temperature_control.designator+'-content"></div>');
 
                     // Temperature readout
                     $("."+name+"-content").append('<h1 class="well '+temperature_control.designator+'-readout" style="text-align: center; margin-top: 12px;"></h1>');
                     
+                    // Add a warning if the temperature is invalid
+                    $("."+name+"-content").append('<div class="bs-callout bs-callout-danger '+temperature_control.designator+'-warning"><h4>Warning</h4>Make sure that your thermistor is plugged in and not shorted.</div>');
+                    // initially hide the warning
+                    $("."+temperature_control.designator+"-warning").hide();
+
                     // Temperature slider
                     $("."+name+"-content").append('<input data-slider-id="'+name+'-slider" class="'+name+'-slider" type="text" data-slider-min="0" data-slider-max="'+(temperature_control.max_temp || "300" )+'" data-slider-step="1" data-slider-value="0"/><br>');
 
@@ -61,8 +66,11 @@ var TemperatureScreen = Screen.extend({
 
     on_value_update: function( value ){
         $.each(value.temperature, function( designator ){
-            $("."+designator+"-readout").html(value.temperature[designator].temperature+'°C / ' +value.temperature[designator].target+ (value.temperature[designator].target > 0 ? '°C <span class="label label-danger">Heating</span>': '°C') );
-
+            // Make sure we are looking at valid designators and not the temperature string
+            if(value.temperature[designator].temperature){
+                $("."+designator+"-readout").html(value.temperature[designator].temperature+'°C / ' +value.temperature[designator].target+ (value.temperature[designator].target > 0 ? '°C <span class="label label-danger">Heating</span>': '°C') );
+                $("."+designator+"-warning").toggle(value.temperature[designator].temperature.includes("inf"));
+            }
         });
     }
 
