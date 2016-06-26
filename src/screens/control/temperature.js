@@ -1,75 +1,72 @@
-// Temperature screen : set and read temperature for hotend and bed
+// Temperature screen : set and read temperature
 
 var TemperatureScreen = Screen.extend({
     enter: function(){
-        // Display this screen
-        this.display('temperature_screen');
+        this.tabs = [];
 
-        // Find temperature_control modules and make a tab for each of them
+        // Supply template information using the machine's config
         if(fabrica.machine.config.temperature_control){
             var _that = this;
             $.each(fabrica.machine.config.temperature_control, function( name ){
                 var temperature_control = fabrica.machine.config.temperature_control[name];
 
                 if(temperature_control.enable){
-                    // We found an enabled temperature_control module, so we can hide the message
-                    $(".no-temperature-control-modules-found").hide();
+                    var tab_content = {};
 
-                    // Make a tab
-                    $(".temperature-control-tabs").append('<li role="presentation"><a href="#'+name+'" class="'+name+'-tab" aria-controls="'+name+'" role="tab" data-toggle="tab">'+name+'</a></li>');
-
-                    // Add content to the tab
-                    $(".temperature-control-tabs-content").append('<div role="tabpanel" class="tab-pane" id="'+name+'"></div>');
-
-                    $("#"+name).append('<div class="container '+name+'-content '+temperature_control.designator+'-content"></div>');
-
-                    // Temperature readout
-                    $("."+name+"-content").append('<h1 class="well '+temperature_control.designator+'-readout" style="text-align: center; margin-top: 12px;"></h1>');
-                    
-                    // Add a warning if the temperature is invalid
-                    $("."+name+"-content").append('<div class="bs-callout bs-callout-danger '+temperature_control.designator+'-warning"><h4>Warning</h4>Make sure that your thermistor is plugged in and not shorted.</div>');
-                    // initially hide the warning
-                    $("."+temperature_control.designator+"-warning").hide();
-
-                    // Temperature slider
-                    $("."+name+"-content").append('<input data-slider-id="'+name+'-slider" class="'+name+'-slider" type="text" data-slider-min="0" data-slider-max="'+(temperature_control.max_temp || "300" )+'" data-slider-step="1" data-slider-value="0"/><br>');
-
-                    $("."+name+"-slider").slider({
-                        tooltip: 'always',
-                        formatter: function(value) {
-                            return value;
-                        }
-                    })
-
-                    // Buttons
-                    $("."+name+"-content").append('<button class="btn btn-lg btn-default btn-'+name+'-set-temperature">Set</button>');
-                    $("."+name+"-content").append('<button class="btn btn-lg btn-danger btn-'+name+'-heater-off">Off</button>');
-
-                    // Handle button clicks       
-                    _that.html.find(".btn-"+name+"-set-temperature").off().click(function(){ fabrica.machine.send_command("M"+temperature_control.set_m_code+" S" + $("#"+name+"-slider .tooltip-inner").text()); });
-                    _that.html.find(".btn-"+name+"-heater-off").off().click(function(){ fabrica.machine.send_command("M"+temperature_control.set_m_code+" S0"); });
-                    
-                    // Show the first tab
-                    if($(".temperature-control-tabs > li").length == 1){ $("."+name+"-tab").tab('show'); }
+                    tab_content.name = name;
+                    tab_content.designator = temperature_control.designator;
+                    tab_content.max_temp = temperature_control.max_temp || 300;
+                    tab_content.m_code = temperature_control.set_m_code;
+                    _that.tabs.push(tab_content);
                 }
             });
         }
 
+        // Display this screen
+        this.display('temperature_screen');
+
+        var _that = this;
+        $.each(this.tabs, function(tab_content){
+            var name = _that.tabs[tab_content].name;
+
+            // Setup slider
+            _that.html.find("."+_that.tabs[tab_content].name+"-slider").slider({
+                tooltip: "always",
+                formatter: function(value){
+                    return value;
+                }
+            });
+
+            // Initially hide the warning
+            _that.html.find("."+_that.tabs[tab_content].designator+"-warning").hide();
+
+            // Handle button clicks
+            _that.html.find(".btn-"+name+"-set-temperature").off().click(function(){ fabrica.machine.send_command("M" + _that.tabs[tab_content].m_code + " S" + _that.html.find("#" + name + " .tooltip-inner").text()); });
+            _that.html.find(".btn-"+name+"-heater-off").off().click(function(){ fabrica.machine.send_command("M" + _that.tabs[tab_content].m_code + " S0"); });
+        });
+
         // Apply styling to sliders
-        $(".slider").css({
+        _that.html.find(".slider").css({
             "max-width": "600px",
-            "width": "90%",
-            "margin-top": "35px",
+            "width": "100%",
+            "margin-top": "25px",
             "margin-bottom": "20px"
         });
+
+        // Show the first tab
+        this.html.find("." + this.tabs[0].name + "-tab").tab("show");
     },
 
     on_value_update: function( value ){
+        var _that = this;
         $.each(value.temperature, function( designator ){
             // Make sure we are looking at valid designators and not the temperature string
-            if(value.temperature[designator].temperature){
-                $("."+designator+"-readout").html(value.temperature[designator].temperature+'°C / ' +value.temperature[designator].target+ (value.temperature[designator].target > 0 ? '°C <span class="label label-danger">Heating</span>': '°C') );
-                $("."+designator+"-warning").toggle(value.temperature[designator].temperature.includes("inf"));
+            if(value.temperature[designator].temperature && _that.html){
+                _that.html.find("."+designator+"-readout").html(value.temperature[designator].temperature+'°C / ' +value.temperature[designator].target+ (value.temperature[designator].target > 0 ? '°C <span class="label label-danger">Heating</span>': '°C') );
+                
+                // Hide the readout and show a warning if the temperature is not valid
+                _that.html.find("."+designator+"-warning").toggle(value.temperature[designator].temperature.includes("inf"));
+                _that.html.find("."+designator+"-controls").toggle(!value.temperature[designator].temperature.includes("inf"));
             }
         });
     }
