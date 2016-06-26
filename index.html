@@ -653,7 +653,35 @@ body,html      { height:100%; }
 </script>
     <script id="make_screen" type="text/x-handlebars-template">
 
-    <h2 class="screen-status">Loading...</h2>
+  <div style="padding-bottom: 70px;">
+
+    <div class="container">
+      <div class="row">
+          <a class="btn btn-default col-xs-12 btn-lg btn-play" href="#">Play</a>
+          <a class="btn btn-default col-xs-12 btn-lg btn-upload" href="#">Upload</a>
+      </div>
+    </div>
+
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+          <button type="button" class="btn btn-default navbar-btn navbar-left col-md-2 btn-help"> 
+              <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
+          </button>
+          <button type="button" class="btn btn-default navbar-btn navbar-right col-md-2 btn-back">
+              <span class="glyphicon glyphicon-back" aria-hidden="true"></span> Back
+          </button>
+        </div>
+      </nav>
+
+  </div>
+
+</script>
+
+
+
+    <script id="play_screen" type="text/x-handlebars-template">
+
+    <h2 class="container screen-status">Loading...</h2>
 
     <div class="file-manager" >
         <div class="container">
@@ -710,6 +738,46 @@ body,html      { height:100%; }
         </button>
       </div>
     </nav>
+
+</script>
+
+
+
+    <script id="upload_screen" type="text/x-handlebars-template">
+
+    <div class="container" style="padding-bottom: 70px;">
+
+        <h1 style="text-align: center;">Upload</h1>
+
+        <br>
+
+        <label class="btn btn-default btn-file" style="margin-bottom: 10px;">
+            Choose File <input type="file" style="display: none;" id="file-uploader" name="files[]" />
+        </label>
+
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">File Name</span>
+            <input type="text" class="form-control file-name-input">
+        </div>
+
+        <br>
+
+        <button type="button" class="btn btn-default btn-upload-file">Upload</button>
+
+        <h3 class="well upload-status"></h3>
+
+        <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+            <button type="button" class="btn btn-default navbar-btn navbar-left col-md-2 btn-help"> 
+                <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Help
+            </button>
+            <button type="button" class="btn btn-default navbar-btn navbar-right col-md-2 btn-back">
+                <span class="glyphicon glyphicon-back" aria-hidden="true"></span> Back
+            </button>
+        </div>
+        </nav>
+
+    </div>
 
 </script>
 
@@ -11198,6 +11266,7 @@ var Machine = Class({
     // Constructor method
     create: function(){
         this.communication_log = "";
+        this.uploading = false;
     },
 
     // Attempt connecting to a machine, and report results
@@ -11212,7 +11281,6 @@ var Machine = Class({
         this.ip = ip;
         this.address = "http://" + ip ;
         this.version_string = data;
-        this.state = "idle";
 
         // Remember the machine's ip after the user leaves or reloads
         fabrica.local_config.set("ip", this.ip);
@@ -11231,6 +11299,24 @@ var Machine = Class({
 
             // Parsing done
             fabrica.call_event('on_config_parse_end');
+        });
+    },
+
+    upload_file: function( filename, file_content ){
+        this.uploading = true;
+        var _that = this;
+        $.ajax({
+            url: "http://" + this.ip + "/upload",
+            type: "POST",
+            headers: {'X-Filename': filename},
+            dataType: "text",
+            data: file_content
+        }).done(function(){
+            fabrica.call_event("on_file_upload_done");
+            _that.uploading = false;
+        }).fail(function(){
+            fabrica.call_event("on_file_upload_failure");
+            _that.uploading = false;
         });
     },
 
@@ -11365,8 +11451,12 @@ var Updater = Class({
 
         var _that = this;
         this.update_timer = setInterval(function(){
-            fabrica.machine.send_command("M105\nM119\nM114\nprogress\n", _that.update_received);
-        }, 5000);
+            // Do not poll the machine when uploading
+            // If there is no ip, we aren't connected so don't poll the machine
+            if(!fabrica.machine.uploading && fabrica.machine.ip){
+                fabrica.machine.send_command("M105\nM119\nM114\nprogress\n", _that.update_received);
+            }
+        }, 1000);
     },
 
 
@@ -11433,7 +11523,7 @@ var Updater = Class({
             result.progress.percent_complete = result.progress.string.match(", (.*?) %")[1];
             result.progress.elapsed_time = response.match("elapsed time: (.*?) s")[1];
             
-            if(result.progress.string.match(/est/g)){ result.progress.estimated_time = result.progress.string.match("est time: (.*) s")[1]; }       
+            if(result.progress.string.match("est time: (.*) s")){ result.progress.estimated_time = result.progress.string.match("est time: (.*) s")[1]; }       
         }else {
             // Paused
             // Example: SD print is paused at 0/115274
@@ -11831,19 +11921,35 @@ var TerminalScreen = Screen.extend({
 fabrica.add_screen('terminal', new TerminalScreen()); 
 </script>
     <!-- Make screen -->
-    <script>// Make screen : lists gcode on sd that is able to be played
+    <script>// Make screen : lists different control activities and allows to select which to use
 
 var MakeScreen = Screen.extend({
     enter: function(){
         // Display this screen
         this.display('make_screen');
 
+        // Setup button clicks       
+        this.html.find(".btn-play").off().click(function(){ fabrica.screens.play.enter(); });
+        this.html.find(".btn-upload").off().click(function(){ fabrica.screens.upload.enter(); });
+    },
+
+});
+
+fabrica.add_screen('make', new MakeScreen()); 
+</script>
+    <!-- Play screen -->
+    <script>// Play screen : lists gcode files on sd that is able to be played. display progress and info of file playing
+
+var PlayScreen = Screen.extend({
+    enter: function(){
+        // Display this screen
+        this.display('play_screen');
+
         this.html.find(".btn-abort").off().click(function(){ fabrica.machine.send_command("abort"); });
         this.html.find(".btn-suspend-resume").off().click(function(){ fabrica.machine.send_command( $(".btn-suspend-resume").text().toLowerCase() ); });
         
         $(".playing-file").hide();
         $(".file-manager").hide();
-        
     },
 
 
@@ -11918,7 +12024,7 @@ var MakeScreen = Screen.extend({
             // Not paused and not playing
 
             // If the file manager isn't visible and we are on this screen, ask for the files 
-            if(!$(".file-manager").is(":visible") && fabrica.current_screen.name === "make_screen"){
+            if(!$(".file-manager").is(":visible") && fabrica.current_screen.name === "play_screen"){
                 fabrica.machine.send_command("M20");
             }
             $(".screen-status").hide();
@@ -11928,7 +12034,63 @@ var MakeScreen = Screen.extend({
     }
 });
 
-fabrica.add_screen('make', new MakeScreen()); 
+fabrica.add_screen('play', new PlayScreen()); 
+</script>
+    <!-- Upload screen -->
+    <script>// Upload screen : upload files to sd
+
+var UploadScreen = Screen.extend({
+    enter: function(){
+        // Display this screen
+        this.display('upload_screen');
+
+        // Initially disable the upload button
+        $(".btn-upload-file").prop("disabled", true);
+
+        document.getElementById("file-uploader").onchange = function() {
+            var file_input = document.getElementById("file-uploader");
+
+            // Allow the user to change the filename
+            $(".file-name-input").val( file_input.files.length ? file_input.files[0].name : "" );
+
+            // Enable the upload button
+            $(".btn-upload-file").prop("disabled", false);
+        }
+
+        // Setup button clicks       
+        this.html.find(".btn-upload-file").off().click(function(){
+            $(".upload-status").text("Reading file...");
+
+            var file = document.getElementById("file-uploader").files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = function(evt) {
+                    $(".upload-status").text("Uploading file...");
+                    fabrica.machine.upload_file( $(".file-name-input").val(), evt.target.result);
+                };
+                reader.onerror = function(evt) {
+                    $(".upload-status").text("Error reading file");
+                };
+            }
+
+        });
+    },
+
+
+    // Tell the user their file failed to upload
+    on_file_upload_failure: function(){
+        $(".upload-status").text("Error on upload. Try again.");
+    },
+    
+    // Tell the user their file uploaded successfully
+    on_file_upload_done: function(){
+        $(".upload-status").text("File uploaded successfully");
+    }
+
+});
+
+fabrica.add_screen('upload', new UploadScreen()); 
 </script>
     <!-- Configuration screen -->
     <script>// Configuration screen : lists different configuration activities and allows to select which to use

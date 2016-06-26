@@ -40,6 +40,8 @@
     @@include('src/screens/control/extruder.html')
     @@include('src/screens/control/terminal.html')
     @@include('src/screens/make/make.html')
+    @@include('src/screens/make/play.html')
+    @@include('src/screens/make/upload.html')
     @@include('src/screens/configuration/configuration.html')
     @@include('src/screens/configuration/raw_configuration.html')
 
@@ -108,6 +110,10 @@
     <script src="src/screens/control/terminal.js" inline></script>
     <!-- Make screen -->
     <script src="src/screens/make/make.js" inline></script>
+    <!-- Play screen -->
+    <script src="src/screens/make/play.js" inline></script>
+    <!-- Upload screen -->
+    <script src="src/screens/make/upload.js" inline></script>
     <!-- Configuration screen -->
     <script src="src/screens/configuration/configuration.js" inline></script>
     <!-- Raw Configuration screen -->
