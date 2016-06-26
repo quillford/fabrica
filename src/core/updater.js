@@ -10,7 +10,7 @@ var Updater = Class({
         var _that = this;
         this.update_timer = setInterval(function(){
             // Do not poll the machine when uploading
-            // If there is no ip, we aren't connected so don't poll the machine
+            // If there is no ip, we don't know where to find the machine so don't poll the machine
             if(!fabrica.machine.uploading && fabrica.machine.ip){
                 fabrica.machine.send_command("M105\nM119\nM114\nprogress\n", _that.update_received);
             }

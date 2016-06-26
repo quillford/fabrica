@@ -12066,6 +12066,8 @@ var UploadScreen = Screen.extend({
 
         // Setup button clicks       
         this.html.find(".btn-upload-file").off().click(function(){
+            if($(".file-name-input").val().match(/ /g)){ bootbox.alert("Remove the spaces from the file name."); return; }
+
             $(".upload-status").text("Reading file...");
 
             var file = document.getElementById("file-uploader").files[0];
