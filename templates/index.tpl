@@ -63,6 +63,8 @@
     <script src="static/js/bootstrap-switch.min.js" inline></script>
     <!-- Bootstrap slider switch-->
     <script src="static/js/bootstrap-slider.min.js" inline></script>
+    <!-- Bootbox-->
+    <script src="static/js/bootbox.min.js" inline></script>
     <!-- Js.class allows more object-oriented javascript -->
     <script src="src/core/js.class/dist/browser/js.class.min.js" inline></script>
     <!-- HandleBar JS Template system -->
