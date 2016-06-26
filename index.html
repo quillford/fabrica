@@ -11838,11 +11838,10 @@ var SpindleScreen = Screen.extend({
 fabrica.add_screen('spindle', new SpindleScreen()); 
 </script>
     <!-- Temperature screen -->
-    <script>// Temperature screen : set and read temperature for hotend and bed
+    <script>// Temperature screen : set and read temperature
 
 var TemperatureScreen = Screen.extend({
     enter: function(){
-        this.tabs = [];
         this.tabs = [];
 
         // Supply template information using the machine's config
