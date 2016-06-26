@@ -5,6 +5,7 @@ var Machine = Class({
     // Constructor method
     create: function(){
         this.communication_log = "";
+        this.uploading = false;
     },
 
     // Attempt connecting to a machine, and report results
@@ -19,7 +20,6 @@ var Machine = Class({
         this.ip = ip;
         this.address = "http://" + ip ;
         this.version_string = data;
-        this.state = "idle";
 
         // Remember the machine's ip after the user leaves or reloads
         fabrica.local_config.set("ip", this.ip);
@@ -38,6 +38,24 @@ var Machine = Class({
 
             // Parsing done
             fabrica.call_event('on_config_parse_end');
+        });
+    },
+
+    upload_file: function( filename, file_content ){
+        this.uploading = true;
+        var _that = this;
+        $.ajax({
+            url: "http://" + this.ip + "/upload",
+            type: "POST",
+            headers: {'X-Filename': filename},
+            dataType: "text",
+            data: file_content
+        }).done(function(){
+            fabrica.call_event("on_file_upload_done");
+            _that.uploading = false;
+        }).fail(function(){
+            fabrica.call_event("on_file_upload_failure");
+            _that.uploading = false;
         });
     },
 

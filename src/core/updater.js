@@ -9,8 +9,12 @@ var Updater = Class({
 
         var _that = this;
         this.update_timer = setInterval(function(){
-            fabrica.machine.send_command("M105\nM119\nM114\nprogress\n", _that.update_received);
-        }, 5000);
+            // Do not poll the machine when uploading
+            // If there is no ip, we don't know where to find the machine so don't poll the machine
+            if(!fabrica.machine.uploading && fabrica.machine.ip){
+                fabrica.machine.send_command("M105\nM119\nM114\nprogress\n", _that.update_received);
+            }
+        }, 1000);
     },
 
 
@@ -77,7 +81,7 @@ var Updater = Class({
             result.progress.percent_complete = result.progress.string.match(", (.*?) %")[1];
             result.progress.elapsed_time = response.match("elapsed time: (.*?) s")[1];
             
-            if(result.progress.string.match(/est/g)){ result.progress.estimated_time = result.progress.string.match("est time: (.*) s")[1]; }       
+            if(result.progress.string.match("est time: (.*) s")){ result.progress.estimated_time = result.progress.string.match("est time: (.*) s")[1]; }       
         }else {
             // Paused
             // Example: SD print is paused at 0/115274
