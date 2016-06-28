@@ -1,12 +1,33 @@
 <script id="temperature_screen" type="text/x-handlebars-template">
 
-    <h1 class="no-temperature-control-modules-found">No (enabled) temperature_control modules found</h1>
-
     <!-- Nav tabs -->
-    <ul class="nav nav-tabs temperature-control-tabs" role="tablist"></ul>
+    <ul class="nav nav-tabs temperature-control-tabs" role="tablist">
+        {{#each tabs}}
+            <li role="presentation"><a href="#{{this.name}}" class="{{this.name}}-tab" aria-controls="{{this.name}}" role="tab" data-toggle="tab">{{this.name}}</a></li>
+        {{/each}}
+    </ul>
 
-      <!-- Tab panes -->
-    <div class="tab-content temperature-control-tabs-content"></div>
+    <!-- Tab panes -->
+    <div class="tab-content temperature-control-tabs-content">
+        {{#each tabs}}
+            <div role="tabpanel" class="tab-pane" id="{{this.name}}">
+
+                <div class="container {{this.name}}-content {{this.designator}}-content">
+
+                    <h1 class="well {{this.designator}}-readout" style="text-align: center; margin-top: 12px;"></h1>
+
+                    <div class="bs-callout bs-callout-danger {{this.designator}}-warning"><h4>Warning - Thermistor Error</h4>Make sure that your thermistor is plugged in and not shorted.</div>
+
+                    <div class="{{this.designator}}-controls">
+                        <input data-slider-id="{{this.name}}-slider" class="{{this.name}}-slider" type="text" data-slider-min="0" data-slider-max="{{this.max_temp}}" data-slider-step="1" data-slider-value="0"/><br>
+                        <button class="btn btn-lg btn-default btn-{{this.name}}-set-temperature">Set</button>
+                        <button class="btn btn-lg btn-danger btn-{{this.name}}-heater-off">Off</button>
+                    </div>
+                </div>
+
+            </div>
+        {{/each}}
+    </div>
 
     <!-- Fabrica Navigation -->
     <nav class="navbar navbar-default navbar-fixed-bottom">
