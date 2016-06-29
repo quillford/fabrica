@@ -8,43 +8,19 @@
             <li role="presentation"><a href="#">Absolute</a></li>
         </ul>
 
-
         <!-- Jogging buttons -->
-        <div class="input-group input-group-lg" style="margin-top: 15px;">
-            <span class="input-group-btn">
-                <button class="btn btn-default btn-jog-x-neg" type="button">X-</button>
-            </span>
 
-            <input type="text" class="form-control x-position" disabled>
-
-            <span class="input-group-btn">
-                <button class="btn btn-default btn-jog-x-pos" type="button">X+</button>
-            </span>
-        </div>
-
-        <div class="input-group input-group-lg" style="margin-top: 10px;">
-            <span class="input-group-btn">
-                <button class="btn btn-default btn-jog-y-neg" type="button">Y-</button>
-            </span>
-
-            <input type="text" class="form-control y-position" disabled>
-
-            <span class="input-group-btn">
-                <button class="btn btn-default btn-jog-y-pos" type="button">Y+</button>
-            </span>
-        </div>
-
-        <div class="input-group input-group-lg" style="margin-top: 10px;">
-            <span class="input-group-btn">
-                <button class="btn btn-default btn-jog-z-neg" type="button">Z-</button>
-            </span>
-
-            <input type="text" class="form-control z-position" disabled>
-
-            <span class="input-group-btn">
-                <button class="btn btn-default btn-jog-z-pos" type="button">Z+</button>
-            </span>
-        </div>
+        {{#each buttons}}
+            <div class="input-group input-group-lg" style="margin-top: 10px;">
+                <span class="input-group-btn">
+                    <button class="btn btn-default btn-jog-{{this.axis}}-neg" type="button">{{this.axis}}-</button>
+                </span>
+                <input type="text" class="form-control {{this.axis}}-position" disabled>
+                <span class="input-group-btn">
+                    <button class="btn btn-default btn-jog-{{this.axis}}-pos" type="button">{{this.axis}}+</button>
+                </span>
+            </div>
+        {{/each}}
 
         <div class="input-group" style="max-width: 800px; margin-top: 10px;">
             <input type="number" class="form-control jog-distance" value="10">
@@ -55,7 +31,7 @@
             <span class="input-group-addon">Z feedrate</span>
         </div>
 
-        <button class="btn btn-default btn-lg btn-motors-off" style="margin-top: 10px;">Motors Off</button>
+        <button class="btn btn-default btn-lg btn-block btn-motors-off" style="margin-top: 10px;">Motors Off</button>
 
     </div>
 

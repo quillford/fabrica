@@ -2,34 +2,39 @@
 
 var MoveScreen = Screen.extend({
     enter: function(){
+
+        this.buttons = [
+            {"axis": "X"},
+            {"axis": "Y"},
+            {"axis": "Z"}
+        ];
+
         // Display this screen
         this.display('move_screen');
 
         // Handle button clicks
         var _that = this;
-        ['x', 'y', 'z'].forEach(function(axis) {
+        this.buttons.forEach(function(button) {
             ['neg', 'pos'].forEach(function (direction) {
-                _that.html.find(".btn-jog-" + axis + "-" + direction).off().click(function(){
-                     fabrica.machine.jog(axis.toUpperCase(), (direction === "neg" ? -1 : 1), $(".jog-distance").val(), (axis === "z" ? $(".jog-z-feedrate").val() : $(".jog-xy-feedrate").val())); 
+                _that.html.find(".btn-jog-" + button.axis + "-" + direction).off().click(function(){
+                    fabrica.machine.jog(button.axis, (direction === "neg" ? -1 : 1), _that.html.find(".jog-distance").val(), (button.axis === "Z" ? _that.html.find(".jog-z-feedrate").val() : _that.html.find(".jog-xy-feedrate").val())); 
                 });
             });
         });
-        this.html.find(".btn-motors-off").off().click(function(){
-            fabrica.machine.send_command("M18");
-        });
+
+        this.html.find(".btn-motors-off").off().click(function(){ fabrica.machine.send_command("M18"); });
     },
 
+    // Listen for updated positions
     on_value_update: function(value){
         console.log(value);
+        // Update positions if there is html to modify
         if(this.html){
             this.html.find(".x-position").val(value.positions.X);
             this.html.find(".y-position").val(value.positions.Y);
             this.html.find(".z-position").val(value.positions.Z);
         }
     }
-
 });
 
-
 fabrica.add_screen('move', new MoveScreen()); 
-
