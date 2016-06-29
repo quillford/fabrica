@@ -21,9 +21,11 @@ var MoveScreen = Screen.extend({
 
     on_value_update: function(value){
         console.log(value);
-        this.html.find(".x-position").val(value.positions.X);
-        this.html.find(".y-position").val(value.positions.Y);
-        this.html.find(".z-position").val(value.positions.Z);
+        if(this.html){
+            this.html.find(".x-position").val(value.positions.X);
+            this.html.find(".y-position").val(value.positions.Y);
+            this.html.find(".z-position").val(value.positions.Z);
+        }
     }
 
 });
