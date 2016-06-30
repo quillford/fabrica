@@ -30,9 +30,9 @@ var MoveScreen = Screen.extend({
         console.log(value);
         // Update positions if there is html to modify
         if(this.html){
-            this.html.find(".x-position").val(value.positions.X);
-            this.html.find(".y-position").val(value.positions.Y);
-            this.html.find(".z-position").val(value.positions.Z);
+            this.html.find(".X-position").val(value.positions.X);
+            this.html.find(".Y-position").val(value.positions.Y);
+            this.html.find(".Z-position").val(value.positions.Z);
         }
     }
 });
