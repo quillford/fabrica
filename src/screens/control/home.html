@@ -1,11 +1,12 @@
 <script id="home_screen" type="text/x-handlebars-template">
-
-
     <div class="container" style="margin-top: 10px;">
-        <button type="button" class="btn btn-default btn-lg btn-home-x">Home X</button>
-        <button type="button" class="btn btn-default btn-lg btn-home-y">Home Y</button>
-        <button type="button" class="btn btn-default btn-lg btn-home-z">Home Z</button>
-        <button type="button" class="btn btn-default btn-lg btn-home-all">Home All</button>
+        {{#each buttons}}
+            <div class="row">
+                <div class="col-xs-12">
+                    <button type="button" style="width: 100%; margin-bottom: 10px;" class="btn btn-default btn-lg btn-home-{{this.axis}}">Home {{this.title}}</button>
+                </div>
+            </div>
+        {{/each}}
     </div>
     
     <nav class="navbar navbar-default navbar-fixed-bottom">
@@ -18,5 +19,4 @@
         </button>
       </div>
     </nav>
-
 </script>

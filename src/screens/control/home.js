@@ -2,14 +2,20 @@
 
 var HomeScreen = Screen.extend({
     enter: function(){
+        this.buttons = [
+            {"axis": "x", "title": "X"},
+            {"axis": "y", "title": "Y"},
+            {"axis": "z", "title": "Z"},
+            {"axis": "all", "title": "All"}
+        ];
+
         // Display this screen
         this.display('home_screen');
 
         // Handle button clicks
-        
         var _that = this;
-        ['x', 'y', 'z', 'all'].forEach(function(axis) {
-            _that.html.find(".btn-home-" + axis).off().click(function(){ fabrica.machine.home( axis.toUpperCase() ); }); 
+        this.buttons.forEach(function(button) {
+            _that.html.find(".btn-home-" + button.axis).off().click(function(){ fabrica.machine.home( button.title ); }); 
         });
     }
 
@@ -17,4 +23,3 @@ var HomeScreen = Screen.extend({
 
 
 fabrica.add_screen('home', new HomeScreen());
-

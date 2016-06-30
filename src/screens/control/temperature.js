@@ -47,7 +47,6 @@ var TemperatureScreen = Screen.extend({
 
         // Apply styling to sliders
         _that.html.find(".slider").css({
-            "max-width": "600px",
             "width": "100%",
             "margin-top": "25px",
             "margin-bottom": "20px"
