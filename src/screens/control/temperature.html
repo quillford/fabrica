@@ -11,7 +11,6 @@
     <div class="tab-content temperature-control-tabs-content">
         {{#each tabs}}
             <div role="tabpanel" class="tab-pane" id="{{this.name}}">
-
                 <div class="container {{this.name}}-content {{this.designator}}-content">
 
                     <h1 class="well {{this.designator}}-readout" style="text-align: center; margin-top: 12px;"></h1>
@@ -20,11 +19,10 @@
 
                     <div class="{{this.designator}}-controls">
                         <input data-slider-id="{{this.name}}-slider" class="{{this.name}}-slider" type="text" data-slider-min="0" data-slider-max="{{this.max_temp}}" data-slider-step="1" data-slider-value="0"/><br>
-                        <button class="btn btn-lg btn-default btn-{{this.name}}-set-temperature">Set</button>
-                        <button class="btn btn-lg btn-danger btn-{{this.name}}-heater-off">Off</button>
+                        <button class="btn btn-lg btn-block btn-default btn-{{this.name}}-set-temperature">Set</button>
+                        <button class="btn btn-lg btn-block btn-danger btn-{{this.name}}-heater-off">Off</button>
                     </div>
                 </div>
-
             </div>
         {{/each}}
     </div>
