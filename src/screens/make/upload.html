@@ -2,24 +2,30 @@
 
     <div class="container" style="padding-bottom: 70px;">
 
-        <h1 style="text-align: center;">Upload</h1>
+        <h2 style="text-align: center;">Upload</h2>
 
-        <br>
+        <div class="upload-options">
+            <label class="btn btn-default btn-file" style="margin-bottom: 10px;">
+                Choose File <input type="file" style="display: none;" id="file-uploader" name="files[]" />
+            </label>
 
-        <label class="btn btn-default btn-file" style="margin-bottom: 10px;">
-            Choose File <input type="file" style="display: none;" id="file-uploader" name="files[]" />
-        </label>
+            <div class="input-group">
+                <span class="input-group-addon">File Name</span>
+                <input type="text" class="form-control file-name-input">
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">File Name</span>
-            <input type="text" class="form-control file-name-input">
+            <br>
+
+            <button type="button" class="btn btn-default btn-upload-file">Upload</button>
         </div>
 
-        <br>
+        <div class="upload-progress">
+            <h3 class="well upload-status"></h3>
 
-        <button type="button" class="btn btn-default btn-upload-file">Upload</button>
+            <div class="callout"></div>
 
-        <h3 class="well upload-status"></h3>
+            <button type="button" class="btn btn-default btn-block btn-lg btn-upload-another-file">Upload Another File</button>
+        </div>
 
         <nav class="navbar navbar-default navbar-fixed-bottom">
         <div class="container">
