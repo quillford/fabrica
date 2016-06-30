@@ -1,14 +1,19 @@
-// Play screen : lists gcode files on sd that is able to be played. display progress and info of file playing
+// Play screen : lists gcode files on sd that are able to be played. display progress and info of file playing
 
 var PlayScreen = Screen.extend({
     enter: function(){
         // Display this screen
         this.display('play_screen');
 
+        // Get the file list
+        fabrica.machine.send_command("M20");
+
+        // Handle button clicks
         var _that = this;
         this.html.find(".btn-abort").off().click(function(){ fabrica.machine.send_command("abort"); });
         this.html.find(".btn-suspend-resume").off().click(function(){ fabrica.machine.send_command( _that.html.find(".btn-suspend-resume").text().toLowerCase() ); });
-        
+
+        // Hide the file menu and the playing view until we know if we are playing a file or not
         this.html.find(".playing-file").hide();
         this.html.find(".file-manager").hide();
     },
@@ -25,7 +30,9 @@ var PlayScreen = Screen.extend({
                 _that.html.find(".file-status").text("No gcode files found on your internal sd card");
 
                 if(file.includes(".gco")){
+                    // We found a playable file, so hide the no gcode files message
                     _that.html.find(".file-status").hide();
+                    
                     var filename = file.replace(".", "-").replace(/(\r\n|\n|\r)/gm,"");
                     file = file.replace(/(\r\n|\n|\r)/gm,"");
                     _that.html.find(".file-list").append( '<a class="btn btn-default col-xs-12 btn-lg btn-'+filename+'" href="#">'+file+'</a>' );
@@ -63,8 +70,8 @@ var PlayScreen = Screen.extend({
             if(value.progress.paused){
                 // Paused
 
-                this.htmt.find(".btn-suspend-resume").text("Resume");
-
+                // Let the user know that the machine is suspended and give them a button to resume 
+                this.html.find(".btn-suspend-resume").text("Resume");
             }else if(value.progress.playing){
                 // Example: file: /sd/test.gcode, 6 % complete, elapsed time: 3 s 
 
