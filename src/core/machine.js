@@ -41,22 +41,60 @@ var Machine = Class({
         });
     },
 
-    upload_file: function( filename, file_content ){
+    upload_file: function( file, filename ){
         this.uploading = true;
         var _that = this;
-        $.ajax({
-            url: "http://" + this.ip + "/upload",
-            type: "POST",
-            headers: {'X-Filename': filename},
-            dataType: "text",
-            data: file_content
-        }).done(function(){
-            fabrica.call_event("on_file_upload_done");
-            _that.uploading = false;
-        }).fail(function(){
-            fabrica.call_event("on_file_upload_failure");
-            _that.uploading = false;
-        });
+
+        // Read the file
+        var reader = new FileReader();
+        reader.readAsBinaryString(file);
+        reader.onloadend  = function(evt){
+            // create XHR instance
+            xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://" + _that.ip + "/upload", true);
+            xhr.setRequestHeader("X-Filename", filename);
+
+            // make sure we have the sendAsBinary method on all browsers
+            XMLHttpRequest.prototype.sendAsBinary = function(text){
+                var data = new ArrayBuffer(text.length);
+                var ui8a = new Uint8Array(data, 0);
+                for (var i = 0; i < text.length; i++) ui8a[i] = (text.charCodeAt(i) & 0xff);
+
+                if(typeof window.Blob == "function"){
+                    var blob = new Blob([data]);
+                }else{
+                    var bb = new (window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder)();
+                    bb.append(data);
+                    var blob = bb.getBlob();
+                }
+
+                this.send(blob);
+            }
+
+            // Track upload progress
+            var eventSource = xhr.upload || xhr;
+            eventSource.addEventListener("progress", function(e) {
+                var percent_complete = Math.round((  (e.position || e.loaded) /  (e.totalSize || e.total) )*100);
+                fabrica.call_event("on_file_upload_update", percent_complete);
+            });
+
+            // Handle file upload success or failure
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4){
+                    if(xhr.status == 200){
+                        // Upload succeeded
+                        fabrica.call_event("on_file_upload_done");
+                    }else{
+                        // Upload failed
+                        fabrica.call_event("on_file_upload_failure"); 
+                    }
+                }
+                _that.uploading = false;
+            };
+
+            // start sending
+            xhr.sendAsBinary(evt.target.result);
+        };
     },
 
     // Send a command to the board
@@ -72,7 +110,7 @@ var Machine = Class({
 
     // Home an axis or all axes
     home: function( axis ){
-        this.send_command(axis.includes("all") ? "G28" : "G28 " + axis);
+        this.send_command(axis.match(/all/gi) ? "G28" : "G28 " + axis);
     },
 
     jog: function( axis, direction, distance, feedrate ){
