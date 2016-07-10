@@ -6,6 +6,9 @@ var Machine = Class({
     create: function(){
         this.communication_log = "";
         this.uploading = false;
+
+        this.gcode_queue = [];
+        this.sending = false;
     },
 
     // Attempt connecting to a machine, and report results
@@ -96,16 +99,53 @@ var Machine = Class({
             xhr.sendAsBinary(evt.target.result);
         };
     },
+    
+    request_update: function( update_string, callback ){
+        // Don't allow multiple update commands in the queue
+        if(!JSON.stringify(this.gcode_queue).includes(JSON.stringify(update_string))){
+            this.send_command(update_string, callback);
+        }
+    },
 
-    // Send a command to the board
+    // Add command to the queue
     send_command: function( command, callback ){
-        console.log("sending command: " + command);
+        this.gcode_queue.push({"command": command, "callback": callback});
 
-        fabrica.call_event('on_gcode_send', command + "\n");
-        this.communication_log += command+"\n";
-        var _that = this;
+        if(!this.sending){
+            this.advance_queue();
+        }
+    },
 
-        $.post("http://" + this.ip + "/command", command+"\n").done( function(data){ _that.communication_log += data; ( (callback ? callback(data) : fabrica.call_event('on_gcode_response', data))); } ) ;
+    // Send the next command in the queue to the board
+    advance_queue: function(){
+        var queue_item  = this.gcode_queue.shift();
+        if(queue_item){
+            var command = queue_item.command;
+            var callback = queue_item.callback;
+
+            console.log("sending command: " + command);
+
+            fabrica.call_event('on_gcode_send', command + "\n");
+            this.communication_log += command+"\n";
+            this.sending = true;
+            var _that = this;
+
+            $.post("http://" + this.ip + "/command", command+"\n")
+                .done( function(data){
+                    _that.communication_log += data;
+                    _that.sending = false;
+                    
+                    if(callback){ callback(data); }
+
+                    fabrica.call_event('on_gcode_response', data);
+                    _that.advance_queue();
+                }).fail(function(){
+                    console.log("gcode failed to send. trying again...");
+                    
+                    _that.gcode_queue.unshift({"command": command, "callback": callback});
+                    _that.advance_queue();
+                });
+        }
     },
 
     // Home an axis or all axes
@@ -119,4 +159,5 @@ var Machine = Class({
 
 }); 
 
-fabrica.machine = new Machine();
+fabrica.machine = new Machine()
+

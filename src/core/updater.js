@@ -12,18 +12,16 @@ var Updater = Class({
             // Do not poll the machine when uploading
             // If there is no ip, we don't know where to find the machine so don't poll the machine
             if(!fabrica.machine.uploading && fabrica.machine.ip && document.hasFocus()){
-                fabrica.machine.send_command("M105\nM119\nM114\nprogress\n", _that.update_received);
+                fabrica.machine.request_update("M105\nM119\nM114\nprogress\n", _that.update_received);
             }
         }, 1000);
     },
-
 
     // Parse the result of our query. It should contain temperature, endstop, postion, and play data in that order.
     update_received: function( response ){
         var result = {};
 
         var lines = response.split("\n");
-
 
         // Extract temperatures
         // Cut into different readings
