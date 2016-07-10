@@ -139,6 +139,11 @@ var Machine = Class({
 
                     fabrica.call_event('on_gcode_response', data);
                     _that.advance_queue();
+                }).fail(function(){
+                    console.log("gcode failed to send. trying again...");
+                    
+                    _that.gcode_queue.unshift({"command": command, "callback": callback});
+                    _that.advance_queue();
                 });
         }
     },
@@ -154,4 +159,5 @@ var Machine = Class({
 
 }); 
 
-fabrica.machine = new Machine();
+fabrica.machine = new Machine()
+
