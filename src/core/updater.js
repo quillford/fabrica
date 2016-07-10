@@ -12,7 +12,7 @@ var Updater = Class({
             // Do not poll the machine when uploading
             // If there is no ip, we don't know where to find the machine so don't poll the machine
             if(!fabrica.machine.uploading && fabrica.machine.ip && document.hasFocus()){
-                fabrica.machine.request_update("M105\nM119\nM114\nprogress\n", _that.update_received);
+                fabrica.machine.request_update("M105\nM119\nM114.1\nprogress\n", _that.update_received);
             }
         }, 1000);
     },
